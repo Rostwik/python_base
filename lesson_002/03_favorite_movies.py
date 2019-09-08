@@ -20,3 +20,4 @@ print(my_favorite_movies[-15:])
 print(my_favorite_movies[12:25])
 print(my_favorite_movies[-22:-17])
 
+#зачет!

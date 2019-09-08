@@ -57,8 +57,9 @@ table_quantity = table_item['quantity']
 table_quantity_2 = table_item_2['quantity']
 table_price = table_item['price']
 table_price_2 = table_item_2['price']
-table_cost = table_quantity * table_price
+table_cost = table_quantity * table_price  # TODO table_cost и table_cost_2 можно совместить
 table_cost_2 = table_quantity_2 * table_price_2
+# TODO тогда и лишних вычислений в print() не попадет
 print('Стол -', table_quantity + table_quantity_2, 'шт, стоимость', table_cost + table_cost_2, 'руб')
 
 sofa_code = goods['Диван']
@@ -70,6 +71,7 @@ sofa_price = sofa_item['price']
 sofa_price_2 = sofa_item_2['price']
 sofa_cost = sofa_quantity * sofa_price
 sofa_cost_2 = sofa_quantity_2 * sofa_price_2
+# TODO здесь так же, cost и cost_2 объеденить, sofa_quantity + sofa_quantity_2 хорошо бы тоже было вынести
 print('Диван -', sofa_quantity + sofa_quantity_2, 'шт, стоимость', sofa_cost + sofa_cost_2, 'руб')
 
 chair_code = goods['Стул']
@@ -85,6 +87,7 @@ chair_price_3 = chair_item_3['price']
 chair_cost = chair_quantity * chair_price
 chair_cost_2 = chair_quantity_2 * chair_price_2
 chair_cost_3 = chair_quantity_3 * chair_price_3
+# TODO а вот здесь обязательно стоит вынести вычисления из принтов, слишком длинная строка получилась
 print('Стул -', chair_quantity + chair_quantity_2 + chair_quantity_3, 'шт, стоимость', chair_cost + chair_cost_2 + chair_cost_3, 'руб')
 
 ##########################################################################################

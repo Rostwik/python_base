@@ -14,18 +14,23 @@ sites = {
 
 distances = {}
 distances['Moscow'] = {}
-distances['Moscow']['London'] = ((sites['Moscow'][0]-sites['London'][0]) ** 2 + (sites['Moscow'][1]-sites['London'][1]) ** 2) ** 0.5
-distances['Moscow']['Paris'] = ((sites['Moscow'][0]-sites['Paris'][0]) ** 2 + (sites['Moscow'][1]-sites['Paris'][1]) ** 2) ** 0.5
+# TODO расчеты повторяются несколько раз, удобнее вынести их в отдельную переменную
+# TODO тоже можно сказать про sites['Moscow'], sites['London'], sites['Paris']
+# TODO если какое-то обращение к списку(словарю или др объекту) часто используется
+# TODO стоит заменить его простой переменной, чтобы код было легче читать
+distances['Moscow']['London'] = ((sites['Moscow'][0] - sites['London'][0]) ** 2 + (
+            sites['Moscow'][1] - sites['London'][1]) ** 2) ** 0.5
+distances['Moscow']['Paris'] = ((sites['Moscow'][0] - sites['Paris'][0]) ** 2 + (
+            sites['Moscow'][1] - sites['Paris'][1]) ** 2) ** 0.5
 distances['London'] = {}
-distances['London']['Moscow'] = ((sites['London'][0]-sites['Moscow'][0]) ** 2 + (sites['London'][1]-sites['Moscow'][1]) ** 2) ** 0.5
-distances['London']['Paris'] = ((sites['London'][0]-sites['Paris'][0]) ** 2 + (sites['London'][1]-sites['Paris'][1]) ** 2) ** 0.5
+distances['London']['Moscow'] = ((sites['London'][0] - sites['Moscow'][0]) ** 2 + (
+            sites['London'][1] - sites['Moscow'][1]) ** 2) ** 0.5
+distances['London']['Paris'] = ((sites['London'][0] - sites['Paris'][0]) ** 2 + (
+            sites['London'][1] - sites['Paris'][1]) ** 2) ** 0.5
 distances['Paris'] = {}
-distances['Paris']['Moscow'] = ((sites['Paris'][0]-sites['Moscow'][0]) ** 2 + (sites['Paris'][1]-sites['Moscow'][1]) ** 2) ** 0.5
-distances['Paris']['London'] = ((sites['Paris'][0]-sites['London'][0]) ** 2 + (sites['Paris'][1]-sites['London'][1]) ** 2) ** 0.5
-
+distances['Paris']['Moscow'] = ((sites['Paris'][0] - sites['Moscow'][0]) ** 2 + (
+            sites['Paris'][1] - sites['Moscow'][1]) ** 2) ** 0.5
+distances['Paris']['London'] = ((sites['Paris'][0] - sites['London'][0]) ** 2 + (
+            sites['Paris'][1] - sites['London'][1]) ** 2) ** 0.5
 
 print(distances)
-
-
-
-

@@ -19,10 +19,9 @@ violator_songs_list = [
 #   Три песни звучат ХХХ минут
 # Обратите внимание, что делать много вычислений внутри print() - плохой стиль.
 # Лучше заранее вычислить необходимое, а затем в print(xxx, yyy, zzz)
-
+# TODO нужно округлить до долей минут (до 2 знаков) и округление лучше добавить в переменную к вычислениям
 time_of_dm = violator_songs_list[3][1] + violator_songs_list[5][1] + violator_songs_list[-1][1]
-print('Три песни звучат',time_of_dm,'минут')
-
+print('Три песни звучат', time_of_dm, 'минут')
 
 # Есть словарь песен группы Depeche Mode
 violator_songs_dict = {
@@ -39,6 +38,8 @@ violator_songs_dict = {
 
 # распечатайте общее время звучания трех песен: 'Sweetest Perfection', 'Policy of Truth' и 'Blue Dress'
 #   А другие три песни звучат ХХХ минут
-
-time_of_dm_2 = violator_songs_dict ['Sweetest Perfection']+violator_songs_dict['Policy of Truth']+violator_songs_dict['Blue Dress']
-print('А другие три песни звучат',time_of_dm_2,'минут')
+# TODO тут тоже нужно округление :)
+time_of_dm_2 = (violator_songs_dict['Sweetest Perfection']
+                + violator_songs_dict['Policy of Truth']
+                + violator_songs_dict['Blue Dress'])
+print('А другие три песни звучат', time_of_dm_2, 'минут')
