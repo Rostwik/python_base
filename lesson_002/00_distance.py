@@ -13,24 +13,40 @@ sites = {
 # расстояние на координатной сетке - корень из (x1 - x2) ** 2 + (y1 - y2) ** 2
 
 distances = {}
+
+
+sites_moscow = sites['Moscow']
+sites_london = sites['London']
+sites_paris = sites['Paris']
+
 distances['Moscow'] = {}
-# TODO расчеты повторяются несколько раз, удобнее вынести их в отдельную переменную
-# TODO тоже можно сказать про sites['Moscow'], sites['London'], sites['Paris']
-# TODO если какое-то обращение к списку(словарю или др объекту) часто используется
-# TODO стоит заменить его простой переменной, чтобы код было легче читать
-distances['Moscow']['London'] = ((sites['Moscow'][0] - sites['London'][0]) ** 2 + (
-            sites['Moscow'][1] - sites['London'][1]) ** 2) ** 0.5
-distances['Moscow']['Paris'] = ((sites['Moscow'][0] - sites['Paris'][0]) ** 2 + (
-            sites['Moscow'][1] - sites['Paris'][1]) ** 2) ** 0.5
+
+moscow_london = ((sites_moscow[0] - sites_london[0]) ** 2 + (
+            sites_moscow[1] - sites_london[1]) ** 2) ** 0.5
+moscow_paris = ((sites_moscow[0] - sites_paris[0]) ** 2 + (
+            sites_moscow[1] - sites_paris[1]) ** 2) ** 0.5
+
 distances['London'] = {}
-distances['London']['Moscow'] = ((sites['London'][0] - sites['Moscow'][0]) ** 2 + (
-            sites['London'][1] - sites['Moscow'][1]) ** 2) ** 0.5
-distances['London']['Paris'] = ((sites['London'][0] - sites['Paris'][0]) ** 2 + (
-            sites['London'][1] - sites['Paris'][1]) ** 2) ** 0.5
+
+london_moscow = ((sites_london[0] - sites_moscow[0]) ** 2 + (
+            sites_london[1] - sites_moscow[1]) ** 2) ** 0.5
+london_paris = ((sites_london[0] - sites_paris[0]) ** 2 + (
+            sites_london[1] - sites_paris[1]) ** 2) ** 0.5
+
 distances['Paris'] = {}
-distances['Paris']['Moscow'] = ((sites['Paris'][0] - sites['Moscow'][0]) ** 2 + (
-            sites['Paris'][1] - sites['Moscow'][1]) ** 2) ** 0.5
-distances['Paris']['London'] = ((sites['Paris'][0] - sites['London'][0]) ** 2 + (
-            sites['Paris'][1] - sites['London'][1]) ** 2) ** 0.5
+
+paris_moscow = ((sites_paris[0] - sites_moscow[0]) ** 2 + (
+            sites_paris[1] - sites_moscow[1]) ** 2) ** 0.5
+paris_london = ((sites_paris[0] - sites_london[0]) ** 2 + (
+            sites_paris[1] - sites_london[1]) ** 2) ** 0.5
+
+distances['Moscow']['London'] = moscow_london
+distances['Moscow']['Paris'] = moscow_paris
+distances['London']['Moscow'] = london_moscow
+distances['London']['Paris'] = london_paris
+distances['Paris']['Moscow'] = paris_moscow
+distances['Paris']['London'] = paris_london
+
+
 
 print(distances)

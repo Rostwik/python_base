@@ -34,7 +34,7 @@ store = {
 # Рассчитать на какую сумму лежит каждого товара на складе
 # например для ламп
 
-lamps_cost = store[goods['Лампа']][0]['quantity'] * store[goods['Лампа']][0]['price']
+#lamps_cost = store[goods['Лампа']][0]['quantity'] * store[goods['Лампа']][0]['price']
 # или проще (/сложнее ?)
 lamp_code = goods['Лампа']
 lamps_item = store[lamp_code][0]
@@ -57,10 +57,12 @@ table_quantity = table_item['quantity']
 table_quantity_2 = table_item_2['quantity']
 table_price = table_item['price']
 table_price_2 = table_item_2['price']
-table_cost = table_quantity * table_price  # TODO table_cost и table_cost_2 можно совместить
+table_cost = table_quantity * table_price
 table_cost_2 = table_quantity_2 * table_price_2
-# TODO тогда и лишних вычислений в print() не попадет
-print('Стол -', table_quantity + table_quantity_2, 'шт, стоимость', table_cost + table_cost_2, 'руб')
+table_cost_sum = table_cost + table_cost_2
+table_quantity_sum = table_quantity + table_quantity_2
+
+print('Стол -', table_quantity_sum, 'шт, стоимость', table_cost_sum, 'руб')
 
 sofa_code = goods['Диван']
 sofa_item = store[sofa_code][0]
@@ -71,8 +73,10 @@ sofa_price = sofa_item['price']
 sofa_price_2 = sofa_item_2['price']
 sofa_cost = sofa_quantity * sofa_price
 sofa_cost_2 = sofa_quantity_2 * sofa_price_2
-# TODO здесь так же, cost и cost_2 объеденить, sofa_quantity + sofa_quantity_2 хорошо бы тоже было вынести
-print('Диван -', sofa_quantity + sofa_quantity_2, 'шт, стоимость', sofa_cost + sofa_cost_2, 'руб')
+sofa_quantity_sum = sofa_quantity + sofa_quantity_2
+sofa_cost_sum = sofa_cost + sofa_cost_2
+
+print('Диван -', sofa_quantity_sum, 'шт, стоимость', sofa_cost_sum, 'руб')
 
 chair_code = goods['Стул']
 chair_item = store[chair_code][0]
@@ -87,8 +91,10 @@ chair_price_3 = chair_item_3['price']
 chair_cost = chair_quantity * chair_price
 chair_cost_2 = chair_quantity_2 * chair_price_2
 chair_cost_3 = chair_quantity_3 * chair_price_3
-# TODO а вот здесь обязательно стоит вынести вычисления из принтов, слишком длинная строка получилась
-print('Стул -', chair_quantity + chair_quantity_2 + chair_quantity_3, 'шт, стоимость', chair_cost + chair_cost_2 + chair_cost_3, 'руб')
+chair_quantity_sum = chair_quantity + chair_quantity_2 + chair_quantity_3
+chair_cost_sum = chair_cost + chair_cost_2 + chair_cost_3
+
+print('Стул -', chair_quantity_sum, 'шт, стоимость', chair_cost_sum, 'руб')
 
 ##########################################################################################
 # ВНИМАНИЕ! После того как __ВСЯ__ домашняя работа сделана и запушена на сервер,         #
