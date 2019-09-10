@@ -20,7 +20,7 @@ violator_songs_list = [
 # Обратите внимание, что делать много вычислений внутри print() - плохой стиль.
 # Лучше заранее вычислить необходимое, а затем в print(xxx, yyy, zzz)
 
-time_of_dm = round(violator_songs_list[3][1] + violator_songs_list[5][1] + violator_songs_list[-1][1],2)
+time_of_dm = round(violator_songs_list[3][1] + violator_songs_list[5][1] + violator_songs_list[-1][1], 2)
 print('Три песни звучат', time_of_dm, 'минут')
 
 # Есть словарь песен группы Depeche Mode
@@ -40,6 +40,7 @@ violator_songs_dict = {
 #   А другие три песни звучат ХХХ минут
 
 time_of_dm_2 = round(violator_songs_dict['Sweetest Perfection']
-                + violator_songs_dict['Policy of Truth']
-                + violator_songs_dict['Blue Dress'],2)
+                     + violator_songs_dict['Policy of Truth']
+                     + violator_songs_dict['Blue Dress'], 2)
 print('А другие три песни звучат', time_of_dm_2, 'минут')
+#зачет!

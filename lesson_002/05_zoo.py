@@ -29,3 +29,4 @@ print(zoo)
 
 print('LION -', zoo.index('lion') + 1, 'клетка')
 print('LARK -', zoo.index('lark') + 1, 'клетка')
+#зачет!
