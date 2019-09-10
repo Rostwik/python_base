@@ -28,20 +28,18 @@ moscow_paris = (((sites_moscow[0] - sites_paris[0]) ** 2
 
 distances['London'] = {}
 
-london_moscow = moscow_london
 london_paris = ((sites_london[0] - sites_paris[0]) ** 2 + (
             sites_london[1] - sites_paris[1]) ** 2) ** 0.5
 
 distances['Paris'] = {}
 
-paris_moscow = moscow_paris
-paris_london = london_paris
 
 distances['Moscow']['London'] = moscow_london
 distances['Moscow']['Paris'] = moscow_paris
-distances['London']['Moscow'] = london_moscow
+distances['London']['Moscow'] = moscow_london
 distances['London']['Paris'] = london_paris
-distances['Paris']['Moscow'] = paris_moscow
-distances['Paris']['London'] = paris_london
+distances['Paris']['Moscow'] = moscow_paris
+distances['Paris']['London'] = london_paris
 
 print(distances)
+#зачет!
