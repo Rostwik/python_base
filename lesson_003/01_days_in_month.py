@@ -7,8 +7,32 @@
 # Если номер месяца некорректен - сообщить об этом
 
 # Номер месяца получать от пользователя следующим образом
+
 user_input = input("Введите, пожалуйста, номер месяца: ")
 month = int(user_input)
 print('Вы ввели', month)
 
-# TODO здесь ваш код
+year_by_month = {1: 31,
+                 2: 28,
+                 3: 31,
+                 4: 30,
+                 5: 31,
+                 6: 30,
+                 7: 31,
+                 8: 31,
+                 9: 30,
+                 10: 31,
+                 11: 30,
+                 12: 31}
+
+days_end = month % 2
+
+if month in year_by_month:
+    if days_end:
+        print('В', month, 'месяце', year_by_month[month], 'дней')
+    else:
+        print('В', month, 'месяце', year_by_month[month], 'день')
+else:
+    print("Месяца, с таким номером не существует!")
+
+
