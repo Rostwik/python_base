@@ -10,5 +10,18 @@
 #   Целочисленное деление ХХХ на YYY дает ZZZ
 
 a, b = 179, 37
+#a, b = 38, 37
+count_del = 0
+a_print = a
 
-# TODO здесь ваш код
+if a >= b:
+    while a >= b:
+        count_del += 1
+        a -= b
+    print('Целочисленное деление', a_print, 'на', b, 'дает', count_del)
+else:
+    print('Целочисленное деление невозможно!')
+
+
+
+
