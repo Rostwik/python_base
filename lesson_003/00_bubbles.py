@@ -6,7 +6,7 @@ sd.resolution = (1200, 600)
 
 # Нарисовать пузырек - три вложенных окружностей с шагом 5 пикселей
 
-point = sd.get_point(200, 200)
+point = sd.get_point(100, 100)
 
 for i in range(0, 15, 5):
     sd.circle(center_position=point, radius=50 + i, color=(125, 0, 250), width=1)
@@ -23,12 +23,25 @@ point = sd.get_point(400, 200)
 circle_ex(point, 10)
 
 # Нарисовать 10 пузырьков в ряд
-# TODO здесь ваш код
+
+for x in range(200,1200,100):
+    point = sd.get_point(x, 550)
+    circle_ex(point_cir=point, step=5)
+
 
 # Нарисовать три ряда по 10 пузырьков
-# TODO здесь ваш код
+
+
+for x in range(200,1200,100):
+    for y in range(200,500,100):
+        point = sd.get_point(x, y)
+        circle_ex(point_cir=point, step=8)
+
 
 # Нарисовать 100 пузырьков в произвольных местах экрана случайными цветами
-# TODO здесь ваш код
+
+for _ in range(100):
+    point = sd.random_point()
+    sd.circle(center_position=point,radius=10)
 
 sd.pause()
