@@ -11,4 +11,24 @@
 
 educational_grant, expenses = 10000, 12000
 
-# TODO здесь ваш код
+
+#expenses_ex += expenses * (1 + i*0.03)
+
+expenses_ex = 0
+i = 0
+sum_parent = 0
+
+while i < 10:
+    expenses_ex = expenses * (1 + i * 0.03)
+    sum_parent += (expenses_ex - educational_grant)
+    i += 1
+
+print('Студенту надо попросить', sum_parent, 'рублей')
+
+
+
+
+
+
+
+
