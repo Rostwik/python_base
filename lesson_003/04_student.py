@@ -10,21 +10,16 @@
 #   Студенту надо попросить ХХХ.ХХ рублей
 
 educational_grant, expenses = 10000, 12000
-
-
-#expenses_ex += expenses * (1 + i*0.03)
-
-expenses_ex = 0
-i = 0
+month = 0
 sum_parent = 0
 
-while i < 10:  # TODO вместо i стоит использовать полезное имя, что-нибудь вроде "месяц"
-    expenses_ex = expenses * (1 + i * 0.03)  # TODO проценты рассчитываются немного иначе
-    # TODO будет достаточно умножать expenses на 1.03 каждый месяц (расходы = расходы * 1.03)
-    sum_parent += (expenses_ex - educational_grant)
-    i += 1
+while month < 10:
+    sum_parent += (expenses - educational_grant)
+    expenses = expenses * 1.03
+    month += 1
 
-print('Студенту надо попросить', sum_parent, 'рублей')
+
+print('Студенту надо попросить', round(sum_parent, 2), 'рублей')
 
 
 
