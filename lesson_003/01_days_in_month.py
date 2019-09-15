@@ -25,13 +25,8 @@ year_by_month = {1: 31,
                  11: 30,
                  12: 31}
 
-days_end = month % 2  # TODO начиная с августа условие запутается
-
 if month in year_by_month:
-    if days_end:  # TODO в этом случае лучше просто использовать другую формулировку. Например"Дней в этом месяце:..."
-        print('В', month, 'месяце', year_by_month[month], 'дней')
-    else:
-        print('В', month, 'месяце', year_by_month[month], 'день')
+    print('Дней в этом месяце:', year_by_month[month])
 else:
     print("Месяца, с таким номером не существует!")
 
