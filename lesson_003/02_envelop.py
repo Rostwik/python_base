@@ -20,7 +20,7 @@ paper_x, paper_y = 8, 6
 # paper_x, paper_y = 9, 11
 # (просто раскоментировать нужную строку и проверить свой код)
 
-if paper_x <= envelop_x and paper_y <= envelop_y:
+if paper_x <= envelop_x and paper_y <= envelop_y:  # TODO нужно ещё учесть вариант, когда лист переворачивают
     print('ДА')
 else:
     print('НЕТ')
@@ -52,10 +52,10 @@ brick_x, brick_y, brick_z = 1100, 10, 2
 # brick_x, brick_y, brick_z = 3, 6, 11
 # brick_x, brick_y, brick_z = 3, 11, 6
 # (просто раскоментировать нужную строку и проверить свой код)
-
+# TODO проверка на размеры не обязательна, но в целом можно её оставить
 if 1 <= hole_x <= 1000 and 1 <= hole_y <= 1000 and 1 <= brick_x <= 1000 and 1 <= brick_y <= 1000\
         and 1 <= brick_z <= 1000:
-    if brick_x <= hole_x and brick_z <= hole_y:
+    if brick_x <= hole_x and brick_z <= hole_y:  # TODO это лишь один вариант расположения кирпича из 6
         print('ДА')
     else:
         print('НЕТ')

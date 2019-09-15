@@ -3,7 +3,7 @@
 # (определение функций)
 
 import simple_draw as sd
-
+# TODO пройдитесь Code/ Reformat code, чтобы исправить стилистические ошибки
 
 def smile(x, y, color):
     lb_el = sd.get_point(x , y)
@@ -28,7 +28,8 @@ sd.resolution = (1200, 600)
 
 
 for _ in range(10):
-    sr = sd.random_point()
+    sr = sd.random_point()  # TODO для рандом колора тоже лучше отдельную переменную выделить :)
+    # TODO + желательно ограничить значения, а то смайлики сильно вылезают за границы
     smile(sr.x, sr.y, sd.random_color())
 
 

@@ -54,11 +54,12 @@ store = {
 #         подсчет стоимости товара
 #     вывод на консоль количества и стоимости товара на складе
 
-for a, b in goods.items():
+for a, b in goods.items():  # TODO вместо a,b нужны полезные названия
     count_item = 0
     cost_item = 0
-    for j in store[b]:
+    for j in store[b]:  # TODO как и вместо j. store[b] по-хорошему стоит вынести в отдельную переменную
+        # TODO и по ней уже проходить циклом
         count_item += j['quantity']
         cost_item += j['quantity'] * j['price']
     print(a, '-', count_item, 'шт', 'стоимость', cost_item, 'руб')
-
+# А так алгоритм верный :) только стиль подправить

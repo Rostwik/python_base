@@ -12,8 +12,8 @@ for i in range(0, 15, 5):
     sd.circle(center_position=point, radius=50 + i, color=(125, 0, 250), width=1)
 
 # Написать функцию рисования пузырька, принимающую 2 (или более) параметра: точка рисовании и шаг
-
-def circle_ex(point_cir, step):
+# TODO используйте Code/ Reformat Code, чтобы исправить стилистические ошибки
+def circle_ex(point_cir, step):  # TODO нужен ещё параметр для передачи цвета в sd.circle()
     radius = 50
     for _ in range(3):
         radius += step
@@ -41,7 +41,7 @@ for x in range(200,1200,100):
 # Нарисовать 100 пузырьков в произвольных местах экрана случайными цветами
 
 for _ in range(100):
-    point = sd.random_point()
-    sd.circle(center_position=point,radius=10)
+    point = sd.random_point()  # TODO а здесь добавить выбор случайного цвета для каждого из них
+    sd.circle(center_position=point,radius=10)  # TODO в параметрах не было радиуса (был step)
 
 sd.pause()
