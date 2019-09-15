@@ -13,7 +13,7 @@ sd.resolution = (500, 500)
 x = 50
 x_end = 350
 
-for i in rainbow_colors:
+for i in rainbow_colors:  # TODO вместо i надо придумать полезное название
     s_point = sd.get_point(x, 50)
     e_point = sd.get_point(x_end, 450)
     sd.line(start_point=s_point, end_point=e_point, color=i, width=4)
@@ -26,7 +26,7 @@ for i in rainbow_colors:
 
 s_point = sd.get_point(600, -50)
 radius = 400
-for i in rainbow_colors:
+for i in rainbow_colors:  # TODO тут тоже название надо придумать. Что-то вроде "цвет" подойдёт
     sd.circle(center_position=s_point, radius=radius, color=i, width=20)
     radius += 21
 
