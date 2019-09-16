@@ -14,11 +14,11 @@ for i in range(0, 15, 5):
 
 # Написать функцию рисования пузырька, принимающую 2 (или более) параметра: точка рисовании и шаг
 
-def circle_ex(point_cir, step, color):
+def circle_ex(point_cir, step, color):  # TODO параметр color не использутеся далее, поэтому он серый и подчеркнут
     radius = 50
     for _ in range(3):
         radius += step
-        sd.circle(center_position=point_cir, radius=radius, color=sd.random_color())
+        sd.circle(center_position=point_cir, radius=radius, color=sd.random_color())  # TODO его нужно передавать сюда
 
 
 point = sd.get_point(400, 200)
@@ -42,6 +42,7 @@ for x in range(200, 1200, 100):
 
 for _ in range(100):
     point = sd.random_point()
-    sd.circle(center_position=point, radius=10, color=sd.random_color())
+    sd.circle(center_position=point, radius=10, color=sd.random_color())  # TODO здесь же лучше в отдельную переменную
+    # TODO вынести цвет, на подобие того, как вы поступили с point
 
 sd.pause()

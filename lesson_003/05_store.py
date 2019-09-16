@@ -63,3 +63,4 @@ for name_good, id_good in goods.items():
         cost_item += pr_title['quantity'] * pr_title['price']
     print(name_good, '-', count_item, 'шт', 'стоимость', cost_item, 'руб')
 # А так алгоритм верный :) только стиль подправить
+#зачет!

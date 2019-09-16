@@ -15,16 +15,10 @@ sum_parent = 0
 
 while month < 10:
     sum_parent += (expenses - educational_grant)
-    expenses = expenses * 1.03
+    expenses *= 1.03
     month += 1
 
 
 print('Студенту надо попросить', round(sum_parent, 2), 'рублей')
 
-
-
-
-
-
-
-
+#зачет!
