@@ -27,18 +27,10 @@ def smile(x, y, color):
 sd.resolution = (1200, 600)
 
 for _ in range(10):
-    sr = sd.random_point()
+    sr_y = sd.random_number(0, 430)
+    sr_x = sd.random_number(0, 1000)
     rnd_color = sd.random_color()
-    if sr.x > 1000:  # TODO если я правильно понял - это для ограничения координат о которых я говорил
-        x = 1000  # TODO выглядит сложно :) есть хороший выход - ограничивать на этапе получения координат
-    else:  # TODO вместо sd.random_point() использовать sd.random_number(a, b),оно возвращает случайное число от а до b
-        x = sr.x  # TODO получить x, y и из них делать точку point
-    if sr.y > 430:
-        y = 430
-    else:
-        y = sr.y
-    smile(x, y, rnd_color)
-    print (x, y)
+    smile(sr_x, sr_y, rnd_color)
 
 
 # Написать функцию отрисовки смайлика по заданным координатам
@@ -46,6 +38,6 @@ for _ in range(10):
 # Параметры функции: кордината X, координата Y, цвет.
 # Вывести 10 смайликов в произвольных точках экрана.
 
-#smile(0, 430, (255, 0, 120))
+# smile(0, 430, (255, 0, 120))
 
 sd.pause()
