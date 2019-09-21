@@ -43,7 +43,8 @@ for x in range(200, 1200, 100):
 for _ in range(100):
     point = sd.random_point()
     color = sd.random_color()
-    circle_ex(point_cir=point, step=0, color_ex=color)
+    circle_ex(point_cir=point, step=5, color_ex=color)
 
 
 sd.pause()
+#зачет!
