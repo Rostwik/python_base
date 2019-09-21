@@ -16,3 +16,4 @@ for delta, y in enumerate(range(0, 700, 50)):
         sd.rectangle(left_bottom=l_point, right_top=t_point, width=2)
 
 sd.pause()
+#зачет!

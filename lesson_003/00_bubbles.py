@@ -22,13 +22,13 @@ def circle_ex(point_cir, step, color_ex):
 
 
 point = sd.get_point(400, 200)
-circle_ex(point_cir=point, step=10, color=sd.random_color())
+circle_ex(point_cir=point, step=10, color_ex=sd.random_color())
 
 # Нарисовать 10 пузырьков в ряд
 
 for x in range(200, 1200, 100):
     point = sd.get_point(x, 550)
-    circle_ex(point_cir=point, step=5, color=sd.random_color())
+    circle_ex(point_cir=point, step=5, color_ex=sd.random_color())
 
 # Нарисовать три ряда по 10 пузырьков
 
@@ -36,14 +36,14 @@ for x in range(200, 1200, 100):
 for x in range(200, 1200, 100):
     for y in range(200, 500, 100):
         point = sd.get_point(x, y)
-        circle_ex(point_cir=point, step=8, color=sd.random_color())
+        circle_ex(point_cir=point, step=8, color_ex=sd.random_color())
 
 # Нарисовать 100 пузырьков в произвольных местах экрана случайными цветами
 
 for _ in range(100):
     point = sd.random_point()
     color = sd.random_color()
-    sd.circle(center_position=point, radius=10, color=color)
+    circle_ex(point_cir=point, step=0, color_ex=color)
 
 
 sd.pause()
