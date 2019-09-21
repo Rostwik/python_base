@@ -14,7 +14,7 @@ for i in range(0, 15, 5):
 
 # Написать функцию рисования пузырька, принимающую 2 (или более) параметра: точка рисовании и шаг
 
-def circle_ex(point_cir, step, color_ex):
+def circle_ex(point_cir, step, color_ex):  # TODO здесь название параметра color_ex
     radius = 50
     for _ in range(3):
         radius += step
@@ -22,8 +22,9 @@ def circle_ex(point_cir, step, color_ex):
 
 
 point = sd.get_point(400, 200)
-circle_ex(point_cir=point, step=10, color=sd.random_color())
-
+circle_ex(point_cir=point, step=10, color=sd.random_color())  # TODO здесь просто color
+# TODO функция не понимает куда передавать sd.random_color()
+# TODO в остальных случаях ниже такая же проблема
 # Нарисовать 10 пузырьков в ряд
 
 for x in range(200, 1200, 100):
@@ -43,6 +44,7 @@ for x in range(200, 1200, 100):
 for _ in range(100):
     point = sd.random_point()
     color = sd.random_color()
+    # TODO здесь нужно тоже вызывать написанную вами circle_ex
     sd.circle(center_position=point, radius=10, color=color)
 
 
