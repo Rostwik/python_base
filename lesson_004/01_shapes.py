@@ -29,96 +29,96 @@ import simple_draw as sd
 # Результат решения см lesson_004/results/exercise_01_shapes.jpg
 
 # определить функцию рисования треугольника из заданной точки с заданным наклоном
-
-def triangle(point, length, angle=0):
-    v1 = sd.get_vector(start_point=point, angle=angle, length=length, width=1)
-    v1.draw()
-
-    v2 = sd.get_vector(start_point=v1.end_point, angle=angle + 120, length=length, width=1)
-    v2.draw()
-
-    v3 = sd.get_vector(start_point=v2.end_point, angle=angle + 240, length=length, width=1)
-    v3.draw()
-
-    sd.line(start_point=point, end_point=v3.end_point)
-
-
-def square(point, length, angle=0):
-    v1 = sd.get_vector(start_point=point, angle=angle, length=length, width=1)
-    v1.draw()
-
-    v2 = sd.get_vector(start_point=v1.end_point, angle=angle + 90, length=length, width=1)
-    v2.draw()
-
-    v3 = sd.get_vector(start_point=v2.end_point, angle=angle + 180, length=length, width=1)
-    v3.draw()
-
-    v4 = sd.get_vector(start_point=v3.end_point, angle=angle + 270, length=length, width=1)
-    v4.draw()
-
-    sd.line(start_point=point, end_point=v4.end_point)
-
-
-def pentagon(point, length, angle=0):
-    v1 = sd.get_vector(start_point=point, angle=angle, length=length, width=1)
-    v1.draw()
-
-    v2 = sd.get_vector(start_point=v1.end_point, angle=angle + 72, length=length, width=1)
-    v2.draw()
-
-    v3 = sd.get_vector(start_point=v2.end_point, angle=angle + 144, length=length, width=1)
-    v3.draw()
-
-    v4 = sd.get_vector(start_point=v3.end_point, angle=angle + 216, length=length, width=1)
-    v4.draw()
-
-    v5 = sd.get_vector(start_point=v4.end_point, angle=angle + 288, length=length, width=1)
-    v5.draw()
-
-    sd.line(start_point=point, end_point=v5.end_point)
-
-
-def hexagon(point, length, angle=0):
-    v1 = sd.get_vector(start_point=point, angle=angle, length=length, width=1)
-    v1.draw()
-
-    v2 = sd.get_vector(start_point=v1.end_point, angle=angle + 60, length=length, width=1)
-    v2.draw()
-
-    v3 = sd.get_vector(start_point=v2.end_point, angle=angle + 120, length=length, width=1)
-    v3.draw()
-
-    v4 = sd.get_vector(start_point=v3.end_point, angle=angle + 180, length=length, width=1)
-    v4.draw()
-
-    v5 = sd.get_vector(start_point=v4.end_point, angle=angle + 240, length=length, width=1)
-    v5.draw()
-
-    v6 = sd.get_vector(start_point=v5.end_point, angle=angle + 300, length=length, width=1)
-    v6.draw()
-
-    sd.line(start_point=point, end_point=v6.end_point)
-
-
-length = 100
-point = sd.get_point(100, 100)
-
-triangle(point=point, length=length, angle=30)
-
-length = 100
-point = sd.get_point(400, 100)
-
-square(point=point, length=length, angle=30)
-
-length = 100
-point = sd.get_point(100, 350)
-
-pentagon(point=point, length=length, angle=30)
-
-length = 100
-point = sd.get_point(400, 350)
-
-hexagon(point=point, length=length, angle=30)
+#
+# def triangle(point, length, angle=0):
+#     v1 = sd.get_vector(start_point=point, angle=angle, length=length, width=1)
+#     v1.draw()
+#
+#     v2 = sd.get_vector(start_point=v1.end_point, angle=angle + 120, length=length, width=1)
+#     v2.draw()
+#
+#     v3 = sd.get_vector(start_point=v2.end_point, angle=angle + 240, length=length, width=1)
+#     v3.draw()
+#
+#     sd.line(start_point=point, end_point=v3.end_point)
+#
+#
+# def square(point, length, angle=0):
+#     v1 = sd.get_vector(start_point=point, angle=angle, length=length, width=1)
+#     v1.draw()
+#
+#     v2 = sd.get_vector(start_point=v1.end_point, angle=angle + 90, length=length, width=1)
+#     v2.draw()
+#
+#     v3 = sd.get_vector(start_point=v2.end_point, angle=angle + 180, length=length, width=1)
+#     v3.draw()
+#
+#     v4 = sd.get_vector(start_point=v3.end_point, angle=angle + 270, length=length, width=1)
+#     v4.draw()
+#
+#     sd.line(start_point=point, end_point=v4.end_point)
+#
+#
+# def pentagon(point, length, angle=0):
+#     v1 = sd.get_vector(start_point=point, angle=angle, length=length, width=1)
+#     v1.draw()
+#
+#     v2 = sd.get_vector(start_point=v1.end_point, angle=angle + 72, length=length, width=1)
+#     v2.draw()
+#
+#     v3 = sd.get_vector(start_point=v2.end_point, angle=angle + 144, length=length, width=1)
+#     v3.draw()
+#
+#     v4 = sd.get_vector(start_point=v3.end_point, angle=angle + 216, length=length, width=1)
+#     v4.draw()
+#
+#     v5 = sd.get_vector(start_point=v4.end_point, angle=angle + 288, length=length, width=1)
+#     v5.draw()
+#
+#     sd.line(start_point=point, end_point=v5.end_point)
+#
+#
+# def hexagon(point, length, angle=0):
+#     v1 = sd.get_vector(start_point=point, angle=angle, length=length, width=1)
+#     v1.draw()
+#
+#     v2 = sd.get_vector(start_point=v1.end_point, angle=angle + 60, length=length, width=1)
+#     v2.draw()
+#
+#     v3 = sd.get_vector(start_point=v2.end_point, angle=angle + 120, length=length, width=1)
+#     v3.draw()
+#
+#     v4 = sd.get_vector(start_point=v3.end_point, angle=angle + 180, length=length, width=1)
+#     v4.draw()
+#
+#     v5 = sd.get_vector(start_point=v4.end_point, angle=angle + 240, length=length, width=1)
+#     v5.draw()
+#
+#     v6 = sd.get_vector(start_point=v5.end_point, angle=angle + 300, length=length, width=1)
+#     v6.draw()
+#
+#     sd.line(start_point=point, end_point=v6.end_point)
+#
+#
+# length = 100
+# point = sd.get_point(100, 100)
+#
+# triangle(point=point, length=length, angle=30)
+#
+# length = 100
+# point = sd.get_point(400, 100)
+#
+# square(point=point, length=length, angle=30)
+#
+# length = 100
+# point = sd.get_point(100, 350)
+#
+# pentagon(point=point, length=length, angle=30)
+#
+# length = 100
+# point = sd.get_point(400, 350)
+#
+# hexagon(point=point, length=length, angle=30)
 # Отлично, можете переходить к следующей части!
 # Часть 1-бис.
 # Попробуйте прикинуть обьем работы, если нужно будет внести изменения в этот код.
@@ -134,6 +134,28 @@ hexagon(point=point, length=length, angle=30)
 # В итоге должно получиться:
 #   - одна общая функция со множеством параметров,
 #   - все функции отрисовки треугольника/квадрата/етс берут 3 параметра и внутри себя ВЫЗЫВАЮТ общую функцию.
+
+def unification(point, length, figure=3):
+    angle0 = 360 / figure
+    point0 = point
+    for i in range(figure-1):
+        angle = i * angle0
+        v = sd.get_vector(start_point=point, angle=angle, length=length, width=1)
+        v.draw()
+        point = v.end_point
+    sd.line(start_point=point0, end_point=point)
+
+point = sd.get_point(350, 250)
+length = 40
+unification(point=point, length=length, figure=20)
+
+# TODO: У меня есть несколько вопросов:
+#  1. Почему фигура расшивается? У меня ошибка в логике?
+#  2. Если соединять первую и предпоследнюю точки, невооруженным глазом видно, что фигура не симметричная.
+#     Меня это смущает и я не могу двигаться дальше.
+#  3. Такие вопросы уместны? Или необходимо сделать всем по максимуму а потом сдаваться? Спасибо.
+
+
 #
 # Не забудте в этой общей функции придумать, как устранить разрыв
 #   в начальной/конечной точках рисуемой фигуры (если он есть)
