@@ -9,6 +9,27 @@ import simple_draw as sd
 # Код функций из упр lesson_004/02_global_color.py скопировать сюда
 # Результат решения см lesson_004/results/exercise_03_shape_select.jpg
 
-# TODO здесь ваш код
+def draw_any_figure(start_point_figure, length, color_figure, figure=3):
+    angle_figure = 360 / (figure + 3)
+    start_point_vector = start_point_figure
+    for i in range(figure + 2):
+        angle = i * angle_figure
+        v = sd.get_vector(start_point=start_point_vector, angle=angle, length=length, width=1)
+        v.draw(color=color_figure)
+        start_point_vector = v.end_point
+    sd.line(start_point=start_point_figure, end_point=start_point_vector, color=color_figure)
+
+
+print('Возможные фигуры: ', '\n', '0 : треугольник', '\n', '1 : квадрат', '\n', '2 : пятиугольник', '\n',
+      '3 : шестиугольник')
+
+user_figure = int(input('Введите желаемую фигуру: '))
+
+if user_figure in range(4):
+    point = sd.get_point(300, 300)
+    length = 80
+    draw_any_figure(start_point_figure=point, length=length, color_figure=sd.COLOR_ORANGE, figure=user_figure)
+else:
+    print('Вы ввели некорректный номер фигуры!')
 
 sd.pause()
