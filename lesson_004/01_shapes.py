@@ -135,26 +135,19 @@ import simple_draw as sd
 #   - одна общая функция со множеством параметров,
 #   - все функции отрисовки треугольника/квадрата/етс берут 3 параметра и внутри себя ВЫЗЫВАЮТ общую функцию.
 
-def unification(point, length, figure=3):
-    angle0 = 360 / figure
-    point0 = point
+def draw_any_figure(start_point_figure, length, figure=3):
+    angle_figure = 360 / figure
+    start_point_vector = start_point_figure
     for i in range(figure-1):
-        angle = i * angle0
-        v = sd.get_vector(start_point=point, angle=angle, length=length, width=1)
+        angle = i * angle_figure
+        v = sd.get_vector(start_point=start_point_vector, angle=angle, length=length, width=1)
         v.draw()
-        point = v.end_point
-    sd.line(start_point=point0, end_point=point)
+        start_point_vector = v.end_point
+    sd.line(start_point=start_point_figure, end_point=start_point_vector)
 
 point = sd.get_point(350, 250)
-length = 40
-unification(point=point, length=length, figure=20)
-
-# TODO: У меня есть несколько вопросов:
-#  1. Почему фигура расшивается? У меня ошибка в логике?
-#  2. Если соединять первую и предпоследнюю точки, невооруженным глазом видно, что фигура не симметричная.
-#     Меня это смущает и я не могу двигаться дальше.
-#  3. Такие вопросы уместны? Или необходимо сделать всем по максимуму а потом сдаваться? Спасибо.
-
+length = 80
+draw_any_figure(start_point_figure=point, length=length, figure=5)
 
 #
 # Не забудте в этой общей функции придумать, как устранить разрыв
