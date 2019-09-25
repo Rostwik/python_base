@@ -7,47 +7,51 @@ import simple_draw as sd
 # - нарисовать падение этих N снежинок
 # - создать список рандомных длинн лучей снежинок (от 10 до 100) и пусть все снежинки будут разные
 
-# N = [[(x,y), n]]
-
 sd.resolution = (1200, 600)
 
-N = []
+snowfall = []
 
 for _ in range(20):
     x = sd.random_number(50, 1150)
-    n = sd.random_number(10, 50)
-    N.append([x, n])
+    y = 600
+    n = sd.random_number(8, 40)
+    snowfall.append([x, y, n])
 
-print(N)
-y = 600
+# i[0] += delta if plus_minus else i[0]-=delta
+# TODO: в таком формате PCh подчеркивает красным выражение после else,
+# TODO: сигнализируя об ошибочном синтаксисе. Подскажите, пожалуйста,
+# TODO: почему так происходит?
 
 while True:
+
     sd.start_drawing()
-    delta = sd.random_number(2, 10)
-    plus_minus = sd.random_number(0, 1)
-    for i in N:
 
-        point = sd.get_point(i[0], y)
-        sd.snowflake(center=point, length=i[1], color=sd.background_color)
-    y -= 5
-    for i in N:
-        point = sd.get_point(i[0], y)
-        sd.snowflake(center=point, length=i[1], color=sd.COLOR_WHITE)
-        if plus_minus:
-            i[0] += delta
+    for i in snowfall:
+        point = sd.get_point(i[0], i[1])
+        sd.snowflake(center=point, length=i[2], color=sd.background_color)
+
+    for i in snowfall:
+        gravity = i[2] / 3
+        wind = sd.random_number(10, 50)
+        dir_wind = sd.random_number(0, 1)
+        i[1] -= gravity
+        if dir_wind:
+            i[0] += wind
         else:
-            i[0] -= delta
+            i[0] -= wind
 
-# i[0] += delta if plus_minus else i[0]-=delta TODO: в таком формате PCh подчеркивает красным выражение после else,
-#                                               сигнализируя об ошибочном синтаксисе. Подскажите, пожалуйста,
-#                                               почему так происходит?
+    for i in snowfall:
+        point = sd.get_point(i[0], i[1])
+        sd.snowflake(center=point, length=i[2], color=sd.COLOR_WHITE)
+        if i[1] < 10:
+            i[1] = 600
+
     sd.finish_drawing()
     sd.sleep(0.1)
-
-
-    sd.clear_screen()
-    if y < 10:
+    if sd.user_want_exit():
         break
+
+sd.pause()
 
 # Пригодятся функции
 # sd.get_point()
@@ -85,8 +89,6 @@ while True:
 #     if sd.user_want_exit():
 #         break
 
-
-sd.pause()
 
 # подсказка! для ускорения отрисовки можно
 #  - убрать clear_screen()
