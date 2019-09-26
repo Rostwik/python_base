@@ -14,7 +14,7 @@ snowfall = []
 for _ in range(20):
     x = sd.random_number(50, 1150)
     y = 600
-    n = sd.random_number(8, 40)
+    n = sd.random_number(15, 40)
     snowfall.append([x, y, n])
 
 # i[0] += delta if plus_minus else i[0]-=delta
@@ -32,7 +32,7 @@ while True:
 
     for i in snowfall:
         gravity = i[2] / 3
-        wind = sd.random_number(10, 50)
+        wind = sd.random_number(1, 5)
         dir_wind = sd.random_number(0, 1)
         i[1] -= gravity
         if dir_wind:
