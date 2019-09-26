@@ -6,12 +6,9 @@
 import room_1
 import room_2
 
-print('В комнате room_1 живут:')
-for i in room_1.folks:
-    print(i)
-print('В комнате room_2 живут:')
-for i in room_2.folks:
-    print(i)
+print('В комнате room_1 живут:', ', '.join(room_1.folks))
+print('В комнате room_2 живут:', ', '.join(room_2.folks))
+
 
 
 
