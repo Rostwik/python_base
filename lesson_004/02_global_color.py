@@ -15,7 +15,7 @@ import simple_draw as sd
 # sd.get_vector()
 # и константы COLOR_RED, COLOR_ORANGE, COLOR_YELLOW, COLOR_GREEN, COLOR_CYAN, COLOR_BLUE, COLOR_PURPLE
 # Результат решения см lesson_004/results/exercise_02_global_color.jpg
-
+# TODO Нужжно будет добавить функции для каждой из фигур из 01
 def draw_any_figure(start_point_figure, length, color_figure, figure=3):
     angle_figure = 360 / figure
     start_point_vector = start_point_figure
@@ -27,6 +27,13 @@ def draw_any_figure(start_point_figure, length, color_figure, figure=3):
     sd.line(start_point=start_point_figure, end_point=start_point_vector, color=color_figure)
 
 
+# TODO для удобства и большей функциональности лучше организовать эти данные в следующую структуру
+# TODO цвета_для_фигур = {'0': {'name': 'red', 'in_sd': sd.COLOR_RED},...}
+# TODO Тогда по введенному ключу пользователя мы получаем доступ к одному из словарей
+# TODO А так как у каждого вложенного словаря будут одинаковые ключи 'name' и 'in_sd'
+# TODO Мы легко получим и нужное название, и нужный цвет:
+# TODO цвета_для_фигур['0']['name']
+# TODO цвета_для_фигур['0']['in_sd']
 figures_color = [sd.COLOR_RED, sd.COLOR_ORANGE, sd.COLOR_YELLOW, sd.COLOR_GREEN,
                  sd.COLOR_CYAN, sd.COLOR_BLUE, sd.COLOR_PURPLE]
 

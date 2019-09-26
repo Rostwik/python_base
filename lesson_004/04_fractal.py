@@ -26,6 +26,7 @@ import simple_draw as sd
 
 # можно поиграть -шрифтами- цветами и углами отклонения
 
+
 def draw_branches(point, angle, length):
     if length < 10:
         return
@@ -53,5 +54,4 @@ draw_branches(point=root_point, angle=90, length=100)
 # sd.random_number()
 
 sd.pause()
-
-
+#зачет!
