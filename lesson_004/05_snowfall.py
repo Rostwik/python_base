@@ -18,18 +18,27 @@ for _ in range(20):
     snowfall.append([x, y, n])
 
 # i[0] += delta if plus_minus else i[0]-=delta
-# TODO: в таком формате PCh подчеркивает красным выражение после else,
-# TODO: сигнализируя об ошибочном синтаксисе. Подскажите, пожалуйста,
-# TODO: почему так происходит?
+#  в таком формате PCh подчеркивает красным выражение после else,
+#  сигнализируя об ошибочном синтаксисе. Подскажите, пожалуйста,
+#  почему так происходит?
+# TODO тернарный оператор "подставляет" часть после else на место delta
+# TODO получается i[0] += i[0]-=delta
+# TODO что и ведет к ошибке. Можно в одном случае прибавлять дельту, в противном минус дельту
+# TODO i[0] += delta if plus_minus else -delta
+# TODO Ну и кроме этого - на этом этапе у вас не заданы ни i, ни plus_minus, ни delta
 
 while True:
 
     sd.start_drawing()
 
-    for i in snowfall:
+    for i in snowfall:  # TODO Нэйминг! 'i' в данном случае используется для обозначения снежинок?
+        # TODO можно так и назвать - снежинка
+        # TODO А лучше вообще "распаковать" внутренний список, с помощью цикла с 3 переменными
+        # TODO for flake_x, flake_y, flake_size in snowfall:
+        # TODO тогда и лишние индексы будут не нужны
         point = sd.get_point(i[0], i[1])
         sd.snowflake(center=point, length=i[2], color=sd.background_color)
-
+    # TODO зачем 3 разных цикла, если можно всё сделать в одном?
     for i in snowfall:
         gravity = i[2] / 3
         wind = sd.random_number(10, 50)
