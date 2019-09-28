@@ -15,49 +15,64 @@ import simple_draw as sd
 # sd.get_vector()
 # и константы COLOR_RED, COLOR_ORANGE, COLOR_YELLOW, COLOR_GREEN, COLOR_CYAN, COLOR_BLUE, COLOR_PURPLE
 # Результат решения см lesson_004/results/exercise_02_global_color.jpg
-# TODO Нужжно будет добавить функции для каждой из фигур из 01
-def draw_any_figure(start_point_figure, length, color_figure, figure=3):
-    angle_figure = 360 / figure
+
+def draw_any_figure(start_point_figure, length, angle, color_figure, figure=3):
     start_point_vector = start_point_figure
-    for i in range(figure - 1):
-        angle = i * angle_figure
-        v = sd.get_vector(start_point=start_point_vector, angle=angle, length=length, width=1)
+    side = int(360 / figure)
+    for i in range(0, 360 - side, side):
+        v = sd.get_vector(start_point=start_point_vector, angle=i + angle, length=length, width=1)
         v.draw(color=color_figure)
         start_point_vector = v.end_point
     sd.line(start_point=start_point_figure, end_point=start_point_vector, color=color_figure)
 
 
-# TODO для удобства и большей функциональности лучше организовать эти данные в следующую структуру
-# TODO цвета_для_фигур = {'0': {'name': 'red', 'in_sd': sd.COLOR_RED},...}
-# TODO Тогда по введенному ключу пользователя мы получаем доступ к одному из словарей
-# TODO А так как у каждого вложенного словаря будут одинаковые ключи 'name' и 'in_sd'
-# TODO Мы легко получим и нужное название, и нужный цвет:
-# TODO цвета_для_фигур['0']['name']
-# TODO цвета_для_фигур['0']['in_sd']
-figures_color = [sd.COLOR_RED, sd.COLOR_ORANGE, sd.COLOR_YELLOW, sd.COLOR_GREEN,
-                 sd.COLOR_CYAN, sd.COLOR_BLUE, sd.COLOR_PURPLE]
+def triangle(point, length, angle, color_figure):
+    draw_any_figure(start_point_figure=point, length=length, angle=angle, color_figure=color_figure, figure=3)
 
-print('Возможные цвета', '\n', '0 : red', '\n', '1 : orange', '\n', '2 : yellow', '\n', '3 : green',
-      '\n', '4 : cyan', '\n', '5 : blue', '\n', '6 : purple')
 
-user_color = int(input('Введите желаемый цвет: '))
+def square(point, length, angle, color_figure):
+    draw_any_figure(start_point_figure=point, length=length, angle=angle, color_figure=color_figure, figure=4)
 
-if user_color in range(7):
+
+def pentagon(point, length, angle, color_figure):
+    draw_any_figure(start_point_figure=point, length=length, angle=angle, color_figure=color_figure, figure=5)
+
+
+def hexagon(point, length, angle, color_figure):
+    draw_any_figure(start_point_figure=point, length=length, angle=angle, color_figure=color_figure, figure=6)
+
+
+colors = {'0': {'name': 'red', 'in_sd': sd.COLOR_RED},
+          '1': {'name': 'orange', 'in_sd': sd.COLOR_ORANGE},
+          '2': {'name': 'yellow', 'in_sd': sd.COLOR_YELLOW},
+          '3': {'name': 'green', 'in_sd': sd.COLOR_GREEN},
+          '4': {'name': 'cyan', 'in_sd': sd.COLOR_CYAN},
+          '5': {'name': 'blue', 'in_sd': sd.COLOR_BLUE},
+          '6': {'name': 'purple', 'in_sd': sd.COLOR_PURPLE}
+          }
+
+for i in range(7):
+    print(i, ': ', colors[str(i)]['name'])
+
+user_color = input('Введите желаемый цвет: ')
+
+if user_color in colors.keys():
     point = sd.get_point(100, 100)
     length = 80
-    draw_any_figure(start_point_figure=point, length=length, color_figure=figures_color[user_color], figure=3)
-
+    figures_color = colors[str(user_color)]['in_sd']
+    triangle(point=point, length=length, angle=20, color_figure=figures_color)
     point = sd.get_point(400, 100)
     length = 80
-    draw_any_figure(start_point_figure=point, length=length, color_figure=figures_color[user_color], figure=4)
-
+    figures_color = colors[str(user_color)]['in_sd']
+    square(point=point, length=length, angle=20, color_figure=figures_color)
     point = sd.get_point(100, 350)
     length = 80
-    draw_any_figure(start_point_figure=point, length=length, color_figure=figures_color[user_color], figure=5)
-
+    figures_color = colors[str(user_color)]['in_sd']
+    pentagon(point=point, length=length, angle=20, color_figure=figures_color)
     point = sd.get_point(400, 350)
     length = 80
-    draw_any_figure(start_point_figure=point, length=length, color_figure=figures_color[user_color], figure=6)
+    figures_color = colors[str(user_color)]['in_sd']
+    hexagon(point=point, length=length, angle=20, color_figure=figures_color)
 else:
     print('Вы ввели некорректный номер!')
 
