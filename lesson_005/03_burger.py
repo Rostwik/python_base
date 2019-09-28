@@ -15,4 +15,30 @@
 # Создать рецепт своего бургера, по вашему вкусу.
 # Если не хватает инградиентов - создать соответствующие функции в модуле my_burger
 
-# TODO здесь ваш код
+import my_burger
+
+#TODO почему-то не подкидывает после точки доступные функции модуля my_burger. Нужно как-то поднастроить PCh?
+
+def Double_Cheeseburger():
+    print('Представляем Вашему вниманию секретный рецепт Двойного чизбургера!')
+    my_burger.cutlet()
+    my_burger.bun()
+    my_burger.mustard_sauce()
+    my_burger.onion()
+    my_burger.gherkin()
+    my_burger.cheese()
+    my_burger.Seasoning_grill()
+
+def Megaburger():
+    print('Представляем Вашему вниманию секретный рецепт Баварского бургера!')
+    my_burger.sausages()
+    my_burger.bun()
+    my_burger.onion()
+    my_burger.gherkin()
+    my_burger.tomato()
+    my_burger.cheese()
+    my_burger.mayonnaise()
+
+
+Double_Cheeseburger()
+Megaburger()
