@@ -21,11 +21,6 @@ for _ in range(20):
 #  в таком формате PCh подчеркивает красным выражение после else,
 #  сигнализируя об ошибочном синтаксисе. Подскажите, пожалуйста,
 #  почему так происходит?
-# TODO тернарный оператор "подставляет" часть после else на место delta
-# TODO получается i[0] += i[0]-=delta
-# TODO что и ведет к ошибке. Можно в одном случае прибавлять дельту, в противном минус дельту
-# TODO i[0] += delta if plus_minus else -delta
-# TODO Ну и кроме этого - на этом этапе у вас не заданы ни i, ни plus_minus, ни delta
 
 while True:
 
@@ -39,17 +34,11 @@ while True:
         point = sd.get_point(i[0], i[1])
         sd.snowflake(center=point, length=i[2], color=sd.background_color)
     # TODO зачем 3 разных цикла, если можно всё сделать в одном?
-    for i in snowfall:
         gravity = i[2] / 3
         wind = sd.random_number(1, 5)
         dir_wind = sd.random_number(0, 1)
         i[1] -= gravity
-        if dir_wind:
-            i[0] += wind
-        else:
-            i[0] -= wind
-
-    for i in snowfall:
+        i[0] += wind if dir_wind else -wind
         point = sd.get_point(i[0], i[1])
         sd.snowflake(center=point, length=i[2], color=sd.COLOR_WHITE)
         if i[1] < 10:

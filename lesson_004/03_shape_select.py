@@ -2,6 +2,7 @@
 
 import simple_draw as sd
 
+
 # Запросить у пользователя желаемую фигуру посредством выбора из существующих
 #   вывести список всех фигур с номерами и ждать ввода номера желаемой фигуры.
 # и нарисовать эту фигуру в центре экрана
@@ -9,33 +10,49 @@ import simple_draw as sd
 # Код функций из упр lesson_004/02_global_color.py скопировать сюда
 # Результат решения см lesson_004/results/exercise_03_shape_select.jpg
 
-def draw_any_figure(start_point_figure, length, color_figure, figure=3):
-    angle_figure = 360 / (figure + 3)
+def draw_any_figure(start_point_figure, length, angle, color_figure, figure=3):
     start_point_vector = start_point_figure
-    for i in range(figure + 2):
-        angle = i * angle_figure
-        v = sd.get_vector(start_point=start_point_vector, angle=angle, length=length, width=1)
+    side = int(360 / figure)
+    for i in range(0, 360 - side, side):
+        v = sd.get_vector(start_point=start_point_vector, angle=i + angle, length=length, width=1)
         v.draw(color=color_figure)
         start_point_vector = v.end_point
     sd.line(start_point=start_point_figure, end_point=start_point_vector, color=color_figure)
 
 
-# TODO здесь нужна будет структура данных идентичная той, которую я описал в 02
-# TODO словарь со словарями. Чтобы хранить в словаре функцию, не выполняя её при создании словаря,
-# TODO надо написать название функции без (параметры)
-# TODO функции_для_фигур = {'0': {'name': 'red', 'func': triangle},...}
-# TODO Запуск такой функции тоже не совсем обычен:
-# TODO функция_рисования = функции_для_фигур['0']['func']
-# TODO функция_рисования(параметры)
-print('Возможные фигуры: ', '\n', '0 : треугольник', '\n', '1 : квадрат', '\n', '2 : пятиугольник', '\n',
-      '3 : шестиугольник')
+def triangle(point, length, angle, color_figure):
+    draw_any_figure(start_point_figure=point, length=length, angle=angle, color_figure=color_figure, figure=3)
 
-user_figure = int(input('Введите желаемую фигуру: '))
 
-if user_figure in range(4):
+def square(point, length, angle, color_figure):
+    draw_any_figure(start_point_figure=point, length=length, angle=angle, color_figure=color_figure, figure=4)
+
+
+def pentagon(point, length, angle, color_figure):
+    draw_any_figure(start_point_figure=point, length=length, angle=angle, color_figure=color_figure, figure=5)
+
+
+def hexagon(point, length, angle, color_figure):
+    draw_any_figure(start_point_figure=point, length=length, angle=angle, color_figure=color_figure, figure=6)
+
+
+figures = {'0': {'name': 'Треугольник', 'func': triangle},
+           '1': {'name': 'Квадрат', 'func': square},
+           '2': {'name': 'Пятиугольник', 'func': pentagon},
+           '3': {'name': 'Шестиугольник', 'func': hexagon}
+           }
+
+print('Возможные фигуры:')
+for i in range(4):
+    print(i, ': ', figures[str(i)]['name'])
+
+user_figure = input('Введите желаемую фигуру: ')
+
+if user_figure in figures.keys():
     point = sd.get_point(300, 300)
     length = 80
-    draw_any_figure(start_point_figure=point, length=length, color_figure=sd.COLOR_ORANGE, figure=user_figure)
+    func_of_dict = figures[user_figure]['func']
+    func_of_dict(point=point, length=length, angle=0, color_figure=sd.COLOR_GREEN)
 else:
     print('Вы ввели некорректный номер фигуры!')
 
