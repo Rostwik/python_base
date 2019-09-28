@@ -26,23 +26,24 @@ while True:
 
     sd.start_drawing()
 
-    for i in snowfall:  # TODO Нэйминг! 'i' в данном случае используется для обозначения снежинок?
-        # TODO можно так и назвать - снежинка
+    for icecrystal in snowfall:
         # TODO А лучше вообще "распаковать" внутренний список, с помощью цикла с 3 переменными
         # TODO for flake_x, flake_y, flake_size in snowfall:
         # TODO тогда и лишние индексы будут не нужны
-        point = sd.get_point(i[0], i[1])
-        sd.snowflake(center=point, length=i[2], color=sd.background_color)
-    # TODO зачем 3 разных цикла, если можно всё сделать в одном?
-        gravity = i[2] / 3
+
+        # TODO Не смог реализовать без нарушения логики, данные в списке необходимо обновлять,
+        # TODO чтобы снежинки падали вниз. Как в предложенной Вами схеме отправлять измененные данные в список?
+        point = sd.get_point(icecrystal[0], icecrystal[1])
+        sd.snowflake(center=point, length=icecrystal[2], color=sd.background_color)
+        gravity = icecrystal[2] / 3
         wind = sd.random_number(1, 5)
         dir_wind = sd.random_number(0, 1)
-        i[1] -= gravity
-        i[0] += wind if dir_wind else -wind
-        point = sd.get_point(i[0], i[1])
-        sd.snowflake(center=point, length=i[2], color=sd.COLOR_WHITE)
-        if i[1] < 10:
-            i[1] = 600
+        icecrystal[1] -= gravity
+        icecrystal[0] += wind if dir_wind else -wind
+        point = sd.get_point(icecrystal[0], icecrystal[1])
+        sd.snowflake(center=point, length=icecrystal[2], color=sd.COLOR_WHITE)
+        if icecrystal[1] < 10:
+            icecrystal[1] = 600
 
     sd.finish_drawing()
     sd.sleep(0.1)
