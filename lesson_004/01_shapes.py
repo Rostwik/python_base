@@ -135,29 +135,31 @@ import simple_draw as sd
 #   - одна общая функция со множеством параметров,
 #   - все функции отрисовки треугольника/квадрата/етс берут 3 параметра и внутри себя ВЫЗЫВАЮТ общую функцию.
 
-def draw_any_figure(start_point_figure, length, figure=3):
-    angle_figure = 360 / figure
+def draw_any_figure(start_point_figure, length, angle, figure=3):
     start_point_vector = start_point_figure
-    for i in range(figure-1):
-        angle = i * angle_figure
-        print(angle)  # TODO Обратите внимание, что углы которые передаются в функцию
-        # TODO начинаются с 0 и идут с одинаковыми интервалами
-        # TODO Это значит, что мы можем задать цикл по этим значения
-        # TODO Что позволит нам избежать расчетов вручную
-        v = sd.get_vector(start_point=start_point_vector, angle=angle, length=length, width=1)
+    side = int(360 / figure)
+    for i in range(0, 360 - side, side):
+        v = sd.get_vector(start_point=start_point_vector, angle=i + angle, length=length, width=1)
         v.draw()
         start_point_vector = v.end_point
     sd.line(start_point=start_point_figure, end_point=start_point_vector)
 
-# TODO помимо этой функции - нужны функции для каждой фигуры, которые будут вызывать эту общую
-# TODO Их задача передать дополнительный параметр основной функции
-# TODO Так, вызвав функцию треугольника со стандартными параметрами point, length, angle
-# TODO внутри вы вызываете общую функцию - но уже с 4 параметрами (передаем ещё количество сторон)
+def triangle(point, length, angle):
+    draw_any_figure(start_point_figure=point, length=length, angle=angle, figure=3)
+
+def square(point, length, angle):
+    draw_any_figure(start_point_figure=point, length=length, angle=angle, figure=4)
+
+def pentagon(point, length, angle):
+    draw_any_figure(start_point_figure=point, length=length, angle=angle, figure=5)
+
+def hexagon(point, length, angle):
+    draw_any_figure(start_point_figure=point, length=length, angle=angle, figure=6)
+
 point = sd.get_point(350, 250)
 length = 80
-draw_any_figure(start_point_figure=point, length=length, figure=5)
+hexagon(point=point, length=length, angle=20)
 
-#
 # Не забудте в этой общей функции придумать, как устранить разрыв
 #   в начальной/конечной точках рисуемой фигуры (если он есть)
 
