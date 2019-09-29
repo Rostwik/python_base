@@ -138,12 +138,12 @@ import simple_draw as sd
 def draw_any_figure(start_point_figure, length, angle, figure=3):
     start_point_vector = start_point_figure
     side = int(360 / figure)
-    for i in range(0, 360 - side, side):
+    for i in range(0, 360 - side, side):  # TODO Только теперь это нельзя называть просто i, это уже angle
         v = sd.get_vector(start_point=start_point_vector, angle=i + angle, length=length, width=1)
         v.draw()
         start_point_vector = v.end_point
     sd.line(start_point=start_point_figure, end_point=start_point_vector)
-
+# TODO Не хватает отступов - выполните Code/Reformat code
 def triangle(point, length, angle):
     draw_any_figure(start_point_figure=point, length=length, angle=angle, figure=3)
 
@@ -159,6 +159,7 @@ def hexagon(point, length, angle):
 point = sd.get_point(350, 250)
 length = 80
 hexagon(point=point, length=length, angle=20)
+# TODO В остальном отлично, то, что нужно! :)
 
 # Не забудте в этой общей функции придумать, как устранить разрыв
 #   в начальной/конечной точках рисуемой фигуры (если он есть)

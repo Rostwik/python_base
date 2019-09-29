@@ -43,11 +43,13 @@ figures = {'0': {'name': 'Треугольник', 'func': triangle},
            }
 
 print('Возможные фигуры:')
-for i in range(4):
+for i in range(4):  # TODO Тот же совет про .items() и цикл по словарю
     print(i, ': ', figures[str(i)]['name'])
 
 user_figure = input('Введите желаемую фигуру: ')
-
+# TODO Тот же совет по проверке ввода внутри цикла
+# TODO while user_figure not in figures.keys():
+# TODO    спрашивать пользователя ещё раз
 if user_figure in figures.keys():
     point = sd.get_point(300, 300)
     length = 80
