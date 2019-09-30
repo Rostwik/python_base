@@ -19,7 +19,7 @@ import simple_draw as sd
 def draw_any_figure(start_point_figure, length, angle, color_figure, figure=3):
     start_point_vector = start_point_figure
     side = int(360 / figure)
-    for i in range(0, 360 - side, side):
+    for i in range(0, 360 - side, side):  # TODO Нэйминг, меняем i на angle
         v = sd.get_vector(start_point=start_point_vector, angle=i + angle, length=length, width=1)
         v.draw(color=color_figure)
         start_point_vector = v.end_point
@@ -51,11 +51,12 @@ colors = {'0': {'name': 'red', 'in_sd': sd.COLOR_RED},
           '6': {'name': 'purple', 'in_sd': sd.COLOR_PURPLE}
           }
 
-for i in range(7):
+for i in range(7):  # TODO используйте метод .items() и цикл по словарю, как в lesson 3 - 05
     print(i, ': ', colors[str(i)]['name'])
 
 user_color = input('Введите желаемый цвет: ')
-
+# TODO С помощью бесконечного цикла проверьте правильность ввода пользователем
+# TODO Затем, вне цикла, рисуйте фигуры с полученным и проверенным выбором пользователя
 if user_color in colors.keys():
     point = sd.get_point(100, 100)
     length = 80
