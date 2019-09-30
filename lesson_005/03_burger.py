@@ -17,7 +17,8 @@
 
 import my_burger
 
-#TODO почему-то не подкидывает после точки доступные функции модуля my_burger. Нужно как-то поднастроить PCh?
+
+# TODO почему-то не подкидывает после точки доступные функции модуля my_burger. Нужно как-то поднастроить PCh?
 
 def Double_Cheeseburger():
     print('Представляем Вашему вниманию секретный рецепт Двойного чизбургера!')
@@ -28,6 +29,7 @@ def Double_Cheeseburger():
     my_burger.gherkin()
     my_burger.cheese()
     my_burger.Seasoning_grill()
+
 
 def Megaburger():
     print('Представляем Вашему вниманию секретный рецепт Баварского бургера!')
