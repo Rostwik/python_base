@@ -16,30 +16,30 @@ import simple_draw as sd
 # и константы COLOR_RED, COLOR_ORANGE, COLOR_YELLOW, COLOR_GREEN, COLOR_CYAN, COLOR_BLUE, COLOR_PURPLE
 # Результат решения см lesson_004/results/exercise_02_global_color.jpg
 
-def draw_any_figure(start_point_figure, length, angle, color_figure, figure=3):
+def draw_any_figure(start_point_figure, length, angle, color_figure, number_of_parties=3):
     start_point_vector = start_point_figure
-    side = int(360 / figure)
-    for i in range(0, 360 - side, side):  # TODO Нэйминг, меняем i на angle
-        v = sd.get_vector(start_point=start_point_vector, angle=i + angle, length=length, width=1)
+    side = int(360 / number_of_parties)
+    for figure_angle in range(0, 360 - side, side):
+        v = sd.get_vector(start_point=start_point_vector, angle=figure_angle + angle, length=length, width=1)
         v.draw(color=color_figure)
         start_point_vector = v.end_point
     sd.line(start_point=start_point_figure, end_point=start_point_vector, color=color_figure)
 
 
 def triangle(point, length, angle, color_figure):
-    draw_any_figure(start_point_figure=point, length=length, angle=angle, color_figure=color_figure, figure=3)
+    draw_any_figure(start_point_figure=point, length=length, angle=angle, color_figure=color_figure, number_of_parties=3)
 
 
 def square(point, length, angle, color_figure):
-    draw_any_figure(start_point_figure=point, length=length, angle=angle, color_figure=color_figure, figure=4)
+    draw_any_figure(start_point_figure=point, length=length, angle=angle, color_figure=color_figure, number_of_parties=4)
 
 
 def pentagon(point, length, angle, color_figure):
-    draw_any_figure(start_point_figure=point, length=length, angle=angle, color_figure=color_figure, figure=5)
+    draw_any_figure(start_point_figure=point, length=length, angle=angle, color_figure=color_figure, number_of_parties=5)
 
 
 def hexagon(point, length, angle, color_figure):
-    draw_any_figure(start_point_figure=point, length=length, angle=angle, color_figure=color_figure, figure=6)
+    draw_any_figure(start_point_figure=point, length=length, angle=angle, color_figure=color_figure, number_of_parties=6)
 
 
 colors = {'0': {'name': 'red', 'in_sd': sd.COLOR_RED},
@@ -51,30 +51,34 @@ colors = {'0': {'name': 'red', 'in_sd': sd.COLOR_RED},
           '6': {'name': 'purple', 'in_sd': sd.COLOR_PURPLE}
           }
 
-for i in range(7):  # TODO используйте метод .items() и цикл по словарю, как в lesson 3 - 05
-    print(i, ': ', colors[str(i)]['name'])
+for i, j in colors.items():
+    print(i, ': ', j['name'])
+
+# TODO Странно, что словарь вывелся по порядку возрастания, мне казалось, что в это происходит случайным
+# TODO образом
 
 user_color = input('Введите желаемый цвет: ')
-# TODO С помощью бесконечного цикла проверьте правильность ввода пользователем
-# TODO Затем, вне цикла, рисуйте фигуры с полученным и проверенным выбором пользователя
-if user_color in colors.keys():
-    point = sd.get_point(100, 100)
-    length = 80
-    figures_color = colors[str(user_color)]['in_sd']
-    triangle(point=point, length=length, angle=20, color_figure=figures_color)
-    point = sd.get_point(400, 100)
-    length = 80
-    figures_color = colors[str(user_color)]['in_sd']
-    square(point=point, length=length, angle=20, color_figure=figures_color)
-    point = sd.get_point(100, 350)
-    length = 80
-    figures_color = colors[str(user_color)]['in_sd']
-    pentagon(point=point, length=length, angle=20, color_figure=figures_color)
-    point = sd.get_point(400, 350)
-    length = 80
-    figures_color = colors[str(user_color)]['in_sd']
-    hexagon(point=point, length=length, angle=20, color_figure=figures_color)
-else:
+
+while user_color not in colors.keys():
     print('Вы ввели некорректный номер!')
+    user_color = input('Введите желаемый цвет: ')
+
+point = sd.get_point(100, 100)
+length = 80
+figures_color = colors[str(user_color)]['in_sd']
+triangle(point=point, length=length, angle=20, color_figure=figures_color)
+point = sd.get_point(400, 100)
+length = 80
+figures_color = colors[str(user_color)]['in_sd']
+square(point=point, length=length, angle=20, color_figure=figures_color)
+point = sd.get_point(100, 350)
+length = 80
+figures_color = colors[str(user_color)]['in_sd']
+pentagon(point=point, length=length, angle=20, color_figure=figures_color)
+point = sd.get_point(400, 350)
+length = 80
+figures_color = colors[str(user_color)]['in_sd']
+hexagon(point=point, length=length, angle=20, color_figure=figures_color)
+
 
 sd.pause()
