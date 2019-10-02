@@ -2,10 +2,14 @@
 
 import simple_draw as sd
 
+
 # На основе кода из практической части реализовать снегопад:
 # - создать списки данных для отрисовки N снежинок
 # - нарисовать падение этих N снежинок
 # - создать список рандомных длинн лучей снежинок (от 10 до 100) и пусть все снежинки будут разные
+
+
+
 
 sd.resolution = (1200, 600)
 
@@ -17,26 +21,23 @@ for _ in range(20):
     n = sd.random_number(15, 40)
     snowfall.append([x, y, n])
 
+
+
 while True:
 
     sd.start_drawing()
-    # TODO В целом работает хорошо и код выглядит неплохо
-    # TODO Но не хватает функционала, который бы контролировал добавление/удаление снежинок
-    # TODO Что-то в этом роде
-    # TODO вечный цикл:
-    # TODO    ...
-    # TODO    номера_упавших_снежинок = []
-    # TODO    цикл по снежинкам:
-    # TODO        ...
-    # TODO        сдвинули снежинку
-    # TODO        если снежинка достигла дна
-    # TODO        запоминаем её номер
+
     # TODO    цикл по номерам упавших снежинок:
     # TODO        удаляем эту снежинку из снежинок
     # TODO    добавляем новых снежинок сверху по количеству удаленных len(номера_упавших_снежинок)
-    # TODO    ...
-    # TODO Это пригодится при работе со следующими модулями
-    for icecrystal in snowfall:
+
+    # TODO Не смог реализовать алгоритм выше, так как в случае хотя бы двух элементов на удаление возникает ситуация,
+    # TODO когда после удаления первого элемента,я пытаюсь обратиться за размеры списка, либо удаляю не тот элемент
+    # TODO ведь порядок элементов "съехал" и тогда снежинка просто зависает посреди экрана. Сделал через INSERT.
+    # TODO ПОдскажите, пожалуйста, как сделать лучше, удовлетворяя предложенному алгоритму. Спасибо.
+
+    fallen_snowflakes = []
+    for number_of_fallen_snowflakes, icecrystal in enumerate(snowfall):
         point = sd.get_point(icecrystal[0], icecrystal[1])
         sd.snowflake(center=point, length=icecrystal[2], color=sd.background_color)
         gravity = icecrystal[2] / 3
@@ -47,7 +48,13 @@ while True:
         point = sd.get_point(icecrystal[0], icecrystal[1])
         sd.snowflake(center=point, length=icecrystal[2], color=sd.COLOR_WHITE)
         if icecrystal[1] < 10:
-            icecrystal[1] = 600
+            fallen_snowflakes.append(number_of_fallen_snowflakes)
+    for i in fallen_snowflakes:
+        del snowfall[i]
+        x = sd.random_number(50, 1150)
+        y = 600
+        n = sd.random_number(15, 40)
+        snowfall.insert(i, [x, y, n])
 
     sd.finish_drawing()
     sd.sleep(0.1)
@@ -80,4 +87,4 @@ sd.pause()
 #   и добавлять новую снежинку
 # Результат решения см https://youtu.be/XBx0JtxHiLg
 
-#зачет!
+# зачет!
