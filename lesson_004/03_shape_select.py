@@ -42,20 +42,19 @@ figures = {'0': {'name': 'Треугольник', 'func': triangle},
            '3': {'name': 'Шестиугольник', 'func': hexagon}
            }
 
-print('Возможные фигуры:')
-for i in range(4):  # TODO Тот же совет про .items() и цикл по словарю
-    print(i, ': ', figures[str(i)]['name'])
+for i, j in figures.items():
+    print('Возможные фигуры:', i, ': ', j['name'])
 
 user_figure = input('Введите желаемую фигуру: ')
-# TODO Тот же совет по проверке ввода внутри цикла
-# TODO while user_figure not in figures.keys():
-# TODO    спрашивать пользователя ещё раз
-if user_figure in figures.keys():
-    point = sd.get_point(300, 300)
-    length = 80
-    func_of_dict = figures[user_figure]['func']
-    func_of_dict(point=point, length=length, angle=0, color_figure=sd.COLOR_GREEN)
-else:
+
+while user_figure not in figures.keys():
     print('Вы ввели некорректный номер фигуры!')
+    user_figure = input('Введите желаемую фигуру: ')
+
+point = sd.get_point(300, 300)
+length = 80
+func_of_dict = figures[user_figure]['func']
+func_of_dict(point=point, length=length, angle=0, color_figure=sd.COLOR_GREEN)
+
 
 sd.pause()
