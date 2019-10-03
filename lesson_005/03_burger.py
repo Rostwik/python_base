@@ -15,33 +15,30 @@
 # Создать рецепт своего бургера, по вашему вкусу.
 # Если не хватает инградиентов - создать соответствующие функции в модуле my_burger
 
-import my_burger
-# TODO Попробуйте конструкцию from module import func1, func2...
-# TODO Тогда функции можно будет использовать без приставки
-# почему-то не подкидывает после точки доступные функции модуля my_burger. Нужно как-то поднастроить PCh?
-# TODO Просто нужно уточнить путь, тогда будет видеть, но лучше использовать совет выше
+from lesson_005.my_burger import cutlet, bun, mustard_sauce, onion, gherkin, cheese, Seasoning_grill, sausages, \
+    tomato, mayonnaise
 
 
 def Double_Cheeseburger():
     print('Представляем Вашему вниманию секретный рецепт Двойного чизбургера!')
-    my_burger.cutlet()
-    my_burger.bun()
-    my_burger.mustard_sauce()
-    my_burger.onion()
-    my_burger.gherkin()
-    my_burger.cheese()
-    my_burger.Seasoning_grill()
+    cutlet()
+    bun()
+    mustard_sauce()
+    onion()
+    gherkin()
+    cheese()
+    Seasoning_grill()
 
 
 def Megaburger():
     print('Представляем Вашему вниманию секретный рецепт Баварского бургера!')
-    my_burger.sausages()
-    my_burger.bun()
-    my_burger.onion()
-    my_burger.gherkin()
-    my_burger.tomato()
-    my_burger.cheese()
-    my_burger.mayonnaise()
+    sausages()
+    bun()
+    onion()
+    gherkin()
+    tomato()
+    cheese()
+    mayonnaise()
 
 
 Double_Cheeseburger()
