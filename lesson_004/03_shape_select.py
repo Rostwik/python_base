@@ -36,6 +36,7 @@ def hexagon(point, length, angle, color_figure):
     draw_any_figure(start_point_figure=point, length=length, angle=angle, color_figure=color_figure, figure=6)
 
 
+# TODO Добавьте сюда выбор цвета из 02
 figures = {'0': {'name': 'Треугольник', 'func': triangle},
            '1': {'name': 'Квадрат', 'func': square},
            '2': {'name': 'Пятиугольник', 'func': pentagon},
