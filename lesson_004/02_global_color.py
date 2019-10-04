@@ -51,7 +51,7 @@ colors = {'0': {'name': 'red', 'in_sd': sd.COLOR_RED},
           '6': {'name': 'purple', 'in_sd': sd.COLOR_PURPLE}
           }
 
-for i, j in colors.items():
+for i, j in colors.items():  # TODO Нэйминг! если 'i' ещё ладно, то вместо 'j' надо придумать что-то полезнее
     print(i, ': ', j['name'])
 
 # Странно, что словарь вывелся по порядку возрастания, мне казалось, что в это происходит случайным образом

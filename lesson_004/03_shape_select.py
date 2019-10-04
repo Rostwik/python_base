@@ -43,7 +43,7 @@ figures = {'0': {'name': 'Треугольник', 'func': triangle},
            '3': {'name': 'Шестиугольник', 'func': hexagon}
            }
 
-for i, j in figures.items():
+for i, j in figures.items():  # TODO Нэйминг! если 'i' ещё ладно, то вместо 'j' надо придумать что-то полезнее
     print('Возможные фигуры:', i, ': ', j['name'])
 
 user_figure = input('Введите желаемую фигуру: ')
