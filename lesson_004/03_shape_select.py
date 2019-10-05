@@ -36,13 +36,14 @@ def hexagon(point, length, angle, color_figure):
     draw_any_figure(start_point_figure=point, length=length, angle=angle, color_figure=color_figure, figure=6)
 
 
+# TODO Добавьте сюда выбор цвета из 02
 figures = {'0': {'name': 'Треугольник', 'func': triangle},
            '1': {'name': 'Квадрат', 'func': square},
            '2': {'name': 'Пятиугольник', 'func': pentagon},
            '3': {'name': 'Шестиугольник', 'func': hexagon}
            }
 
-for i, j in figures.items():
+for i, j in figures.items():  # TODO Нэйминг! если 'i' ещё ладно, то вместо 'j' надо придумать что-то полезнее
     print('Возможные фигуры:', i, ': ', j['name'])
 
 user_figure = input('Введите желаемую фигуру: ')

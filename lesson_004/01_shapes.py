@@ -175,3 +175,4 @@ hexagon(point=point, length=length, angle=20)
 
 
 sd.pause()
+#зачет!

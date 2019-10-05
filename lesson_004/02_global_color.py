@@ -51,18 +51,18 @@ colors = {'0': {'name': 'red', 'in_sd': sd.COLOR_RED},
           '6': {'name': 'purple', 'in_sd': sd.COLOR_PURPLE}
           }
 
-for i, j in colors.items():
+for i, j in colors.items():  # TODO Нэйминг! если 'i' ещё ладно, то вместо 'j' надо придумать что-то полезнее
     print(i, ': ', j['name'])
 
-# TODO Странно, что словарь вывелся по порядку возрастания, мне казалось, что в это происходит случайным
-# TODO образом
+# Странно, что словарь вывелся по порядку возрастания, мне казалось, что в это происходит случайным образом
+# TODO С 3.7 они запоминают порядок вставки элементов (раньше для этого использовался OrderedDict)
 
 user_color = input('Введите желаемый цвет: ')
 
 while user_color not in colors.keys():
     print('Вы ввели некорректный номер!')
     user_color = input('Введите желаемый цвет: ')
-
+# TODO Ниже дублируются много раз длина и цвет, но они ведь не меняются. Уберите дубли
 point = sd.get_point(100, 100)
 length = 80
 figures_color = colors[str(user_color)]['in_sd']
