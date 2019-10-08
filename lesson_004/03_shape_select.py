@@ -36,15 +36,35 @@ def hexagon(point, length, angle, color_figure):
     draw_any_figure(start_point_figure=point, length=length, angle=angle, color_figure=color_figure, figure=6)
 
 
-# TODO Добавьте сюда выбор цвета из 02
+colors = {'0': {'name': 'red', 'in_sd': sd.COLOR_RED},
+          '1': {'name': 'orange', 'in_sd': sd.COLOR_ORANGE},
+          '2': {'name': 'yellow', 'in_sd': sd.COLOR_YELLOW},
+          '3': {'name': 'green', 'in_sd': sd.COLOR_GREEN},
+          '4': {'name': 'cyan', 'in_sd': sd.COLOR_CYAN},
+          '5': {'name': 'blue', 'in_sd': sd.COLOR_BLUE},
+          '6': {'name': 'purple', 'in_sd': sd.COLOR_PURPLE}
+          }
+
+for i, color_name in colors.items():
+    print(i, ': ', color_name['name'])
+
+user_color = input('Введите желаемый цвет: ')
+
+
+while user_color not in colors.keys():
+    print('Вы ввели некорректный номер!')
+    user_color = input('Введите желаемый цвет: ')
+
+figures_color = colors[str(user_color)]['in_sd']
+
 figures = {'0': {'name': 'Треугольник', 'func': triangle},
            '1': {'name': 'Квадрат', 'func': square},
            '2': {'name': 'Пятиугольник', 'func': pentagon},
            '3': {'name': 'Шестиугольник', 'func': hexagon}
            }
 
-for i, j in figures.items():  # TODO Нэйминг! если 'i' ещё ладно, то вместо 'j' надо придумать что-то полезнее
-    print('Возможные фигуры:', i, ': ', j['name'])
+for i, figure_name in figures.items():
+    print('Возможные фигуры:', i, ': ', figure_name['name'])
 
 user_figure = input('Введите желаемую фигуру: ')
 
@@ -55,7 +75,6 @@ while user_figure not in figures.keys():
 point = sd.get_point(300, 300)
 length = 80
 func_of_dict = figures[user_figure]['func']
-func_of_dict(point=point, length=length, angle=0, color_figure=sd.COLOR_GREEN)
-
+func_of_dict(point=point, length=length, angle=0, color_figure=figures_color)
 
 sd.pause()

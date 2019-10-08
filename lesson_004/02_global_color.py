@@ -51,33 +51,34 @@ colors = {'0': {'name': 'red', 'in_sd': sd.COLOR_RED},
           '6': {'name': 'purple', 'in_sd': sd.COLOR_PURPLE}
           }
 
-for i, j in colors.items():  # TODO Нэйминг! если 'i' ещё ладно, то вместо 'j' надо придумать что-то полезнее
-    print(i, ': ', j['name'])
+for i, color_name in colors.items():
+    print(i, ': ', color_name['name'])
 
 # Странно, что словарь вывелся по порядку возрастания, мне казалось, что в это происходит случайным образом
-# TODO С 3.7 они запоминают порядок вставки элементов (раньше для этого использовался OrderedDict)
+# С 3.7 они запоминают порядок вставки элементов (раньше для этого использовался OrderedDict)
+
 
 user_color = input('Введите желаемый цвет: ')
+
 
 while user_color not in colors.keys():
     print('Вы ввели некорректный номер!')
     user_color = input('Введите желаемый цвет: ')
-# TODO Ниже дублируются много раз длина и цвет, но они ведь не меняются. Уберите дубли
+
+
+length = 80
+figures_color = colors[str(user_color)]['in_sd']
+
 point = sd.get_point(100, 100)
-length = 80
-figures_color = colors[str(user_color)]['in_sd']
 triangle(point=point, length=length, angle=20, color_figure=figures_color)
+
 point = sd.get_point(400, 100)
-length = 80
-figures_color = colors[str(user_color)]['in_sd']
 square(point=point, length=length, angle=20, color_figure=figures_color)
+
 point = sd.get_point(100, 350)
-length = 80
-figures_color = colors[str(user_color)]['in_sd']
 pentagon(point=point, length=length, angle=20, color_figure=figures_color)
+
 point = sd.get_point(400, 350)
-length = 80
-figures_color = colors[str(user_color)]['in_sd']
 hexagon(point=point, length=length, angle=20, color_figure=figures_color)
 
 
