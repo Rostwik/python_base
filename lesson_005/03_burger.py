@@ -18,9 +18,8 @@
 from lesson_005.my_burger import cutlet, bun, mustard_sauce, onion, gherkin, cheese, Seasoning_grill, sausages, \
     tomato, mayonnaise
 
-# TODO Нэйминг! Никакого верхнего регистра, все буквы одного, небольшого, размера.
-# TODO + стоит добавить глагол - сделать_двойной_чизбургер например)
-def Double_Cheeseburger():
+
+def do_double_cheeseburger():
     print('Представляем Вашему вниманию секретный рецепт Двойного чизбургера!')
     cutlet()
     bun()
@@ -31,7 +30,7 @@ def Double_Cheeseburger():
     Seasoning_grill()
 
 
-def Megaburger():  # TODO И тут
+def do_megaburger():
     print('Представляем Вашему вниманию секретный рецепт Баварского бургера!')
     sausages()
     bun()
@@ -42,5 +41,5 @@ def Megaburger():  # TODO И тут
     mayonnaise()
 
 
-Double_Cheeseburger()
-Megaburger()
+do_double_cheeseburger()
+do_megaburger()
