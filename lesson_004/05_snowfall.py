@@ -36,8 +36,6 @@ while True:
     # ведь порядок элементов "съехал" и тогда снежинка просто зависает посреди экрана. Сделал через INSERT.
     # ПОдскажите, пожалуйста, как сделать лучше, удовлетворяя предложенному алгоритму. Спасибо.
 
-    # TODO Не забудьте потом добавить пару снежинок сверху, чтобы снегопад постепенно усиливался
-
     fallen_snowflakes = []
 
     for number_of_fallen_snowflakes, icecrystal in enumerate(snowfall):
@@ -45,6 +43,9 @@ while True:
         sd.snowflake(center=point, length=icecrystal[2], color=sd.background_color)
         gravity = icecrystal[2] / 3
         wind = sd.random_number(1, 5)
+        # У вас очень интересная реализация ветра с тернарным оператором)
+        # Но я должен указать, что был вариант просто создавать рандомное число от 0 до 10 например и отнимать 5
+        # Тогда и был бы этот диапазон от -5 до 5
         dir_wind = sd.random_number(0, 1)
         icecrystal[1] -= gravity
         icecrystal[0] += wind if dir_wind else -wind
@@ -87,3 +88,4 @@ sd.pause()
 # - сделать сугоб внизу экрана - если снежинка долетает до низа, оставлять её там,
 #   и добавлять новую снежинку
 # Результат решения см https://youtu.be/XBx0JtxHiLg
+#зачет!

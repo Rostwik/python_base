@@ -83,3 +83,4 @@ hexagon(point=point, length=length, angle=20, color_figure=figures_color)
 
 
 sd.pause()
+#зачет!
