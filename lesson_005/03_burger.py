@@ -43,3 +43,4 @@ def Megaburger():
 
 Double_Cheeseburger()
 Megaburger()
+#зачет!
