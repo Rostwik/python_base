@@ -78,3 +78,4 @@ func_of_dict = figures[user_figure]['func']
 func_of_dict(point=point, length=length, angle=0, color_figure=figures_color)
 
 sd.pause()
+#зачет!
