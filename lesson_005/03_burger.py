@@ -43,3 +43,4 @@ def do_megaburger():
 
 do_double_cheeseburger()
 do_megaburger()
+#зачет!
