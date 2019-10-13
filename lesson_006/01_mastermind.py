@@ -43,4 +43,39 @@
 # Это пример применения SOLID принципа (см https://goo.gl/GFMoaI) в архитектуре программ.
 # Точнее, в этом случае важен принцип единственной ответственности - https://goo.gl/rYb3hT
 
-# TODO здесь ваш код...
+from lesson_006.mastermind_engine import verify_user_number, make_number, check_number
+from termcolor import cprint, colored
+
+hint = {}
+number_of_moves = 0
+
+cprint('***********БЫКИ И КОРОВЫ***********', color='cyan')
+
+make_number()
+cprint('Компьютер загадал число.', color='cyan')
+
+user_number = input(colored('Введите предполагаемое число:', color='yellow'))
+
+while True:
+    number_of_moves += 1
+    while not verify_user_number(user_number):
+        user_number = input()
+    hint = check_number(user_number)
+    if hint['bulls'] != 4:
+        print('Быков: ', hint['bulls'], 'Коров: ', hint['cows'])
+        cprint('К сожалению, Вы не угадали. Попробуйте еще раз:', color='red')
+        user_number = input()
+    else:
+        cprint('Поздравляю, Вы угадали. Количество ходов составило:', color='green')
+        cprint(number_of_moves, color='green')
+        yesno = input(colored('Хотите еще партию?(Да/Нет)', color='green'))
+        if yesno == 'Да':
+            make_number()
+            cprint('Компьютер загадал число.', color='cyan')
+            number_of_moves = 0
+            user_number = input(colored('Введите предполагаемое число:', color='yellow'))
+        if yesno == 'Нет':
+            cprint('До свидания.', color='blue')
+            break
+
+
