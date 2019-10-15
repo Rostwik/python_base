@@ -55,7 +55,8 @@ make_number()
 cprint('Компьютер загадал число.', color='cyan')
 
 user_number = input(colored('Введите предполагаемое число:', color='yellow'))
-
+# TODO Инпут дублируется 3 раза
+# TODO Хотя его можно заменить одним единственным - в начале цикла
 while True:
     number_of_moves += 1
     while not verify_user_number(user_number):
@@ -69,6 +70,7 @@ while True:
         cprint('Поздравляю, Вы угадали. Количество ходов составило:', color='green')
         cprint(number_of_moves, color='green')
         yesno = input(colored('Хотите еще партию?(Да/Нет)', color='green'))
+        # TODO Название не очень удачно подобрано, какой-нибудь user_choice звучал бы получше
         if yesno == 'Да':
             make_number()
             cprint('Компьютер загадал число.', color='cyan')
@@ -77,5 +79,15 @@ while True:
         if yesno == 'Нет':
             cprint('До свидания.', color='blue')
             break
+
+# TODO Хорошо было бы игровой процесс вынести в отдельную функцию
+# TODO Чтобы структура упростилась до
+# TODO цикл:
+# TODO     загадывание_числа
+# TODO     цикл:
+# TODO         игра
+# TODO         выход из игры при 4 быках
+# TODO     повторить?
+# TODO     если нет - выход из игры.
 
 
