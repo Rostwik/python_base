@@ -46,3 +46,4 @@ def delete_snowflakes(*args):
 
     for delta, index in enumerate(args):
         snowfall.pop(index - delta)
+#зачет!
