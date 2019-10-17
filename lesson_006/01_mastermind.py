@@ -43,51 +43,57 @@
 # Это пример применения SOLID принципа (см https://goo.gl/GFMoaI) в архитектуре программ.
 # Точнее, в этом случае важен принцип единственной ответственности - https://goo.gl/rYb3hT
 
-from lesson_006.mastermind_engine import verify_user_number, make_number, check_number
+from lesson_006.mastermind_engine import make_number, check_number
 from termcolor import cprint, colored
+
+
+def verify_user_number(user_number):
+    if not user_number.isdigit():
+        print('Вы ввели текстовую информацию')
+        return False
+    else:
+        if len(user_number) != 4:
+            print('Введена цифра несоответствующей разрядности')
+            return False
+        else:
+            if user_number[0] == '0':
+                print('Первая цифра не должна быть нулем')
+                return False
+            else:
+                return True
+
+
+def game():
+    number_of_moves = 0
+    while True:
+
+        number_of_moves += 1
+        user_number = input(colored('Введите предполагаемое число:', color='yellow'))
+        while not verify_user_number(user_number):
+            user_number = input()
+        hint = check_number(user_number)
+        if hint['bulls'] != 4:
+            print('Быков: ', hint['bulls'], 'Коров: ', hint['cows'])
+            cprint('К сожалению, Вы не угадали. Попробуйте еще раз:', color='red')
+        else:
+            return number_of_moves
+
 
 hint = {}
 number_of_moves = 0
 
 cprint('***********БЫКИ И КОРОВЫ***********', color='cyan')
 
-make_number()
-cprint('Компьютер загадал число.', color='cyan')
-
-user_number = input(colored('Введите предполагаемое число:', color='yellow'))
-# TODO Инпут дублируется 3 раза
-# TODO Хотя его можно заменить одним единственным - в начале цикла
 while True:
-    number_of_moves += 1
-    while not verify_user_number(user_number):
-        user_number = input()
-    hint = check_number(user_number)
-    if hint['bulls'] != 4:
-        print('Быков: ', hint['bulls'], 'Коров: ', hint['cows'])
-        cprint('К сожалению, Вы не угадали. Попробуйте еще раз:', color='red')
-        user_number = input()
-    else:
-        cprint('Поздравляю, Вы угадали. Количество ходов составило:', color='green')
-        cprint(number_of_moves, color='green')
-        yesno = input(colored('Хотите еще партию?(Да/Нет)', color='green'))
-        # TODO Название не очень удачно подобрано, какой-нибудь user_choice звучал бы получше
-        if yesno == 'Да':
-            make_number()
-            cprint('Компьютер загадал число.', color='cyan')
-            number_of_moves = 0
-            user_number = input(colored('Введите предполагаемое число:', color='yellow'))
-        if yesno == 'Нет':
-            cprint('До свидания.', color='blue')
-            break
 
-# TODO Хорошо было бы игровой процесс вынести в отдельную функцию
-# TODO Чтобы структура упростилась до
-# TODO цикл:
-# TODO     загадывание_числа
-# TODO     цикл:
-# TODO         игра
-# TODO         выход из игры при 4 быках
-# TODO     повторить?
-# TODO     если нет - выход из игры.
+    make_number()
+    cprint('Компьютер загадал число.', color='cyan')
+    number_of_moves = game()
 
+    cprint('Поздравляю, Игра окончена. Количество ходов составило:', color='green')
+    cprint(number_of_moves, color='green')
 
+    user_choice = input(colored('Хотите еще партию?(Да/Нет)', color='green'))
+    if user_choice == 'Нет':
+        cprint('До свидания.', color='blue')
+        break
