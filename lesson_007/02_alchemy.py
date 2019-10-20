@@ -19,7 +19,129 @@
 #   print(Water(), '+', Air(), '=', Water() + Air())
 #   print(Fire(), '+', Air(), '=', Fire() + Air())
 
-# TODO здесь ваш код
+
+def magic(*args):
+    if sorted(args) == ['Air', 'Water']:
+        return Storm()
+    if sorted(args) == ['Air', 'Fire']:
+        return Lightning()
+    if sorted(args) == ['Earth', 'Water']:
+        return Dirt()
+    if sorted(args) == ['Air', 'Earth']:
+        return Dust()
+    if sorted(args) == ['Earth', 'Fire']:
+        return Lava()
+    if sorted(args) == ['Fire', 'Water']:
+        return Steam()
+
+
+class Water:
+    def __add__(self, other):
+        probe = [self.__class__.__name__, other.__class__.__name__]
+
+        return magic(*probe)
+
+    def __str__(self):
+        return self.__class__.__name__
+
+
+class Air:
+    def __add__(self, other):
+        probe = (self.__class__.__name__, other.__class__.__name__)
+
+        return magic(*probe)
+
+    def __str__(self):
+        return self.__class__.__name__
+
+
+class Fire:
+    def __add__(self, other):
+        probe = [self.__class__.__name__, other.__class__.__name__]
+
+        return magic(*probe)
+
+    def __str__(self):
+        return self.__class__.__name__
+
+
+class Earth:
+    def __add__(self, other):
+        probe = [self.__class__.__name__, other.__class__.__name__]
+
+        return magic(*probe)
+
+    def __str__(self):
+        return self.__class__.__name__
+
+
+class Storm:
+    def __add__(self, other):
+        probe = [self.__class__.__name__, other.__class__.__name__]
+
+        return magic(*probe)
+
+    def __str__(self):
+        return self.__class__.__name__
+
+
+class Steam:
+    def __add__(self, other):
+        probe = [self.__class__.__name__, other.__class__.__name__]
+
+        return magic(*probe)
+
+    def __str__(self):
+        return self.__class__.__name__
+
+
+class Dirt:
+    def __add__(self, other):
+        probe = [self.__class__.__name__, other.__class__.__name__]
+
+        return magic(*probe)
+
+    def __str__(self):
+        return self.__class__.__name__
+
+
+class Lightning:
+    def __add__(self, other):
+        probe = [self.__class__.__name__, other.__class__.__name__]
+
+        return magic(*probe)
+
+    def __str__(self):
+        return self.__class__.__name__
+
+
+class Dust:
+    def __add__(self, other):
+        probe = [self.__class__.__name__, other.__class__.__name__]
+
+        return magic(*probe)
+
+    def __str__(self):
+        return self.__class__.__name__
+
+
+class Lava:
+    def __add__(self, other):
+        probe = [self.__class__.__name__, other.__class__.__name__]
+
+        return magic(*probe)
+
+    def __str__(self):
+        return self.__class__.__name__
+
+
+print(Water(), '+', Air(), '=', Air() + Water())
+print(Water(), '+', Air(), '=', Water() + Air())
+print(Fire(), '+', Air(), '=', Fire() + Air())
+print(Fire(), '+', Fire(), '=', Fire() + Fire())
+print(Fire(), '+', Earth(), '=', Fire() + Earth())
+
+# Water, Air, Fire, Earth, Storm, Steam, Dirt, Lightning, Dust, Lava
 
 # Усложненное задание (делать по желанию)
 # Добавить еще элемент в игру.
