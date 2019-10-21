@@ -66,7 +66,6 @@ def verify_user_number(user_number):
 def game():
     number_of_moves = 0
     while True:
-
         number_of_moves += 1
         user_number = input(colored('Введите предполагаемое число:', color='yellow'))
         while not verify_user_number(user_number):
@@ -97,3 +96,4 @@ while True:
     if user_choice == 'Нет':
         cprint('До свидания.', color='blue')
         break
+#зачет!
