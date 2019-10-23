@@ -25,7 +25,10 @@ from random import randint, choice
 # что будет делать сегодня
 
 # Человеку и коту надо вместе прожить 365 дней.
-
+# TODO И у кота и у человека в методах не хватает проверок на наличие ресурсов
+# TODO Деньги могут тратиться даже тогда, когда их нет
+# TODO Еда съедается вне зависимости от её наличия
+# TODO Нужно внести правки (кучу if/else конструкций :))
 class Cat:
     def __init__(self):
         self.satiety = 0
@@ -38,12 +41,12 @@ class Cat:
 
     def eat(self):
         self.satiety += 20
-        self.house.cat_food -= 10
+        self.house.cat_food -= 10  # TODO Что же делать коту, если дома нет? Вызывать ошибку AttributeError!
         print('Котик чавкает!')
 
     def tear_wallpaper(self):
         self.satiety -= 10
-        self.house.mud += 5
+        self.house.mud += 5  # TODO И тут, бездомный котик не найдёт свои обои
         print('Кот элегантно спускается вниз по новеньким обоям...')
 
     def status(self):
@@ -132,7 +135,6 @@ good_person = Human('Вова')
 good_person.buy_house(my_house)
 kitten = Cat()
 good_person.shelter_a_pet(kitten, 'Persik')
-
 
 for day in range(1, 366):
     print('================ день {} =================='.format(day))

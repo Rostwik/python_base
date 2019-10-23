@@ -63,18 +63,23 @@ def append_flakes(count):
 
 flake = Snowflake()
 
-while True:
-
-    flake.clear_previous_picture()
-    flake.move()
-    flake.draw()
-
-    # TODO есть вопрос: подскажите, пожалуйста, почему используется not, в чем его преимущества?
-    if not flake.can_fall():
-        break
-    sd.sleep(0.1)
-    if sd.user_want_exit():
-        break
+# while True:
+#
+#     flake.clear_previous_picture()
+#     flake.move()
+#     flake.draw()
+#
+#     # есть вопрос: подскажите, пожалуйста, почему используется not, в чем его преимущества?
+#     # not используется как отрицание. иногда удобнее мысленно разделять конструкцию
+#     # if (not условие) - в этом случае условие внутри if будет равно True, когда внутри скобок будет (not False)
+#     # Тк наш метод возвращает False когда снежинка не может падать
+#     # Мы не можем использовать этот ответ напрямую в if flake.can_fall()
+#     # И мы добавляем not, чтобы условие из "Если снежинка может падать" превратилась в "Если снежинка не может падать"
+#     if not flake.can_fall():
+#         break
+#     sd.sleep(0.1)
+#     if sd.user_want_exit():
+#         break
 
 flakes = get_flakes(20)
 
@@ -93,3 +98,4 @@ while True:
     if sd.user_want_exit():
         break
 sd.pause()
+#зачет!
