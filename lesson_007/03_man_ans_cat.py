@@ -36,18 +36,35 @@ class Cat:
         self.nickname = None
 
     def sleep(self):
-        self.satiety -= 10
-        print('Кот храпит!')
+        if self.satiety >= 10:
+            self.satiety -= 10
+            print('Кот храпит!')
+        else:
+            print('Кот не может заснуть на пустой желудок..')
+            self.satiety -= 1
 
     def eat(self):
-        self.satiety += 20
-        self.house.cat_food -= 10  # TODO Что же делать коту, если дома нет? Вызывать ошибку AttributeError!
-        print('Котик чавкает!')
+
+        if self.house:
+            if self.house.cat_food >= 10:
+                self.satiety += 20
+                self.house.cat_food -= 10
+                print('Котик чавкает!')
+            else:
+                print('Кот не нашел еды в миске..')
+                self.satiety -= 1
+        else:
+            print('Котик жалобно мяучит, в поисках хоть какой-то еды')
+            self.satiety -= 5
 
     def tear_wallpaper(self):
-        self.satiety -= 10
-        self.house.mud += 5  # TODO И тут, бездомный котик не найдёт свои обои
-        print('Кот элегантно спускается вниз по новеньким обоям...')
+        if self.house:
+            self.satiety -= 10
+            self.house.mud += 5
+            print('Кот элегантно спускается вниз по новеньким обоям...')
+        else:
+            print('Когда ты бездомный, даже развлекаться неохота((')
+            self.satiety -= 5
 
     def status(self):
         print('Сытость кота', self.satiety)
@@ -83,14 +100,20 @@ class Human:
         print('Я приютил котика по имени', nickname)
 
     def buy_cat_food(self):
-        self.house.cat_food += 50
-        self.money -= 50
-        print('Котику нечего кушать, надо сходить в Пятерочку, я знаю там сегодня акция на Шебу!')
+        if self.money >= 50:
+            self.house.cat_food += 50
+            self.money -= 50
+            print('Котику нечего кушать, надо сходить в Пятерочку, я знаю там сегодня акция на Шебу!')
+        else:
+            print('Денег не так уж и много, надо срочно где-то сшибить пару сотен, хм.')
 
     def buy_food(self):
-        self.house.food += 50
-        self.money -= 70
-        print('В холодильнике пусто, схожу в магазин!')
+        if self.money >= 70:
+            self.house.food += 50
+            self.money -= 70
+            print('В холодильнике пусто, схожу в магазин!')
+        else:
+            print('Денег не так уж и много, надо срочно где-то сшибить пару сотен, хм.')
 
     def clean_the_house(self):
         self.house.mud -= 100
@@ -102,20 +125,28 @@ class Human:
         print('Программа сама себя не напишет! Доделаю проект, авось заплатят сразу.')
 
     def eat(self):
-        self.satiety += 20
+        if self.house.food >= 40:
+            self.satiety += 20
+            self.house.food -= 40
+            print('Фух! пельмешки топ за свои деньги!')
+        else:
+            print('Я не нашел ничего съестного (( ')
+            self.satiety -= 1
 
     def status(self):
-        print('Моя сытость:', self.satiety, 'Денег у меня:', self.money, 'В доме грязно на:', self.house.mud)
+        print('Моя сытость:', self.satiety, 'Денег у меня:', self.money, 'В доме грязно на:',
+              self.house.mud, 'Еда для меня', self.house.food, 'Еда для котика', self.house.cat_food)
 
     def act(self):
-        if self.house.food < 100:
-            self.buy_food()
-        elif self.house.cat_food < 80:
-            self.buy_cat_food()
-        elif self.house.mud > 120:
-            self.clean_the_house()
-        elif self.money < 100:
+        if self.money > 120:
+            if self.house.food < 100:
+                self.buy_food()
+            elif self.house.cat_food < 60:
+                self.buy_cat_food()
+        else:
             self.work()
+        if self.house.mud > 120:
+            self.clean_the_house()
         elif self.satiety < 40:
             self.eat()
 
@@ -135,6 +166,9 @@ good_person = Human('Вова')
 good_person.buy_house(my_house)
 kitten = Cat()
 good_person.shelter_a_pet(kitten, 'Persik')
+good_person.buy_cat_food()
+
+
 
 for day in range(1, 366):
     print('================ день {} =================='.format(day))
