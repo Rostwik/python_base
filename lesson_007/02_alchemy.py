@@ -20,31 +20,35 @@
 #   print(Fire(), '+', Air(), '=', Fire() + Air())
 
 
-# TODO Интересный способ :)
-# TODO Однако странная выходит ситуация, когда несколько классов обращаются к внешней функции
-# TODO Надо добавить подобную функцию каждому классу отдельно.
-# TODO Кстати для сравнения будет корректнее использовать isinstance(object_1, object_2)
-# TODO И стоит учесть вариант, когда не подходит ни один элементов (вернуть None)
-def magic(*args):
-    if sorted(args) == ['Air', 'Water']:
-        return Storm()
-    if sorted(args) == ['Air', 'Fire']:
-        return Lightning()
-    if sorted(args) == ['Earth', 'Water']:
-        return Dirt()
-    if sorted(args) == ['Air', 'Earth']:
-        return Dust()
-    if sorted(args) == ['Earth', 'Fire']:
-        return Lava()
-    if sorted(args) == ['Fire', 'Water']:
-        return Steam()
+# "TODO Кстати для сравнения будет корректнее использовать isinstance(object_1, object_2)"
+# TODO Я не разобрался с Вашей подсказкой, в этой домашней работе мы еще не добрались до наследования.
+#  Подскажите, пож., как мне применить  isinstance. Саму функцию изучил.
+
+
+# def magic(*args):
+
+# if isinstance(a, Water):
+#     return Storm()
+# if sorted(args) == ['Air', 'Fire']:
+#     return Lightning()
+# if sorted(args) == ['Earth', 'Water']:
+#     return Dirt()
+# if sorted(args) == ['Air', 'Earth']:
+#     return Dust()
+# if sorted(args) == ['Earth', 'Fire']:
+#     return Lava()
+# if sorted(args) == ['Fire', 'Water']:
+#     return Steam()
 
 
 class Water:
     def __add__(self, other):
-        probe = [self.__class__.__name__, other.__class__.__name__]
-
-        return magic(*probe)
+        if str(other) == 'Air':
+            return Storm()
+        if str(other) == 'Earth':
+            return Dirt()
+        if str(other) == 'Fire':
+            return Steam()
 
     def __str__(self):
         return self.__class__.__name__
@@ -52,9 +56,12 @@ class Water:
 
 class Air:
     def __add__(self, other):
-        probe = (self.__class__.__name__, other.__class__.__name__)
-
-        return magic(*probe)
+        if str(other) == 'Water':
+            return Storm()
+        if str(other) == 'Fire':
+            return Lightning()
+        if str(other) == 'Earth':
+            return Dust()
 
     def __str__(self):
         return self.__class__.__name__
@@ -62,9 +69,12 @@ class Air:
 
 class Fire:
     def __add__(self, other):
-        probe = [self.__class__.__name__, other.__class__.__name__]
-
-        return magic(*probe)
+        if str(other) == 'Air':
+            return Lightning()
+        if str(other) == 'Water':
+            return Water()
+        if str(other) == 'Earth':
+            return Lava()
 
     def __str__(self):
         return self.__class__.__name__
@@ -72,69 +82,47 @@ class Fire:
 
 class Earth:
     def __add__(self, other):
-        probe = [self.__class__.__name__, other.__class__.__name__]
-
-        return magic(*probe)
+        if str(other) == 'Water':
+            return Dirt()
+        if str(other) == 'Air':
+            return Dust()
+        if str(other) == 'Fire':
+            return Lava()
 
     def __str__(self):
         return self.__class__.__name__
 
 
 class Storm:
-    def __add__(self, other):
-        probe = [self.__class__.__name__, other.__class__.__name__]
-
-        return magic(*probe)
-
     def __str__(self):
         return self.__class__.__name__
 
 
 class Steam:
-    def __add__(self, other):
-        probe = [self.__class__.__name__, other.__class__.__name__]
-
-        return magic(*probe)
 
     def __str__(self):
         return self.__class__.__name__
 
 
 class Dirt:
-    def __add__(self, other):
-        probe = [self.__class__.__name__, other.__class__.__name__]
-
-        return magic(*probe)
 
     def __str__(self):
         return self.__class__.__name__
 
 
 class Lightning:
-    def __add__(self, other):
-        probe = [self.__class__.__name__, other.__class__.__name__]
-
-        return magic(*probe)
 
     def __str__(self):
         return self.__class__.__name__
 
 
 class Dust:
-    def __add__(self, other):
-        probe = [self.__class__.__name__, other.__class__.__name__]
-
-        return magic(*probe)
 
     def __str__(self):
         return self.__class__.__name__
 
 
 class Lava:
-    def __add__(self, other):
-        probe = [self.__class__.__name__, other.__class__.__name__]
-
-        return magic(*probe)
 
     def __str__(self):
         return self.__class__.__name__
@@ -145,6 +133,8 @@ print(Water(), '+', Air(), '=', Water() + Air())
 print(Fire(), '+', Air(), '=', Fire() + Air())
 print(Fire(), '+', Fire(), '=', Fire() + Fire())
 print(Fire(), '+', Earth(), '=', Fire() + Earth())
+print(Fire(), '+', Earth(), '=', Earth() + Fire())
+print(Water(), '+', Fire(), '=', Water() + Fire())
 
 # Water, Air, Fire, Earth, Storm, Steam, Dirt, Lightning, Dust, Lava
 
