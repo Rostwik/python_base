@@ -20,25 +20,14 @@
 #   print(Fire(), '+', Air(), '=', Fire() + Air())
 
 
-# "TODO Кстати для сравнения будет корректнее использовать isinstance(object_1, object_2)"
-# TODO Я не разобрался с Вашей подсказкой, в этой домашней работе мы еще не добрались до наследования.
+#  Кстати для сравнения будет корректнее использовать isinstance(object_1, object_2)"
+#  Я не разобрался с Вашей подсказкой, в этой домашней работе мы еще не добрались до наследования.
 #  Подскажите, пож., как мне применить  isinstance. Саму функцию изучил.
-
-
-# def magic(*args):
-
-# if isinstance(a, Water):
-#     return Storm()
-# if sorted(args) == ['Air', 'Fire']:
-#     return Lightning()
-# if sorted(args) == ['Earth', 'Water']:
-#     return Dirt()
-# if sorted(args) == ['Air', 'Earth']:
-#     return Dust()
-# if sorted(args) == ['Earth', 'Fire']:
-#     return Lava()
-# if sorted(args) == ['Fire', 'Water']:
-#     return Steam()
+# TODO Про сам метод я вам в телеграме ответил, пример применения такой:
+# TODO isinstance(cat, Cat())
+# TODO Что вернет либо True либо False
+# TODO Мы получаем на вход объект other и проверяем, является ли он например воздухом:
+# TODO if isinstance(other, Air())
 
 
 class Water:
