@@ -23,20 +23,15 @@
 #  Кстати для сравнения будет корректнее использовать isinstance(object_1, object_2)"
 #  Я не разобрался с Вашей подсказкой, в этой домашней работе мы еще не добрались до наследования.
 #  Подскажите, пож., как мне применить  isinstance. Саму функцию изучил.
-# TODO Про сам метод я вам в телеграме ответил, пример применения такой:
-# TODO isinstance(cat, Cat())
-# TODO Что вернет либо True либо False
-# TODO Мы получаем на вход объект other и проверяем, является ли он например воздухом:
-# TODO if isinstance(other, Air())
 
 
 class Water:
     def __add__(self, other):
-        if str(other) == 'Air':
+        if isinstance(other, Air):
             return Storm()
-        if str(other) == 'Earth':
+        if isinstance(other, Earth):
             return Dirt()
-        if str(other) == 'Fire':
+        if isinstance(other, Fire):
             return Steam()
 
     def __str__(self):
@@ -45,11 +40,11 @@ class Water:
 
 class Air:
     def __add__(self, other):
-        if str(other) == 'Water':
+        if isinstance(other, Water):
             return Storm()
-        if str(other) == 'Fire':
+        if isinstance(other, Fire):
             return Lightning()
-        if str(other) == 'Earth':
+        if isinstance(other, Earth):
             return Dust()
 
     def __str__(self):
@@ -58,11 +53,11 @@ class Air:
 
 class Fire:
     def __add__(self, other):
-        if str(other) == 'Air':
+        if isinstance(other, Air):
             return Lightning()
-        if str(other) == 'Water':
+        if isinstance(other, Water):
             return Water()
-        if str(other) == 'Earth':
+        if isinstance(other, Earth):
             return Lava()
 
     def __str__(self):
@@ -71,11 +66,11 @@ class Fire:
 
 class Earth:
     def __add__(self, other):
-        if str(other) == 'Water':
+        if isinstance(other, Water):
             return Dirt()
-        if str(other) == 'Air':
+        if isinstance(other, Air):
             return Dust()
-        if str(other) == 'Fire':
+        if isinstance(other, Fire):
             return Lava()
 
     def __str__(self):
