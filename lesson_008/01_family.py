@@ -49,6 +49,8 @@ class Mammal:
 
     def __str__(self):
         return '{} Счастье {} Сытость {}'.format(self.__class__.__name__, self.happiness, self.satiety)
+    # TODO Общие методы стоит дописать сюда
+    # TODO Чтобы не дублировать их в наследниках
 
 
 class House:
@@ -200,6 +202,9 @@ for day in range(365):
     serge.act()
     masha.act()
     home.mud += 5
+    # TODO Эту логику перенести в классы
+    # TODO Дому добавить метод с загрязнением
+    # TODO Людям проверку на happiness и satiety
     if home.mud > 90:
         serge.happiness -= 10
         masha.happiness -= 10
