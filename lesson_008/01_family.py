@@ -198,9 +198,13 @@ for day in range(365):
     # TODO Дому добавить метод с загрязнением
     # TODO Людям проверку на happiness и satiety
     if home.mud > 90:
+        # TODO Я имел ввиду все вот эти проверки
+        # TODO Они должны проходить внутри методов
         serge.happiness -= 10
         masha.happiness -= 10
     if serge.happiness < 10:
+        # TODO для этого можно даже метод выделить, с проверкой, загрустил ли человек до смерти
+        # TODO И с остальными так же
         print('Член семьи загремел в больничку.')
         break
     elif masha.happiness < 10:
