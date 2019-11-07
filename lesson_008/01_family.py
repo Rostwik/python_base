@@ -43,14 +43,22 @@ from random import randint
 # Подвести итоги жизни за год: сколько было заработано денег, сколько сьедено еды, сколько куплено шуб.
 
 class Mammal:
-    def __init__(self):
+    def __init__(self, name):
         self.happiness = 100
         self.satiety = 30
+        self.name = name
+        self.house = None
 
     def __str__(self):
         return '{} Счастье {} Сытость {}'.format(self.__class__.__name__, self.happiness, self.satiety)
-    # TODO Общие методы стоит дописать сюда
-    # TODO Чтобы не дублировать их в наследниках
+
+    def eat(self):
+        if self.house.food_in_fridge > 30:
+            food = randint(20, 30)
+            self.satiety += food
+            self.house.food_in_fridge -= food
+            self.house.food += food
+            return food
 
 
 class House:
@@ -63,6 +71,9 @@ class House:
         self.food_in_fridge = 50
         self.mud = 0
 
+    def pollution(self):
+        self.mud += 5
+
     def __str__(self):
         return '{} Деньги {} Еда {} Беспорядок {}'.format(self.__class__.__name__,
                                                           self.money_in_nightstand, self.food_in_fridge, self.mud)
@@ -71,9 +82,7 @@ class House:
 class Husband(Mammal):
 
     def __init__(self, name):
-        super().__init__()
-        self.name = name
-        self.house = None
+        super().__init__(name=name)
 
     def __str__(self):
         return super().__str__()
@@ -100,17 +109,8 @@ class Husband(Mammal):
                     self.satiety -= 1
 
     def eat(self):
-        if self.house.food_in_fridge > 50:
-            food = randint(20, 30)
-            self.satiety += food
-            self.house.food_in_fridge -= food
-            self.house.food += food
-            print('Муж поел', food)
 
-        else:
-            print('Еды недостаточно, возможно пора искать работу?')
-            self.satiety -= 1
-            self.happiness -= 1
+        print('Муж поел', super().eat())
 
     def work(self):
         self.house.money_in_nightstand += 150
@@ -127,9 +127,7 @@ class Husband(Mammal):
 class Wife(Mammal):
 
     def __init__(self, name):
-        super().__init__()
-        self.name = name
-        self.house = None
+        super().__init__(name=name)
 
     def __str__(self):
         return super().__str__()
@@ -155,14 +153,8 @@ class Wife(Mammal):
             self.eat()
 
     def eat(self):
-        if self.house.food_in_fridge > 30:
-            food = randint(20, 30)
-            self.satiety += food
-            self.house.food_in_fridge -= food
-            self.house.food += food
-            print('Жена поела', food)
-        else:
-            print('Жене не хватило еды!')
+
+        print('Жена поела', super().eat())
 
     def shopping(self):
         if self.house.money_in_nightstand > 90:
@@ -201,7 +193,7 @@ for day in range(365):
     cprint('================== День {} =================='.format(day), color='red')
     serge.act()
     masha.act()
-    home.mud += 5
+    home.pollution()
     # TODO Эту логику перенести в классы
     # TODO Дому добавить метод с загрязнением
     # TODO Людям проверку на happiness и satiety
