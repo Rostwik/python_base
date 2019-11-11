@@ -52,6 +52,16 @@ class Mammal:
     def __str__(self):
         return '{} Счастье {} Сытость {}'.format(self.__class__.__name__, self.happiness, self.satiety)
 
+    def in_depression(self):
+        if self.happiness < 10:
+            print('Млекопитающее', self.name, 'погибло от тоски(')
+            return True
+
+    def exhaustion(self):
+        if self.satiety < 10:
+            print('Млекопитающее', self.name, 'погибло от истощения(')
+            return True
+
     def eat(self):
         if self.house.food_in_fridge > 30:
             food = randint(20, 30)
@@ -97,7 +107,6 @@ class Husband(Mammal):
             elif self.house.money_in_nightstand < 350:
                 self.work()
 
-
             else:
                 print('У мужа дела в ажуре!')
                 dice = randint(1, 6)
@@ -122,6 +131,10 @@ class Husband(Mammal):
         self.happiness += 20
         self.satiety -= 10
         print('Расслабился в таньчики')
+
+    def is_dirty_house(self):
+        if home.mud > 90:
+            self.happiness -= 10
 
 
 class Wife(Mammal):
@@ -182,6 +195,10 @@ class Wife(Mammal):
         self.house.mud -= 100
         print('Убрала дом.')
 
+    def is_dirty_house(self):
+        if home.mud > 90:
+            self.happiness -= 10
+
 
 home = House()
 serge = Husband(name='Сережа')
@@ -194,27 +211,15 @@ for day in range(365):
     serge.act()
     masha.act()
     home.pollution()
-    # TODO Эту логику перенести в классы
-    # TODO Дому добавить метод с загрязнением
-    # TODO Людям проверку на happiness и satiety
-    if home.mud > 90:
-        # TODO Я имел ввиду все вот эти проверки
-        # TODO Они должны проходить внутри методов
-        serge.happiness -= 10
-        masha.happiness -= 10
-    if serge.happiness < 10:
-        # TODO для этого можно даже метод выделить, с проверкой, загрустил ли человек до смерти
-        # TODO И с остальными так же
-        print('Член семьи загремел в больничку.')
+    serge.is_dirty_house()
+    masha.is_dirty_house()
+    if serge.in_depression():
         break
-    elif masha.happiness < 10:
-        print('Член семьи загремел в больничку.')
+    elif masha.in_depression():
         break
-    elif serge.satiety < 0:
-        print('Член семьи загремел в больничку.')
+    elif serge.exhaustion():
         break
-    elif masha.satiety < 0:
-        print('Член семьи загремел в больничку.')
+    elif masha.exhaustion():
         break
 
     cprint(serge, color='cyan')
