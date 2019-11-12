@@ -132,7 +132,7 @@ class Husband(Mammal):
         self.satiety -= 10
         print('Расслабился в таньчики')
 
-    def is_dirty_house(self):
+    def is_dirty_house(self):  # TODO тк метод есть и у жены и у мужа, можно вынести его в класс-родитель
         if home.mud > 90:
             self.happiness -= 10
 
@@ -211,7 +211,7 @@ for day in range(365):
     serge.act()
     masha.act()
     home.pollution()
-    serge.is_dirty_house()
+    serge.is_dirty_house()  # TODO А запуск их стоит включить в act()
     masha.is_dirty_house()
     if serge.in_depression():
         break
@@ -230,8 +230,8 @@ cprint('Съедено за год {} Заработано за год {} Куп
                                                                              serge.house.fur_coat), color='blue')
 
 
-# TODO после реализации первой части - отдать на проверку учителю
-
+# после реализации первой части - отдать на проверку учителю
+# TODO можете приступать ко второй части
 ######################################################## Часть вторая
 #
 # После подтверждения учителем первой части надо
