@@ -70,6 +70,10 @@ class Mammal:
             self.house.food += food
             return food
 
+    def is_dirty_house(self):
+        if self.house.mud > 90:
+            self.happiness -= 10
+
 
 class House:
     fur_coat = 0
@@ -98,6 +102,7 @@ class Husband(Mammal):
         return super().__str__()
 
     def act(self):
+        self.is_dirty_house()
 
         if self.house.food_in_fridge > 40:
             if self.satiety < 30:
@@ -132,10 +137,6 @@ class Husband(Mammal):
         self.satiety -= 10
         print('Расслабился в таньчики')
 
-    def is_dirty_house(self):  # TODO тк метод есть и у жены и у мужа, можно вынести его в класс-родитель
-        if home.mud > 90:
-            self.happiness -= 10
-
 
 class Wife(Mammal):
 
@@ -146,6 +147,7 @@ class Wife(Mammal):
         return super().__str__()
 
     def act(self):
+        self.is_dirty_house()
 
         if self.satiety > 40:
 
@@ -211,8 +213,7 @@ for day in range(365):
     serge.act()
     masha.act()
     home.pollution()
-    serge.is_dirty_house()  # TODO А запуск их стоит включить в act()
-    masha.is_dirty_house()
+
     if serge.in_depression():
         break
     elif masha.in_depression():
