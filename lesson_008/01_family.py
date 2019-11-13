@@ -287,7 +287,7 @@ class Cat:
 # отличия от взрослых - кушает максимум 10 единиц еды,
 # степень счастья  - не меняется, всегда ==100 ;)
 
-class Child:
+class Child(Wife, Husband):
 
     def __init__(self):
         pass
