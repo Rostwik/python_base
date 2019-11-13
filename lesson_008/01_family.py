@@ -83,6 +83,7 @@ class House:
     def __init__(self):
         self.money_in_nightstand = 100
         self.food_in_fridge = 50
+        self.cat_food = 30
         self.mud = 0
 
     def pollution(self):
@@ -201,17 +202,40 @@ class Wife(Mammal):
         if home.mud > 90:
             self.happiness -= 10
 
+    class Cat(Mammal):
+
+        def __init__(self, name):
+            super().__init__(self, name=name)
+            self.happiness = None
+
+        def act(self):
+            pass
+
+        def eat(self):
+
+
+
+
+        def sleep(self):
+            pass
+
+        def soil(self):
+            pass
+
 
 home = House()
 serge = Husband(name='Сережа')
 masha = Wife(name='Маша')
+persik = Cat(name='Персик')
 serge.house = home
 masha.house = home
+persik.house = home
 
 for day in range(365):
     cprint('================== День {} =================='.format(day), color='red')
     serge.act()
     masha.act()
+    persik.act()
     home.pollution()
 
     if serge.in_depression():
@@ -258,22 +282,7 @@ cprint('Съедено за год {} Заработано за год {} Куп
 # Если кот дерет обои, то грязи становится больше на 5 пунктов
 
 
-class Cat(Mammal):
 
-    def __init__(self):
-        pass
-
-    def act(self):
-        pass
-
-    def eat(self):
-        pass
-
-    def sleep(self):
-        pass
-
-    def soil(self):
-        pass
 
 
 ######################################################## Часть вторая бис
