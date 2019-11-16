@@ -221,7 +221,7 @@ class Cat(Mammal):
             self.eat()
 
         dice = randint(1, 6)
-        if dice in [1]:
+        if dice in [1]:  # TODO Если вариант в списке один, то простое сравнение будет уместнее
             self.soil()
         elif dice in [5]:
             self.sleep()
@@ -231,6 +231,7 @@ class Cat(Mammal):
     def eat(self):
         if self.house.cat_food > 10:
             if self.satiety < 30:
+                # TODO И тут проверку бы на наличие еды
                 cat_food = randint(7, 10)
                 self.satiety += cat_food * 2
                 self.house.cat_food -= cat_food
@@ -283,9 +284,9 @@ for day in range(365):
 cprint('Съедено за год {} Заработано за год {} Куплено шуб за год {}'.format(serge.house.food, serge.house.money,
                                                                              serge.house.fur_coat), color='blue')
 
-
+# TODO Правки небольшие, после них можете приступать к следующей части
 # после реализации первой части - отдать на проверку учителю
-# TODO можете приступать ко второй части
+# можете приступать ко второй части
 ######################################################## Часть вторая
 #
 # После подтверждения учителем первой части надо
