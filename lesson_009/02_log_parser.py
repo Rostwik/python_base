@@ -18,8 +18,55 @@
 #
 # Входные параметры: файл для анализа, файл результата
 # Требования к коду: он должен быть готовым к расширению функциональности. Делать сразу на классах.
+from pprint import pprint
 
-# TODO здесь ваш код
+
+class Loger():
+
+    def __init__(self, filename_in, filename_out):
+        self.filename = filename_in
+        self.filename = filename_out
+        stat = {}
+
+    def counter(self, sign):
+        pass
+
+
+stat = {}
+
+
+with open('events.txt', 'r') as file:
+    for line in file:
+        year = line[1:5]
+        month = line[6:8]
+        day = line[9:11]
+        hour = line[12:14]
+        minute = line[15:17]
+        if 'NOK' in line:
+            if year not in stat:
+                stat[year] = {}
+                if month not in stat[year]:
+                    stat[year][month] = {}
+                    if day not in stat[year][month]:
+                        stat[year][month][day] = []
+                        stat[year][month][day].append([hour, minute])
+
+            else:
+                if month not in stat[year]:
+                    stat[year][month] = {}
+                    if day not in stat[year][month]:
+                        stat[year][month][day] = []
+                        stat[year][month][day].append([hour, minute])
+
+                else:
+                    if day not in stat[year][month]:
+                        stat[year][month][day] = []
+                        stat[year][month][day].append([hour, minute])
+
+                    else:
+                        stat[year][month][day].append([hour, minute])
+
+pprint(stat)
 
 # После выполнения первого этапа нужно сделать группировку событий
 #  - по часам
