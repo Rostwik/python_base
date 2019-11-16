@@ -119,8 +119,6 @@ class Husband(Mammal):
                     self.work()
                 elif dice == 6:
                     self.gaming()
-                else:
-                    self.satiety -= 1
 
     def eat(self):
 
@@ -162,7 +160,7 @@ class Wife(Mammal):
                     self.buy_fur_coat()
                 else:
                     print('У жены дел не нашлось.')
-                    self.satiety -= 1
+
 
         else:
             self.eat()
@@ -189,7 +187,6 @@ class Wife(Mammal):
             print('Купила шубу.')
         else:
             print('Денег не хватает, лучше сэкономить!')
-            self.happiness -= 1
             self.satiety -= 10
 
     def clean_house(self):
@@ -202,16 +199,38 @@ class Wife(Mammal):
             self.happiness -= 10
 
 
+class Child(Wife, Husband):
+
+    def act(self):
+        if self.satiety < 20:
+            self.eat()
+        else:
+            self.sleep()
+
+    def eat(self):
+        food = randint(7, 10)
+        self.satiety += food
+        self.house.food_in_fridge -= food
+        self.house.food += food
+
+    def sleep(self):
+
+        self.satiety -= 10
+
+
 home = House()
 serge = Husband(name='Сережа')
 masha = Wife(name='Маша')
+artem = Child(name='Артем')
 serge.house = home
 masha.house = home
+artem.house = home
 
 for day in range(365):
     cprint('================== День {} =================='.format(day), color='red')
     serge.act()
     masha.act()
+    artem.act()
     home.pollution()
 
     if serge.in_depression():
@@ -222,9 +241,12 @@ for day in range(365):
         break
     elif masha.exhaustion():
         break
+    elif artem.exhaustion():
+        break
 
     cprint(serge, color='cyan')
     cprint(masha, color='cyan')
+    cprint(artem, color='cyan')
     cprint(home, color='cyan')
 
 cprint('Съедено за год {} Заработано за год {} Куплено шуб за год {}'.format(serge.house.food, serge.house.money,
@@ -232,7 +254,7 @@ cprint('Съедено за год {} Заработано за год {} Куп
 
 
 # после реализации первой части - отдать на проверку учителю
-# TODO можете приступать ко второй части
+# можете приступать ко второй части
 ######################################################## Часть вторая
 #
 # После подтверждения учителем первой части надо
@@ -275,7 +297,6 @@ class Cat:
     def soil(self):
         pass
 
-
 ######################################################## Часть вторая бис
 #
 # После реализации первой части надо в ветке мастер продолжить работу над семьей - добавить ребенка
@@ -287,26 +308,6 @@ class Cat:
 # отличия от взрослых - кушает максимум 10 единиц еды,
 # степень счастья  - не меняется, всегда ==100 ;)
 
-class Child(Wife, Husband):
-
-    def __init__(self):
-        pass
-
-    def __str__(self):
-        return super().__str__()
-
-    def act(self):
-        pass
-
-    def eat(self):
-        pass
-
-    def sleep(self):
-        pass
-
-
-# TODO после реализации второй части - отдать на проверку учителем две ветки
-
 
 ######################################################## Часть третья
 #
@@ -315,22 +316,22 @@ class Child(Wife, Husband):
 # отправить на проверку учителем.
 
 
-home = House()
-serge = Husband(name='Сережа')
-masha = Wife(name='Маша')
-kolya = Child(name='Коля')
-murzik = Cat(name='Мурзик')
-
-for day in range(365):
-    cprint('================== День {} =================='.format(day), color='red')
-    serge.act()
-    masha.act()
-    kolya.act()
-    murzik.act()
-    cprint(serge, color='cyan')
-    cprint(masha, color='cyan')
-    cprint(kolya, color='cyan')
-    cprint(murzik, color='cyan')
+# home = House()
+# serge = Husband(name='Сережа')
+# masha = Wife(name='Маша')
+# kolya = Child(name='Коля')
+# murzik = Cat(name='Мурзик')
+#
+# for day in range(365):
+#     cprint('================== День {} =================='.format(day), color='red')
+#     serge.act()
+#     masha.act()
+#     kolya.act()
+#     murzik.act()
+#     cprint(serge, color='cyan')
+#     cprint(masha, color='cyan')
+#     cprint(kolya, color='cyan')
+#     cprint(murzik, color='cyan')
 
 # Усложненное задание (делать по желанию)
 #
