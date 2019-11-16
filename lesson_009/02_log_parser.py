@@ -18,55 +18,58 @@
 #
 # Входные параметры: файл для анализа, файл результата
 # Требования к коду: он должен быть готовым к расширению функциональности. Делать сразу на классах.
+
 from pprint import pprint
 
 
 class Loger():
 
     def __init__(self, filename_in, filename_out):
-        self.filename = filename_in
-        self.filename = filename_out
-        stat = {}
+        self.filename_in = filename_in
+        self.filename_out = filename_out
+        self.stat = {}
 
-    def counter(self, sign):
-        pass
-
-
-stat = {}
-
-
-with open('events.txt', 'r') as file:
-    for line in file:
-        year = line[1:5]
-        month = line[6:8]
-        day = line[9:11]
-        hour = line[12:14]
-        minute = line[15:17]
-        if 'NOK' in line:
-            if year not in stat:
-                stat[year] = {}
-                if month not in stat[year]:
-                    stat[year][month] = {}
-                    if day not in stat[year][month]:
-                        stat[year][month][day] = []
-                        stat[year][month][day].append([hour, minute])
-
-            else:
-                if month not in stat[year]:
-                    stat[year][month] = {}
-                    if day not in stat[year][month]:
-                        stat[year][month][day] = []
-                        stat[year][month][day].append([hour, minute])
-
-                else:
-                    if day not in stat[year][month]:
-                        stat[year][month][day] = []
-                        stat[year][month][day].append([hour, minute])
-
+    def reformat(self, a):
+        self.stat = {}
+        deadend = 17 - a
+        with open(self.filename_in, 'r') as file:
+            for line in file:
+                if 'NOK' in line:
+                    out_log_format = line[1:deadend]
+                    if out_log_format in self.stat:
+                        self.stat[out_log_format] += 1
                     else:
-                        stat[year][month][day].append([hour, minute])
+                        self.stat[out_log_format] = 1
 
-pprint(stat)
+    def write_data
+
+    def hh_format(self):
+
+        a = 3
+        self.reformat(a)
+
+    def dd_format(self):
+
+        a = 6
+        self.reformat(a)
+
+    def mm_format(self):
+
+        a = 9
+        self.reformat(a)
+
+    def yyyy_format(self):
+
+        a = 12
+        self.reformat(a)
+
+
+new_data = Loger('events.txt', 'out_events.txt')
+
+new_data.yyyy_format()
+pprint(new_data.stat)
+new_data.hh_format()
+pprint(new_data.stat)
 
 # После выполнения первого этапа нужно сделать группировку событий
 #  - по часам
