@@ -19,15 +19,12 @@
 # Входные параметры: файл для анализа, файл результата
 # Требования к коду: он должен быть готовым к расширению функциональности. Делать сразу на классах.
 
-from pprint import pprint
-
 
 class Loger():
 
     def __init__(self, filename_in, filename_out):
         self.filename_in = filename_in
         self.filename_out = filename_out
-        self.stat = {}
 
     def reformat(self, a):
         self.stat = {}
@@ -41,35 +38,36 @@ class Loger():
                     else:
                         self.stat[out_log_format] = 1
 
-    def write_data
+    def write_data(self):
+        with open(self.filename_out, 'w') as file:
+            for data, count in self.stat.items():
+                file.write(f'[{data}] {count} \n')
 
-    def hh_format(self):
-
+    def hour_format(self):
         a = 3
         self.reformat(a)
 
-    def dd_format(self):
-
+    def day_format(self):
         a = 6
         self.reformat(a)
 
-    def mm_format(self):
-
+    def month_format(self):
         a = 9
         self.reformat(a)
 
-    def yyyy_format(self):
-
+    def year_format(self):
         a = 12
+        self.reformat(a)
+
+    def minute_format(self):
+        a = 0
         self.reformat(a)
 
 
 new_data = Loger('events.txt', 'out_events.txt')
 
-new_data.yyyy_format()
-pprint(new_data.stat)
-new_data.hh_format()
-pprint(new_data.stat)
+new_data.minute_format()
+new_data.write_data()
 
 # После выполнения первого этапа нужно сделать группировку событий
 #  - по часам
