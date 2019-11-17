@@ -2,6 +2,7 @@
 
 import os, time, shutil
 
+
 # Нужно написать скрипт для упорядочивания фотографий (вообще любых файлов)
 # Скрипт должен разложить файлы из одной папки по годам и месяцам в другую.
 # Например, так:
@@ -34,7 +35,29 @@ import os, time, shutil
 # Чтение документации/гугла по функциям - приветствуется. Как и поиск альтернативных вариантов :)
 # Требования к коду: он должен быть готовым к расширению функциональности. Делать сразу на классах.
 
-# TODO здесь ваш код
+class Sorter():
+
+    def __init__(self, input_dir, output_dir):
+        self.start_dir = input_dir
+        self.end_dir = output_dir
+
+    def do_dir_by_time(self):
+        for dirpath, dirnames, filenames in os.walk(self.start_dir):
+            print(dirpath, dirnames, filenames)
+            for file in filenames:
+                full_file_path = os.path.join(dirpath, file)
+                file_time = time.gmtime(os.path.getmtime(full_file_path))
+                if not os.path.isdir(os.path.join(self.end_dir, str(file_time[0]))):
+                    os.makedirs(os.path.join(self.end_dir, str(file_time[0])))
+                if not os.path.isdir(os.path.join(self.end_dir, str(file_time[0]), str(file_time[1]))):
+                    os.makedirs(os.path.join(self.end_dir, str(file_time[0]), str(file_time[1])))
+                shutil.copy2(full_file_path, os.path.join(self.end_dir, str(file_time[0]), str(file_time[1])))
+
+
+fotoalbum = Sorter('C:\\Users\\Авито\\PycharmProjects\\python_base\\lesson_009\\icons',
+                   'C:\\Users\\Авито\\PycharmProjects\\python_base\\lesson_009\\icons_by_year')
+
+fotoalbum.do_dir_by_time()
 
 # Усложненное задание (делать по желанию)
 # Нужно обрабатывать zip-файл, содержащий фотографии, без предварительного извлечения файлов в папку.
