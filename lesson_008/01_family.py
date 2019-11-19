@@ -63,8 +63,8 @@ class Mammal:
             return True
 
     def eat(self):
-        if self.house.food_in_fridge > 30:
-            food = randint(20, 30)
+        if self.house.food_in_fridge > 40:
+            food = randint(30, 40)
             self.satiety += food
             self.house.food_in_fridge -= food
             self.house.food += food
@@ -119,7 +119,7 @@ class Husband(Mammal):
                 dice = randint(1, 6)
                 if dice == 1:
                     self.work()
-                elif dice == 6:
+                elif dice in (5, 6):
                     self.gaming()
 
     def eat(self):
@@ -135,7 +135,7 @@ class Husband(Mammal):
     def gaming(self):
         self.happiness += 20
         self.satiety -= 10
-        print('Расслабился в таньчики')
+        print('Расслабился в таньчики.')
 
 
 class Wife(Mammal):
@@ -146,9 +146,9 @@ class Wife(Mammal):
     def act(self):
         self.is_dirty_house()
 
-        if self.satiety > 40:
+        if self.satiety > 30:
 
-            if self.house.mud > 120:
+            if self.house.mud > 110:
                 self.clean_house()
 
             elif self.house.money_in_nightstand > 240:
@@ -162,7 +162,6 @@ class Wife(Mammal):
                 else:
                     print('У жены дел не нашлось.')
 
-
         else:
             self.eat()
             self.tactile_sensations()
@@ -174,7 +173,7 @@ class Wife(Mammal):
     def shopping(self):
         if self.house.money_in_nightstand > 190:
             food = randint(90, 120)
-            cat_food = randint(20, 40)
+            cat_food = randint(20, 30)
             self.house.food_in_fridge += food
             self.house.cat_food += cat_food
             self.satiety -= 10
@@ -264,7 +263,7 @@ home = House()
 serge = Husband(home, name='Сережа')
 masha = Wife(home, name='Маша')
 artem = Child(home, name='Артем')
-persik = Cat(name='Персик')
+persik = Cat(home, name='Персик')
 
 for day in range(365):
     cprint('================== День {} =================='.format(day), color='red')
@@ -295,7 +294,6 @@ for day in range(365):
 
 cprint('Съедено за год {} Заработано за год {} Куплено шуб за год {}'.format(serge.house.food, serge.house.money,
                                                                              serge.house.fur_coat), color='blue')
-
 
 # после реализации первой части - отдать на проверку учителю
 # можете приступать ко второй части
