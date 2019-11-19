@@ -43,11 +43,11 @@ from random import randint
 # Подвести итоги жизни за год: сколько было заработано денег, сколько сьедено еды, сколько куплено шуб.
 
 class Mammal:
-    def __init__(self, name):  # TODO Хорошо бы и дом добавлять параметром
+    def __init__(self, house, name):
         self.happiness = 100
         self.satiety = 30
         self.name = name
-        self.house = None
+        self.house = house
 
     def __str__(self):
         return '{} Счастье {} Сытость {}'.format(self.__class__.__name__, self.happiness, self.satiety)
@@ -95,9 +95,6 @@ class House:
 
 class Husband(Mammal):
 
-    def __init__(self, name):
-        super().__init__(name=name)
-
     def __str__(self):
         return super().__str__()
 
@@ -137,9 +134,6 @@ class Husband(Mammal):
 
 
 class Wife(Mammal):
-
-    def __init__(self, name):
-        super().__init__(name=name)
 
     def __str__(self):
         return super().__str__()
@@ -208,23 +202,20 @@ class Child(Wife, Husband):
             self.sleep()
 
     def eat(self):
-        # TODO Не хватает проверки на наличие еды
-        food = randint(7, 10)
-        self.satiety += food
-        self.house.food_in_fridge -= food
-        self.house.food += food
+        if self.house.food_in_fridge > 20:
+            food = randint(7, 10)
+            self.satiety += food
+            self.house.food_in_fridge -= food
+            self.house.food += food
 
     def sleep(self):
         self.satiety -= 10
 
 
 home = House()
-serge = Husband(name='Сережа')
-masha = Wife(name='Маша')
-artem = Child(name='Артем')
-serge.house = home  # TODO Тогда эти 3 строки можно будет удалить
-masha.house = home
-artem.house = home
+serge = Husband(home, name='Сережа')
+masha = Wife(home, name='Маша')
+artem = Child(home, name='Артем')
 
 for day in range(365):
     cprint('================== День {} =================='.format(day), color='red')
