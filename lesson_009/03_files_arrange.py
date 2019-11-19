@@ -41,23 +41,27 @@ class Sorter():
         self.start_dir = input_dir
         self.end_dir = output_dir
 
-    def do_dir_by_time(self):
+    def create_dir_copy_into_by_time(self):
         for dirpath, dirnames, filenames in os.walk(self.start_dir):
-            print(dirpath, dirnames, filenames)
+
             for file in filenames:
+
                 full_file_path = os.path.join(dirpath, file)
                 file_time = time.gmtime(os.path.getmtime(full_file_path))
-                if not os.path.isdir(os.path.join(self.end_dir, str(file_time[0]))):
-                    os.makedirs(os.path.join(self.end_dir, str(file_time[0])))
-                if not os.path.isdir(os.path.join(self.end_dir, str(file_time[0]), str(file_time[1]))):
-                    os.makedirs(os.path.join(self.end_dir, str(file_time[0]), str(file_time[1])))
-                shutil.copy2(full_file_path, os.path.join(self.end_dir, str(file_time[0]), str(file_time[1])))
+                result_year_dir = os.path.join(self.end_dir, str(file_time[0]))
+                result_month_dir = os.path.join(result_year_dir, str(file_time[1]))
+                if not os.path.isdir(result_year_dir):
+                    os.makedirs(os.path.join(result_year_dir))
+                if not os.path.isdir(result_month_dir):
+                    os.makedirs(os.path.join(result_month_dir))
+
+                shutil.copy2(full_file_path, result_month_dir)
 
 
 fotoalbum = Sorter('C:\\Users\\Авито\\PycharmProjects\\python_base\\lesson_009\\icons',
                    'C:\\Users\\Авито\\PycharmProjects\\python_base\\lesson_009\\icons_by_year')
 
-fotoalbum.do_dir_by_time()
+fotoalbum.create_dir_copy_into_by_time()
 
 # Усложненное задание (делать по желанию)
 # Нужно обрабатывать zip-файл, содержащий фотографии, без предварительного извлечения файлов в папку.
