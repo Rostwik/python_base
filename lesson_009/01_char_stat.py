@@ -23,7 +23,7 @@
 import zipfile
 
 
-class Statist:
+class Statist:  # TODO Над названием надо бы ещё подумать, похоже на транслит русского)
     total = 0
 
     def __init__(self, file_name):
@@ -34,11 +34,14 @@ class Statist:
         zfile = zipfile.ZipFile(self.file_name, 'r')
         for filename in zfile.namelist():
             zfile.extract(filename)
-        self.file_name = filename
+        # TODO Тут перед циклом стоит определить filename, на случай, если цикл по волшебству окажется пустым
+        self.file_name = filename  # TODO Да и по сути лучше вернуть return-om название файла, а путь на всякий случай
+        # TODO оставить (не перезаписывать)
 
     def collect(self):
         if self.file_name.endswith('.zip'):
             self.unzip()
+            # TODO А здесь можно проверить вернувшийся filename и, при случая, прервать выполнение
         with open(self.file_name, 'r', encoding='cp1251') as file:
             for line in file:
                 self._collect_in_line(line)
@@ -77,8 +80,7 @@ class Statist:
         self.display_stat(list_count_of_simbols)
 
 
-count_of_simbols = Statist('C:\\Users\\Авито\\PycharmProjects\\python_base'
-                           '\\lesson_009\\python_snippets\\voyna-i-mir.txt.zip')
+count_of_simbols = Statist('python_snippets\\voyna-i-mir.txt.zip')
 
 count_of_simbols.collect()
 count_of_simbols.alphabetically_ascending()
@@ -90,3 +92,4 @@ count_of_simbols.frequency_ascending()
 #  - по алфавиту по возрастанию
 #  - по алфавиту по убыванию
 # Для этого пригодится шаблон проектирование "Шаблонный метод" см https://goo.gl/Vz4828
+#зачет!

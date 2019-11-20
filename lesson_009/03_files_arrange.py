@@ -58,8 +58,8 @@ class Sorter():
                 shutil.copy2(full_file_path, result_month_dir)
 
 
-fotoalbum = Sorter('C:\\Users\\Авито\\PycharmProjects\\python_base\\lesson_009\\icons',
-                   'C:\\Users\\Авито\\PycharmProjects\\python_base\\lesson_009\\icons_by_year')
+fotoalbum = Sorter('icons',
+                   'icons_by_year')
 
 fotoalbum.create_dir_copy_into_by_time()
 
@@ -67,3 +67,4 @@ fotoalbum.create_dir_copy_into_by_time()
 # Нужно обрабатывать zip-файл, содержащий фотографии, без предварительного извлечения файлов в папку.
 # Основная функция должна брать параметром имя zip-файла и имя целевой папки.
 # Для этого пригодится шаблон проектирование "Шаблонный метод" см https://goo.gl/Vz4828
+# зачет!

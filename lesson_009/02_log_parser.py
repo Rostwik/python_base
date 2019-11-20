@@ -20,19 +20,19 @@
 # Требования к коду: он должен быть готовым к расширению функциональности. Делать сразу на классах.
 
 
-class Loger():
+class Loger():  # TODO Logger скорее, и без скобок
 
     def __init__(self, filename_in, filename_out):
         self.filename_in = filename_in
         self.filename_out = filename_out
 
     def reformat(self, a):
-        self.stat = {}
-        deadend = 17 - a
+        self.stat = {}  # TODO определение атрибутов класса стоит производить в init
+        dead_end = 17 - a  # добавил пробел к имени
         with open(self.filename_in, 'r') as file:
             for line in file:
                 if 'NOK' in line:
-                    out_log_format = line[1:deadend]
+                    out_log_format = line[1:dead_end]
                     if out_log_format in self.stat:
                         self.stat[out_log_format] += 1
                     else:
@@ -44,7 +44,7 @@ class Loger():
                 file.write(f'[{data}] {count} \n')
 
     def hour_format(self):
-        a = 3
+        a = 3  # TODO Нэйминг :) как я понял это окончание строки, можно назвать как-то в этом же ключе
         self.reformat(a)
 
     def day_format(self):
