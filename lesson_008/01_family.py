@@ -240,8 +240,6 @@ class Cat(Mammal):
     def eat(self):
         if self.house.cat_food > 10:
             if self.satiety < 30:
-                # TODO И тут проверку бы на наличие еды
-                # проверка в самом начале, или я чего-то  не понял?
                 cat_food = randint(7, 10)
                 self.satiety += cat_food * 2
                 self.house.cat_food -= cat_food
@@ -379,3 +377,4 @@ cprint('Съедено за год {} Заработано за год {} Куп
 #       for salary in range(50, 401, 50):
 #           max_cats = life.experiment(salary)
 #           print(f'При зарплате {salary} максимально можно прокормить {max_cats} котов')
+#зачет!
