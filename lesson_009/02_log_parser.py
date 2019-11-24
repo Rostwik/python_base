@@ -20,15 +20,16 @@
 # Требования к коду: он должен быть готовым к расширению функциональности. Делать сразу на классах.
 
 
-class Loger():  # TODO Logger скорее, и без скобок
+class Logger:
 
     def __init__(self, filename_in, filename_out):
         self.filename_in = filename_in
         self.filename_out = filename_out
+        self.stat = {}
 
-    def reformat(self, a):
-        self.stat = {}  # TODO определение атрибутов класса стоит производить в init
-        dead_end = 17 - a  # добавил пробел к имени
+    def reformat(self, last_characters):
+        self.stat = {}
+        dead_end = 17 - last_characters
         with open(self.filename_in, 'r') as file:
             for line in file:
                 if 'NOK' in line:
@@ -44,27 +45,27 @@ class Loger():  # TODO Logger скорее, и без скобок
                 file.write(f'[{data}] {count} \n')
 
     def hour_format(self):
-        a = 3  # TODO Нэйминг :) как я понял это окончание строки, можно назвать как-то в этом же ключе
-        self.reformat(a)
+        last_characters = 3
+        self.reformat(last_characters)
 
     def day_format(self):
-        a = 6
-        self.reformat(a)
+        last_characters = 6
+        self.reformat(last_characters)
 
     def month_format(self):
-        a = 9
-        self.reformat(a)
+        last_characters = 9
+        self.reformat(last_characters)
 
     def year_format(self):
-        a = 12
-        self.reformat(a)
+        last_characters = 12
+        self.reformat(last_characters)
 
     def minute_format(self):
-        a = 0
-        self.reformat(a)
+        last_characters = 0
+        self.reformat(last_characters)
 
 
-new_data = Loger('events.txt', 'out_events.txt')
+new_data = Logger('events.txt', 'out_events.txt')
 
 new_data.minute_format()
 new_data.write_data()
