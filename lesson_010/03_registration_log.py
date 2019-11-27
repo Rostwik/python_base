@@ -74,5 +74,4 @@ with open(myfirstweb.datafile, 'r', encoding='cp1251') as file:
 
 myfirstweb.write_data('registrations_good.log', myfirstweb.out_good_data)
 myfirstweb.write_data('registrations_bad.log', myfirstweb.out_bad_data)
-
-
+#зачет!

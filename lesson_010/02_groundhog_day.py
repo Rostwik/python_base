@@ -76,5 +76,5 @@ while True:
         print('Билл не хочет вставать из кроватки.')
     except SuicideError:
         print('Билл опустил тостер в ванну.')
-
+# TODO А как же запись исключений в лог?
 # https://goo.gl/JnsDqu
