@@ -89,3 +89,4 @@ while True:
         write_data(exc.__class__.__name__)
 
 # https://goo.gl/JnsDqu
+#зачет!
