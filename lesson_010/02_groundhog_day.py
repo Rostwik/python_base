@@ -44,6 +44,11 @@ class SuicideError(Exception):
     pass
 
 
+def write_data(exp):
+    with open('Bill.log', mode='a') as file:
+        file.write(f'{exp}\n')
+
+
 def one_day():
     exception_dict = {1: IamGodError, 2: DrunkError, 3: CarCrashError, 4: GluttonyError,
                       5: DepressionError, 6: SuicideError}
@@ -64,17 +69,23 @@ while True:
         ENLIGHTENMENT_CARMA_LEVEL += karma
         if ENLIGHTENMENT_CARMA_LEVEL >= 777:
             break
-    except IamGodError:
+    except IamGodError as exc:
         print('Билл думает о вечном.')
-    except DrunkError:
+        write_data(exc.__class__.__name__)
+    except DrunkError as exc:
         print('Билл напился.')
-    except CarCrashError:
+        write_data(exc.__class__.__name__)
+    except CarCrashError as exc:
         print('Билл гоняет на машине по железнодорожным путям.')
-    except GluttonyError:
+        write_data(exc.__class__.__name__)
+    except GluttonyError as exc:
         print('Билл не боится холестерина.')
-    except DepressionError:
+        write_data(exc.__class__.__name__)
+    except DepressionError as exc:
         print('Билл не хочет вставать из кроватки.')
-    except SuicideError:
+        write_data(exc.__class__.__name__)
+    except SuicideError as exc:
         print('Билл опустил тостер в ванну.')
-# TODO А как же запись исключений в лог?
+        write_data(exc.__class__.__name__)
+
 # https://goo.gl/JnsDqu
