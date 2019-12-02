@@ -84,6 +84,7 @@ class Fibonacci:
         return self
 
     def __next__(self):
+
         self.i += 1
         if self.i > 1:
             if self.i > self.n:
