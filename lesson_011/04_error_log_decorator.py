@@ -8,9 +8,18 @@
 # Лог файл открывать каждый раз при ошибке в режиме 'a'
 
 
-def log_errors(func):
-    pass
-    # TODO здесь ваш код
+def log_errors(func, *args, **kwargs):
+    def deputy(*args, **kwargs):
+
+        try:
+            func(*args, **kwargs)
+        except Exception as exp:
+            with open('function_errors.log', 'a') as file:
+                format_str = f'{func.__name__} {args} {kwargs} {exp.__class__.__name__} {str(exp.args)} \n'
+                file.write(format_str)
+                raise Exception(exp.args)
+
+    return deputy
 
 
 # Проверить работу на следующих функциях
@@ -43,8 +52,8 @@ for line in lines:
         check_line(line)
     except Exception as exc:
         print(f'Invalid format: {exc}')
-perky(param=42)
 
+perky(param=42)
 
 # Усложненное задание (делать по желанию).
 # Написать декоратор с параметром - именем файла
@@ -52,4 +61,3 @@ perky(param=42)
 # @log_errors('function_errors.log')
 # def func():
 #     pass
-
