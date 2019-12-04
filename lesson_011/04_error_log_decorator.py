@@ -8,7 +8,7 @@
 # Лог файл открывать каждый раз при ошибке в режиме 'a'
 
 
-def log_errors(func, *args, **kwargs):
+def log_errors(func, *args, **kwargs):  # TODO Обратите внимание, что *args, **kwargs заданные здесь - не используются
     def deputy(*args, **kwargs):
 
         try:

@@ -31,3 +31,4 @@ draw_triangle = get_polygon(n=3)
 draw_triangle(start_point_figure=sd.get_point(200, 200), angle=13, length=100)
 
 sd.pause()
+#зачет!
