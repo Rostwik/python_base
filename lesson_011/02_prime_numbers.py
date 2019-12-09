@@ -79,8 +79,6 @@ def prime_numbers_generator(n):
                 yield number
 
 
-
-
 for number in prime_numbers_generator(n=10000):
     print(number)
 
