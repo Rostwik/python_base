@@ -50,25 +50,39 @@ class PrimeNumbers:
                     return number
 
 
-prime_number_iterator = PrimeNumbers(n=10000)
-for number in prime_number_iterator:
-    print(number)
+# prime_number_iterator = PrimeNumbers(n=10000)
+# for number in prime_number_iterator:
+#     print(number)
 
 
 # после подтверждения части 1 преподователем, можно делать
-# TODO Можете приступать ко второй части
 # Часть 2
 # Теперь нужно создать генератор, который выдает последовательность простых чисел до n
 # Распечатать все простые числа до 10000 в столбик
 
 
 def prime_numbers_generator(n):
-    pass
-    # TODO здесь ваш код
+    counter = 0
+    interval = n
+    prime_numbers = []
+    while True:
+        counter += 1
+        if counter >= interval:
+            break
+        else:
+            number = 1 + counter
+            for prime in prime_numbers:
+                if number % prime == 0:
+                    break
+            else:
+                prime_numbers.append(number)
+                yield number
 
 
-# for number in prime_numbers_generator(n=10000):
-#     print(number)
+
+
+for number in prime_numbers_generator(n=10000):
+    print(number)
 
 # Часть 3
 # Написать несколько функций-фильтров, которые выдает True, если число:
