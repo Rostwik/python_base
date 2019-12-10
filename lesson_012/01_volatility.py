@@ -73,4 +73,36 @@
 #     def run(self):
 #         <обработка данных>
 
-# TODO написать код в однопоточном/однопроцессорном стиле
+import os
+from pprint import pprint
+
+
+class Volatility:
+
+    def __init__(self, input_dir):
+        self.data_directory = input_dir
+        self.list_file_paths = []
+        self.volatility = {}
+
+    def run(self):
+        for tup in os.walk(self.data_directory):
+            for file in tup[2]:
+
+                if 'csv' in file:
+                    filepath = os.path.join(self.data_directory, file)
+                    self.list_file_paths.append(filepath)
+
+        for file in self.list_file_paths:
+            minmax_list = []
+
+            with open(file, 'r') as tiker_file:
+                tiker_file.readline()
+                for line in tiker_file:
+                    secid, tradetime, price, quantity = line.split(',')
+                    minmax_list.append(price)
+            print(max(minmax_list), file)
+            print(min(minmax_list), file)
+
+
+success = Volatility('trades')
+success.run()
