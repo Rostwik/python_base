@@ -61,3 +61,4 @@ perky(param=42)
 # @log_errors('function_errors.log')
 # def func():
 #     pass
+#зачет!
