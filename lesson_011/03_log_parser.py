@@ -8,6 +8,7 @@
 # на консоли должно появится что-то вроде
 # [2018-05-17 01:57] 1234
 
+
 def read_file_data(file):
     with open(file, 'r') as file:
         for line in file:
@@ -43,3 +44,4 @@ def log_generator(file):
 grouped_events = log_generator('events.txt')
 for group_time, event_count in grouped_events:
     print(f'[{group_time}] {event_count}')
+#зачет!
