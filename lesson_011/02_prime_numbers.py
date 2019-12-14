@@ -60,8 +60,53 @@ class PrimeNumbers:
 # Теперь нужно создать генератор, который выдает последовательность простых чисел до n
 # Распечатать все простые числа до 10000 в столбик
 
+# 1) "счастливое" в обыденном пониманиии - сумма первых цифр равна сумме последних
+#       Если число имеет нечетное число цифр (например 727 или 92083),
+#       то для вычисления "счастливости" брать равное количество цифр с начала и конца:
+#           727 -> 7(2)7 -> 7 == 7 -> True
+#           92083 -> 92(0)83 -> 9+2 == 8+3 -> True
 
-def prime_numbers_generator(n):
+def armstrong_number(prime_number):
+    narcissistic_number = 0
+    degree = len(str(prime_number))
+    str_number = str(prime_number)
+    narcissistic_number = sum(list(map(lambda x, xx=degree: int(x) ** xx, str_number)))
+    if prime_number == narcissistic_number:
+        return True
+
+
+
+
+
+def happy_filter(prime_number):
+    extra_sign = 0
+    str_number = (str(prime_number))
+    if len(str(prime_number)) == 1:
+        return
+    if len(str_number) % 2 != 0:
+        extra_sign = 1
+    number_of_signs = int(((len(str_number)) - extra_sign) / 2)
+    left_part = str_number[:number_of_signs]
+    right_part = str_number[-number_of_signs:]
+    if sum(list(map(int, left_part))) == sum(list(map(int, right_part))):
+        return True
+
+
+def palindrome_filter(prime_number):
+    extra_sign = 0
+    str_number = (str(prime_number))
+    if len(str(prime_number)) == 1:
+        return
+    if len(str_number) % 2 != 0:
+        extra_sign = 1
+    number_of_signs = int(((len(str_number)) - extra_sign) / 2)
+    left_part = str_number[:number_of_signs]
+    right_part = str_number[-number_of_signs:][::-1]  # TODO: подскажите, пожалуйста, а здесь можно проще?
+    if left_part == right_part:
+        return True
+
+
+def prime_numbers_generator(n, func):
     counter = 0
     interval = n
     prime_numbers = []
@@ -76,13 +121,13 @@ def prime_numbers_generator(n):
                     break
             else:
                 prime_numbers.append(number)
-                yield number
+                if func(number):
+                    yield number
 
 
-for number in prime_numbers_generator(n=10000):
+for number in prime_numbers_generator(n=10000, func=armstrong_number):
     print(number)
 
-# TODO Приступайте к 3-ей части
 # Часть 3
 # Написать несколько функций-фильтров, которые выдает True, если число:
 # 1) "счастливое" в обыденном пониманиии - сумма первых цифр равна сумме последних
