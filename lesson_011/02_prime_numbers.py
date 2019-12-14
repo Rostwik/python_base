@@ -67,16 +67,11 @@ class PrimeNumbers:
 #           92083 -> 92(0)83 -> 9+2 == 8+3 -> True
 
 def armstrong_number(prime_number):
-
     degree = len(str(prime_number))
     str_number = str(prime_number)
     narcissistic_number = sum(list(map(lambda x, xx=degree: int(x) ** xx, str_number)))
     if prime_number == narcissistic_number:
-
         return True
-
-
-
 
 
 def happy_filter(prime_number):
@@ -126,8 +121,10 @@ def prime_numbers_generator(n, func):
                     yield number
 
 
-for number in prime_numbers_generator(n=10000, func=armstrong_number):
+for number in prime_numbers_generator(n=10000, func=palindrome_filter):
     print(number)
+
+
 
 # Часть 3
 # Написать несколько функций-фильтров, которые выдает True, если число:
