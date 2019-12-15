@@ -78,13 +78,14 @@ def happy_filter(prime_number):
     extra_sign = 0
     str_number = (str(prime_number))
     if len(str(prime_number)) == 1:
-        return
+        return  # TODO
     if len(str_number) % 2 != 0:
         extra_sign = 1
-    number_of_signs = int(((len(str_number)) - extra_sign) / 2)
+    number_of_signs = int(((len(str_number)) - extra_sign) / 2)  # TODO Вместо int проще использовать //
     left_part = str_number[:number_of_signs]
     right_part = str_number[-number_of_signs:]
     if sum(list(map(int, left_part))) == sum(list(map(int, right_part))):
+        # TODO Тут стоит ретурном возвращать условие, а то как-то не красиво, либо True, либо None
         return True
 
 
@@ -93,11 +94,15 @@ def palindrome_filter(prime_number):
     str_number = (str(prime_number))
     if len(str(prime_number)) == 1:
         return
-    if len(str_number) % 2 != 0:
+    if len(str_number) % 2 != 0:  # TODO Почему бы вместо разделения и проверки двух частей
+        # TODO Не проверить равенство с перевернутой строкой? строка == строка[::-1]?
         extra_sign = 1
     number_of_signs = int(((len(str_number)) - extra_sign) / 2)
     left_part = str_number[:number_of_signs]
-    right_part = str_number[-number_of_signs:][::-1]  # TODO: подскажите, пожалуйста, а здесь можно проще?
+    right_part = str_number[-number_of_signs:][::-1]  # подскажите, пожалуйста, а здесь можно проще?
+    print('1234'[2:][::-1], '1234'[:1:-1])  # TODO Когда используете отрицательный шаг, то индексы начинаются с конца
+    # TODO Так '1234'[:1:-1] будет идентично записи '1234'[3:1:-1]
+    # TODO и в такой срез будут включены индексы 3 и 2 (с последнего до 1-ого, не включая его)
     if left_part == right_part:
         return True
 
@@ -121,9 +126,9 @@ def prime_numbers_generator(n, func):
                     yield number
 
 
-for number in prime_numbers_generator(n=10000, func=palindrome_filter):
-    print(number)
-
+#for number in prime_numbers_generator(n=10000, func=palindrome_filter):
+#    print(number)
+print('1'[::-1] == '1')
 
 
 # Часть 3
