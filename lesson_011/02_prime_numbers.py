@@ -88,8 +88,8 @@ def happy_filter(prime_number):
 
 
 def palindrome_filter(prime_number):
-    str_number = (str(prime_number))
-    if len(str(prime_number)) == 1:
+    str_number = str(prime_number)
+    if len(str_number) == 1:  # Мне кажется так выглядит попроще, согласны?
         return False
     else:
         return str_number == str_number[::-1]
@@ -132,3 +132,4 @@ for number in prime_numbers_generator(n=10000, func=palindrome_filter):
 # простых счастливых палиндромных чисел и так далее. Придумать не менее 2х способов.
 #
 # Подсказка: возможно, нужно будет добавить параметр в итератор/генератор.
+#зачет!
