@@ -82,7 +82,8 @@ class Volatility:
     def __init__(self, input_dir):
         self.data_directory = input_dir
         self.list_file_paths = []
-        self.volatility = {}
+        self.volatility = []
+        self.volatility_0 = []
 
     def run(self):
         for tup in os.walk(self.data_directory):
@@ -97,11 +98,36 @@ class Volatility:
 
             with open(file, 'r') as tiker_file:
                 tiker_file.readline()
+
                 for line in tiker_file:
                     secid, tradetime, price, quantity = line.split(',')
-                    minmax_list.append(price)
-            print(max(minmax_list), file)
-            print(min(minmax_list), file)
+                    minmax_list.append(float(price))
+
+            average_price = (max(minmax_list) + min(minmax_list)) / 2
+            delta = max(minmax_list) - min(minmax_list)
+            volatility = (delta / average_price) * 100
+
+            if volatility == 0:
+                self.volatility_0.append(secid)
+            else:
+                self.volatility.append([secid, volatility])
+
+        self.volatility.sort(key=lambda list_vol: list_vol[1], reverse=True)
+
+
+        print('Максимальная волатильность:')
+        for index in self.volatility[0:3]:
+            print(f'     {index[0]:} - {index[1]:3.2f} %')
+        print('Минимальная волатильность:')
+        for index in self.volatility[:-4:-1][::-1]:
+            print(f'     {index[0]:} - {index[1]:3.2f} %')
+        print('Нулевая волатильность:')
+        self.volatility_0.sort()
+        print('    ', end=' ')
+        print(', '.join(self.volatility_0))
+
+        # for index in self.volatility_0.sort(): #TODO так не работает, почему?
+
 
 
 success = Volatility('trades')
