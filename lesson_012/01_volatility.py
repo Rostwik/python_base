@@ -84,37 +84,9 @@ class Volatility:
         self.list_file_paths = []
         self.volatility = []
         self.volatility_0 = []
+        self.minmax_list = []
 
-    def run(self):
-        for tup in os.walk(self.data_directory):
-            for file in tup[2]:
-
-                if 'csv' in file:
-                    filepath = os.path.join(self.data_directory, file)
-                    self.list_file_paths.append(filepath)
-
-        for file in self.list_file_paths:
-            minmax_list = []
-
-            with open(file, 'r') as tiker_file:
-                tiker_file.readline()
-
-                for line in tiker_file:
-                    secid, tradetime, price, quantity = line.split(',')
-                    minmax_list.append(float(price))
-
-            average_price = (max(minmax_list) + min(minmax_list)) / 2
-            delta = max(minmax_list) - min(minmax_list)
-            volatility = (delta / average_price) * 100
-
-            if volatility == 0:
-                self.volatility_0.append(secid)
-            else:
-                self.volatility.append([secid, volatility])
-
-        self.volatility.sort(key=lambda list_vol: list_vol[1], reverse=True)
-
-
+    def display_result(self):
         print('Максимальная волатильность:')
         for index in self.volatility[0:3]:
             print(f'     {index[0]:} - {index[1]:3.2f} %')
@@ -126,8 +98,38 @@ class Volatility:
         print('    ', end=' ')
         print(', '.join(self.volatility_0))
 
-        # for index in self.volatility_0.sort(): #TODO так не работает, почему?
+    def collect_data_from_files(self, file):
+        with open(file, 'r') as tiker_file:
+            tiker_file.readline()
 
+            for line in tiker_file:
+                secid, tradetime, price, quantity = line.split(',')
+                self.minmax_list.append(float(price))
+        return secid
+
+    def file_path(self):
+        for tup in os.walk(self.data_directory):
+            for file in tup[2]:
+                if 'csv' in file:
+                    filepath = os.path.join(self.data_directory, file)
+                    self.list_file_paths.append(filepath)
+
+    def run(self):
+        self.file_path()
+        for file in self.list_file_paths:
+            self.minmax_list = []
+            secid = self.collect_data_from_files(file)
+            average_price = (max(self.minmax_list) + min(self.minmax_list)) / 2
+            delta = max(self.minmax_list) - min(self.minmax_list)
+            volatility = (delta / average_price) * 100
+            if volatility == 0:
+                self.volatility_0.append(secid)
+            else:
+                self.volatility.append([secid, volatility])
+        self.volatility.sort(key=lambda list_vol: list_vol[1], reverse=True)
+        self.display_result()
+
+        # for index in self.volatility_0.sort(): #TODO так не работает, почему?
 
 
 success = Volatility('trades')
