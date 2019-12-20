@@ -118,22 +118,17 @@ class Volatility:
         for file in self.list_file_paths:
             self.minmax_list = []
             secid = self.collect_data_from_files(file)
-            # TODO Хорошо бы было присвоить max() и min() переменным, чтобы не запускать их по несколько раз
-            # TODO Всё же эти функции проходят по списку, пока ищут макс и мин
-            average_price = (max(self.minmax_list) + min(self.minmax_list)) / 2
-            delta = max(self.minmax_list) - min(self.minmax_list)
+            max_vol = max(self.minmax_list)
+            min_vol = min(self.minmax_list)
+            average_price = (max_vol + min_vol) / 2
+            delta = max_vol - min_vol
             volatility = (delta / average_price) * 100
-            if volatility == 0:  # TODO if not volatility мне кажется будет лучше смотреться
+            if not volatility:
                 self.volatility_0.append(secid)
             else:
                 self.volatility.append([secid, volatility])
         self.volatility.sort(key=lambda list_vol: list_vol[1], reverse=True)
         self.display_result()
-
-        # for index in self.volatility_0.sort():  # так не работает, почему?
-        # TODO Проверьте принтом
-        # TODO Что такое self.volatility_0.sort()
-        # TODO Зачастую функции, которые изменяют структуру, вместо создания новой - возвращают None
 
 
 success = Volatility('trades')
