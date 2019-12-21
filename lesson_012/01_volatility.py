@@ -133,3 +133,4 @@ class Volatility:
 
 success = Volatility('trades')
 success.run()
+#Зачет!
