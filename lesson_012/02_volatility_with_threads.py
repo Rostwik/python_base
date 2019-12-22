@@ -10,7 +10,8 @@ import time
 
 def time_track(func):
     def surrogate(*args, **kwargs):
-        started_at = time.time()
+        started_at = time.time()  # Тут стоило бы использовать monotonic()
+        # Она никогда не уменьшает значение времени, даже если изменяется системное время.
 
         result = func(*args, **kwargs)
 
@@ -70,6 +71,9 @@ class Volatility(threading.Thread):
             for line in tiker_file:
                 secid, tradetime, price, quantity = line.split(',')
                 self.minmax_list.append(float(price))
+        # TODO Тут стоило бы подстраховаться, чтобы не было ошибки с secid, если файл пустой будет
+        # TODO Либо исключение поймать, если нам надо отслеживать пустые файлы, либо задать secid начальное значение
+        # TODO До открытия файла
         self.secid = secid
 
     def run(self):
@@ -80,7 +84,7 @@ class Volatility(threading.Thread):
         delta = max_vol - min_vol
         self.volatility = (delta / average_price) * 100
 
-
+# TODO После правки можете приступать к следующему заданиюю
 @time_track
 def main():
     list_file_paths = file_path('trades')
