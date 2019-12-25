@@ -81,11 +81,11 @@ import time
 
 def time_track(func):
     def surrogate(*args, **kwargs):
-        started_at = time.time()
+        started_at = time.monotonic()
 
         result = func(*args, **kwargs)
 
-        ended_at = time.time()
+        ended_at = time.monotonic()
         elapsed = round(ended_at - started_at, 4)
         print(f'Функция работала {elapsed} секунд(ы)')
         return result
