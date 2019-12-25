@@ -38,10 +38,11 @@ def display_result(tikers):
     volatility_0 = []
 
     for tiker in tikers:
-        if not tiker.volatility:
-            volatility_0.append(tiker.secid)
-        else:
-            volatility.append([tiker.secid, tiker.volatility])
+        if tiker.secid:
+            if not tiker.volatility:
+                volatility_0.append(tiker.secid)
+            else:
+                volatility.append([tiker.secid, tiker.volatility])
     volatility.sort(key=lambda list_vol: list_vol[1], reverse=True)
 
     print('Максимальная волатильность:')
@@ -66,25 +67,29 @@ class Volatility(threading.Thread):
         self.filepath = filepath
 
     def collect_data_from_files(self):
-        with open(self.filepath, 'r') as tiker_file:
-            tiker_file.readline()
-            for line in tiker_file:
-                secid, tradetime, price, quantity = line.split(',')
-                self.minmax_list.append(float(price))
-        # TODO Тут стоило бы подстраховаться, чтобы не было ошибки с secid, если файл пустой будет
-        # TODO Либо исключение поймать, если нам надо отслеживать пустые файлы, либо задать secid начальное значение
-        # TODO До открытия файла
-        self.secid = secid
+        try:
+            with open(self.filepath, 'r') as tiker_file:
+                tiker_file.readline()
+                for line in tiker_file:
+                    secid, tradetime, price, quantity = line.split(',')
+                    self.minmax_list.append(float(price))
+
+            self.secid = secid
+        except UnboundLocalError:
+            print(f'Проблема с файлом {self.filepath}.')
+
+
 
     def run(self):
         self.collect_data_from_files()
-        max_vol = max(self.minmax_list)
-        min_vol = min(self.minmax_list)
-        average_price = (max_vol + min_vol) / 2
-        delta = max_vol - min_vol
-        self.volatility = (delta / average_price) * 100
+        if self.secid:
+            max_vol = max(self.minmax_list)
+            min_vol = min(self.minmax_list)
+            average_price = (max_vol + min_vol) / 2
+            delta = max_vol - min_vol
+            self.volatility = (delta / average_price) * 100
 
-# TODO После правки можете приступать к следующему заданиюю
+
 @time_track
 def main():
     list_file_paths = file_path('trades')
