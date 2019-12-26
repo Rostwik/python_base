@@ -10,7 +10,7 @@ import time
 
 def time_track(func):
     def surrogate(*args, **kwargs):
-        started_at = time.monotonic()   # Тут стоило бы использовать monotonic()
+        started_at = time.monotonic()  # Тут стоило бы использовать monotonic()
         # Она никогда не уменьшает значение времени, даже если изменяется системное время.
 
         result = func(*args, **kwargs)
@@ -78,8 +78,6 @@ class Volatility(threading.Thread):
         except UnboundLocalError:
             print(f'Проблема с файлом {self.filepath}.')
 
-
-
     def run(self):
         self.collect_data_from_files()
         if self.secid:
@@ -105,3 +103,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+#зачет!
