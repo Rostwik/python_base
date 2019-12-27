@@ -82,8 +82,6 @@ class Volatility(multiprocessing.Process):
         except UnboundLocalError:
             print(f'Проблема с файлом {self.filepath}.')
 
-
-
     def run(self):
         self.collect_data_from_files()
         if self.secid:
@@ -111,4 +109,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-
+#зачет!
