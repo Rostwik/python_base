@@ -8,9 +8,33 @@
 # Пример заполнения lesson_013/images/ticket_sample.png
 # Подходящий шрифт искать на сайте ofont.ru
 
+from PIL import Image, ImageFont, ImageDraw, ImageColor
+
+
+# TODO: Note: you may need to restart the kernel to use updated packages.  Подскажите, пожалуйста, что
+# TODO: означает эта фраза? У меня оущещние, что файл requirements.txt  не обновляется.
+
 def make_ticket(fio, from_, to, date):
-    # TODO здесь ваш код
-    pass
+    im = Image.open("images/ticket_template.png")
+    print(im.format, im.size, im.mode)
+
+    im = Image.open("images/ticket_template.png")
+    font = ImageFont.truetype('ofont.ru_Baskerville_WGL4_BT.ttf', size=22)
+    # TODO: не срабатывают  atl+shift+enter (
+    im_txt = ImageDraw.Draw(im)
+    im_txt.text((45, 130), fio, font=font, fill=ImageColor.colormap['black'])
+    im_txt.text((45, 195), from_, font=font, fill=ImageColor.colormap['black'])
+    im_txt.text((45, 265), to, font=font, fill=ImageColor.colormap['black'])
+    im_txt.text((250, 265), date, font=font, fill=ImageColor.colormap['black'])
+    im.show()
+
+
+passenger = 'Иванов П.А.'
+departure = 'Москва'
+arrival = 'Санкт-Петербург'
+data = '24.12.2020'
+
+make_ticket(passenger, departure, arrival, data)
 
 # Усложненное задание (делать по желанию).
 # Написать консольный скрипт c помощью встроенного python-модуля agrparse.
