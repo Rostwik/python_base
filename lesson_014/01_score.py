@@ -38,3 +38,17 @@
 # TODO: Подскажите, пожалуйста, патерн "Состояние" Вы предлагаете применить к модулю подсчета очков или к модулю консольной части.
 #  Я почитал ссылки, что указаны в описании, смысл понял, но не вижу как это применить к данной задаче.
 
+# TODO: Вопрос по лекции - так как лекцию я не понял, нужна помощь:
+# TODO: test_handling_external_data.py
+#     def test_normal(self):
+#         getter = ExternalResourceGetter(url='bla-bla-bla')
+#         fake_result = Mock()
+#         fake_result.text = _test_data
+#         fake_get_result = Mock(return_value=fake_result)
+#         handling_external_data.requests.get = fake_get_result
+#         result = getter.run()
+#         self.assertEqual(result, 9)
+#  тут вопрос: можете по шагам объяснить  что делает каждая строчка, особенно вот эта handling_external_data.requests.get = fake_get_result
+#  преподаватель объяснил, что таким образом мы переопределяем функцию requests.get мы так раньше не делали, хочу понять механику,
+#  как это работает на уровне интерпретатора. Спасибо.
+
