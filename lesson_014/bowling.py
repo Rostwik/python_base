@@ -6,6 +6,7 @@ class ShotState:
         self.score = 0
         self.score_digit = 0
         self.symbol = ''
+        self.total = False
 
     def run(self):
         pass
@@ -26,7 +27,7 @@ class ShotStateTwo(ShotState):
 
     def run(self):
         if self.symbol == '/':
-            self.score += 15
+            self.total = True
         if self.symbol.isdigit():
             self.score_digit += int(self.symbol)
 
@@ -65,7 +66,7 @@ def get_score(game_result):
 
     game_result = game_result.replace('X', 'XX')
 
-    if len(game_result) // 2 != 10:
+    if len(game_result) % 2:
         raise ErrorLenData('Проверьте данные - неверное количество символов!')
 
     game_result = [game_result[x:x + 2] for x in range(0, len(game_result), 2)]
@@ -80,19 +81,20 @@ def get_score(game_result):
         frame_bowl.state.run()
         if shot_one.score_digit + shot_two.score_digit > 10:
             raise ErrorFormatData('Проверьте, пожалуйста, данные - кеглей всего 10.')
-
+        elif frame_bowl.state.total:
+            score += 15
+        else:
             score += frame_bowl.score_frame + frame_bowl.state.score + frame_bowl.state.score_digit
-            frame_bowl.change_state(shot_one)
-        shot_one.score = 0
-        shot_one.score_digit = 0
-        shot_two.score = 0
-        shot_two.score_digit = 0
+        shot_one = ShotStateOne()
+        shot_two = ShotStateTwo()
+        frame_bowl.change_state(shot_one)
         frame_bowl.score_frame = 0
+
 
     print(score)
 
 
-get_score('2/37X1111111111282/')
+get_score('2/37X1111111111282/1')
 
 # for shot in game_result:
 #     if shot == '//' or shot[0] == '/':
