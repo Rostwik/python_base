@@ -9,6 +9,7 @@ ipython-genutils==0.2.0
 jedi==0.15.1
 parso==0.5.1
 pickleshare==0.7.5
+Pillow==6.2.1
 prompt-toolkit==2.0.9
 pydevd-pycharm==192.6262.63
 pygame==1.9.6

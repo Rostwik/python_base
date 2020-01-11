@@ -94,7 +94,7 @@ def get_score(game_result):
     print(score)
 
 
-get_score('2/37X1111111111282/1')
+
 
 # for shot in game_result:
 #     if shot == '//' or shot[0] == '/':
