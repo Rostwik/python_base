@@ -70,7 +70,6 @@ def get_score(game_result):
         raise ErrorLenData('Проверьте данные - неверное количество символов!')
 
     game_result = [game_result[x:x + 2] for x in range(0, len(game_result), 2)]
-    print(game_result)
 
     for shot in game_result:
         frame_bowl.state.symbol = shot[0]
@@ -90,11 +89,7 @@ def get_score(game_result):
         frame_bowl.change_state(shot_one)
         frame_bowl.score_frame = 0
 
-
-    print(score)
-
-
-
+    return score
 
 # for shot in game_result:
 #     if shot == '//' or shot[0] == '/':

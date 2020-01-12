@@ -29,9 +29,24 @@
 # Скрипт должен принимать параметр --result и печатать на консоль:
 #   Количество очков для результатов ХХХ - УУУ.
 
-from lesson_014.bowling import get_score
+from bowling import get_score
 
-get_score('2/37X11111111--2821')
+# TODO: from lesson_014.bowling import get_score в таком формате не запускается через командную строку,
+#  ошибка File "01_score.py", line 32, in <module>
+#         ModuleNotFoundError: No module named 'lesson_014'
+#         from lesson_014.bowling import get_score
+#         однако через PC запускается.
+#
+import argparse
+
+parser = argparse.ArgumentParser(description='Подсчет очков в игре "Боулинг"')
+parser.add_argument('--result', type=str, dest='result')
+
+args = parser.parse_args()
+bow_score = get_score(args.result)
+print('Количество очков для результатов {} составляет {}'.format(args.result, bow_score))
+
+# get_score('2/37X11111111--2821')
 
 
 # При написании кода помнить, что заказчик может захотеть доработок и новых возможностей...
