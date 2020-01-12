@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 class ShotState:
 
     def __init__(self):
@@ -10,11 +11,15 @@ class ShotState:
 
     def run(self):
         pass
+    # TODO С состоянием нам скорее здесь надо создать общий метод для обработки символов (if/elif блоком + return)
+    # TODO А страйк и спэйр сделать методами, которые будут переопределяться в зависимости от класса
+    # TODO Здесь же их надо будет обернуть как абстрактные методы (Как при шаблонном методе https://goo.gl/Vz4828)
 
 
 class ShotStateOne(ShotState):
 
     def run(self):
+        # TODO Тк выбран может быть только один из вариантов, почему бы не использовать if/elif блок?
         if self.symbol == '/':
             raise ErrorFormatData("Обратите внимание на spare - фрейм не может начинаться с '/'.")
         if self.symbol.isdigit():
@@ -72,6 +77,8 @@ def get_score(game_result):
     game_result = [game_result[x:x + 2] for x in range(0, len(game_result), 2)]
 
     for shot in game_result:
+        # TODO Тут хорошо бы сделать "атомарную функцию"
+        # TODO Принимает shot -- считает очки -- меняет состояние
         frame_bowl.state.symbol = shot[0]
         frame_bowl.state.run()
         frame_bowl.score_frame += frame_bowl.state.score + frame_bowl.state.score_digit
@@ -84,8 +91,8 @@ def get_score(game_result):
             score += 15
         else:
             score += frame_bowl.score_frame + frame_bowl.state.score + frame_bowl.state.score_digit
-        shot_one = ShotStateOne()
-        shot_two = ShotStateTwo()
+        shot_one = ShotStateOne()  # TODO Зачем переопределение? А, увидел, но в бросках не должна храниться
+        shot_two = ShotStateTwo()  # TODO Информация о количестве очков
         frame_bowl.change_state(shot_one)
         frame_bowl.score_frame = 0
 
