@@ -18,10 +18,6 @@ class ShotState(metaclass=ABCMeta):
             result = int(self.symbol)
         return result
 
-    # С состоянием нам скорее здесь надо создать общий метод для обработки символов (if/elif блоком + return)
-    # А страйк и спэйр сделать методами, которые будут переопределяться в зависимости от класса
-    # Здесь же их надо будет обернуть как абстрактные методы (Как при шаблонном методе https://goo.gl/Vz4828)
-
     @abstractmethod
     def strike(self):
         pass
@@ -60,8 +56,6 @@ class Frame:
 
 
 def state_machine(shot, frame, state1, state2):
-    # Тут хорошо бы сделать "атомарную функцию"
-    #  Принимает shot -- считает очки -- меняет состояние
 
     score = 0
 
@@ -72,9 +66,9 @@ def state_machine(shot, frame, state1, state2):
     frame.state.symbol = shot[0]
     score += frame.state.run()
     frame.change_state(state2)
-    if shot[1] == '/':  # TODO: масло масленое, умнее не придумал
-        score = 15
-    else:
+    if shot[1] == '/':  # масло масленое, умнее не придумал
+        score = 15  # TODO Можно сделать по проверке после 1-ого и 2-ого броска
+    else:  # TODO Если первый = 20 -> return 20, если второй = 15 -> return 15 else - сумма 1 + 2
         frame.state.symbol = shot[1]
         score += frame.state.run()
         frame.change_state(state1)
