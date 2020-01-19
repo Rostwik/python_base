@@ -9,6 +9,7 @@ from lesson_014.bowling import get_score
 _test_data1 = '2/37X11111111--2821'
 _test_data2 = '2/37X19111111--2821'
 
+# TODO: не могу понять почему запускается только один тест, а не два. Подскажите, пож.
 
 class GetScoreTest(unittest.TestCase):
 

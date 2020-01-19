@@ -56,23 +56,22 @@ class Frame:
 
 
 def state_machine(shot, frame, state1, state2):
-
-    score = 0
-
-    if shot[0].isdigit() & shot[1].isdigit():
-        if int(shot[0]) + int(shot[1]) > 10:
-            raise ErrorFormatData('Проверьте, пожалуйста, данные фреймов - кеглей всего 10.')
-
     frame.state.symbol = shot[0]
-    score += frame.state.run()
+    score1 = frame.state.run()
     frame.change_state(state2)
-    if shot[1] == '/':  # масло масленое, умнее не придумал
-        score = 15  # TODO Можно сделать по проверке после 1-ого и 2-ого броска
-    else:  # TODO Если первый = 20 -> return 20, если второй = 15 -> return 15 else - сумма 1 + 2
-        frame.state.symbol = shot[1]
-        score += frame.state.run()
-        frame.change_state(state1)
-    return score
+
+    frame.state.symbol = shot[1]
+    score2 = frame.state.run()
+    frame.change_state(state1)
+
+    if score1 == 20:
+        return 20
+    elif score2 == 15:
+        return 15
+    elif (score2 + score1) > 10:
+        raise ErrorFormatData('Проверьте, пожалуйста, данные фреймов - кеглей всего 10.')
+    else:
+        return score2 + score1
 
 
 class ErrorLenData(Exception):
