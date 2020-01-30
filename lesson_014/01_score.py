@@ -31,7 +31,7 @@
 
 from bowling import get_score
 
-# TODO: from lesson_014.bowling import get_score в таком формате не запускается через командную строку,
+# TODO : from lesson_014.bowling import get_score в таком формате не запускается через командную строку,
 #  ошибка File "01_score.py", line 32, in <module>
 #         ModuleNotFoundError: No module named 'lesson_014'
 #         from lesson_014.bowling import get_score
