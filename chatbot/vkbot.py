@@ -4,11 +4,17 @@ from pprint import pprint
 import random
 import logging
 
-from chatbot._token import token
+#from chatbot._token import token
+
+try:
+    import settings
+except ImportError:
+    exit('Скопируй из settings.py.default в settings.py и установи TOKEN!')
+
 import vk_api
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 
-id_group = 190258846
+
 log = logging.getLogger('bot')
 
 
@@ -30,7 +36,19 @@ def configure_logging():
 
 class BotVk:
 
+    """
+    use Python 3.7
+    Echo bot for VK.com
+
+    """
+
     def __init__(self, id_group, token):
+
+        """
+
+        :param id_group:  gpoup_id из группы vk
+        :param token: секретный token
+        """
         self.id_group = id_group
         self.token = token
         self.vk = vk_api.VkApi(token=token)
@@ -38,6 +56,10 @@ class BotVk:
         self.api = self.vk.get_api()
 
     def run(self):
+        """
+        запуск бота
+
+        """
         for event in self.long_poller.listen():
 
             try:
@@ -46,6 +68,12 @@ class BotVk:
                 log.exception('Ошибка в обработке события.')
 
     def on_event(self, event):
+        """
+         Обрабатывает сообщения бота. Отправляет сообщение назад, если это текст
+
+        :param event: VKBotMessageEvent object
+        :return:
+        """
         if event.type == VkBotEventType.MESSAGE_NEW:
 
             log.debug('Отправляем сообщение назад.')
@@ -60,7 +88,7 @@ class BotVk:
 
 if __name__ == "__main__":
     configure_logging()
-    BotDrink = BotVk(id_group, token)
+    BotDrink = BotVk(settings.ID_GROUP, settings.TOKEN)
     BotDrink.run()
 
     # а как лектор понял, что можно так написать? Почему мы не создавали объект класса VkBotEventType?
