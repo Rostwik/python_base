@@ -37,7 +37,10 @@ class GetScoreTest(unittest.TestCase):
     def test_normal_3(self):
         fake_result = Mock()
         fake_result.text = _test_data5
-        get_score(fake_result.text)
+        #get_score(fake_result.text)
+        with self.assertRaises(Exception) as err:
+            get_score(fake_result.text)
+        self.assertEqual('Проверьте данные - неверное количество символов!', str(err.exception))
 
     def test_normal_4(self):
         fake_result = Mock()
