@@ -44,19 +44,7 @@
 #
 # Пример взаимодействия с игроком:
 #
-# Вы находитесь в Location_0_tm0
-# У вас 0 опыта и осталось 123456.0987654321 секунд до наводнения
-# Прошло времени: 00:00
-#
-# Внутри вы видите:
-# — Вход в локацию: Location_1_tm1040
-# — Вход в локацию: Location_2_tm123456
-# Выберите действие:
-# 1.Атаковать монстра
-# 2.Перейти в другую локацию
-# 3.Сдаться и выйти из игры
-#
-# Вы выбрали переход в локацию Location_2_tm1234567890
+
 #
 # Вы находитесь в Location_2_tm1234567890
 # У вас 0 опыта и осталось 0.0987654321 секунд до наводнения
@@ -92,11 +80,153 @@
 #
 # и так далее...
 
+# Вы находитесь в Location_0_tm0
+    # У вас 0 опыта и осталось 123456.0987654321 секунд до наводнения
+    # Прошло времени: 00:00
+    #
+    # Внутри вы видите:
+    # — Вход в локацию: Location_1_tm1040
+    # — Вход в локацию: Location_2_tm123456
+    # Выберите действие:
+    # 1.Атаковать монстра
+    # 2.Перейти в другую локацию
+    # 3.Сдаться и выйти из игры
+    #
+    # Вы выбрали переход в локацию Location_2_tm1234567890
+
+
+import datetime
+import re
+import json
+import sys
+from decimal import *
+import csv
 
 remaining_time = '123456.0987654321'
-# если изначально не писать число в виде строки - теряется точность!
-field_names = ['current_location', 'current_experience', 'current_date']
 
-# TODO тут ваш код
+# если изначально не писать число в виде строки - теряется точность!
+
+class Journey:
+
+    def __init__(self, remaining_time, map):
+        self.location = None
+        self.experience = 0
+        self.start_time = Decimal(remaining_time)
+        self.time_spent = 0
+        self.map = map
+        self.flooded_caves = []
+        self.location = ''
+
+
+
+    def calculation_time_and_experience(self, data, flag=True):
+        """
+        Расчет времени и опыта
+
+        :param data: Передается строка, в зависимости от выбора "Локация" или "Монстр"
+        :param flag: Если "Локация", передается False, чтобы учитывать только время
+        :return:
+        """
+        exp = []
+        time = []
+        exp = re.search(r'(exp)(\d+)', data)
+        time = re.search(r'(tm)(\d+)', data)
+
+        if flag:
+            self.experience += Decimal(exp[2])
+            self.time_spent += Decimal(time[2])
+        else:
+            self.time_spent += Decimal(time[2])
+
+        return
+
+    def csv_result_file(self):
+        field_names = ['current_location', 'current_experience', 'current_date']
+
+        with open('dungeon.csv', 'a', newline='') as out_csv:
+            writer = csv.DictWriter(out_csv, delimiter=',', fieldnames=field_names)
+            writer.writerow({'current_location': self.location, 'current_experience': self.experience,
+                             'current_date': datetime.datetime.now()})
+
+    def moves(self):
+        with open(self.map, "r") as json_file:
+            list_of_location = json.load(json_file)
+
+        while True:
+
+            where_to_go = {}
+            whom_to_kill = []
+
+            location, environment = list(list_of_location.items())[0]
+
+            print(f'Вы находитесь в {location}')
+            self.location = location
+            deadline = self.start_time - self.time_spent
+            if deadline < 0:
+                print('Время вышло. Вы не успели открыть люк!!! НАВОДНЕНИЕ!!! RIP.')
+                self.csv_result_file()
+            if 'Hatch' in location:
+                print('Вы видите спасительный люк! Вы пробуете его открыть.. ')
+                if self.experience < 280:
+                    print('О Боже! Вы мало качались на мобах и Вам не хватает сил..')
+                else:
+                    print('Вы спасены! Свобода! Вы победитель по жизни, и Вас ждут новые испытания!')
+                self.csv_result_file()
+                break
+            print(f'У вас {self.experience} опыта и осталось {deadline} секунд до наводнения')
+            print(f'Прошло времени {str(datetime.timedelta(seconds=float(self.time_spent)))}')
+            print('Внутри вы видите:')
+
+            for member, j in enumerate(environment):
+                if ('exp') in j:
+                    whom_to_kill.append(j)
+                    print(f'- Монстра {j}')
+                else:
+                    where_to_go[member] = j
+                    print(f'- Вход в локацию: {list(j.items())[0][0]}')
+            while True:
+                print('Выберите действие: ')
+                if whom_to_kill:
+                    print('1.Атаковать монстра')
+                if where_to_go:
+                    print('2.Перейти в другую локацию')
+                print('3.Сдаться и выйти из игры')
+
+                choice = int(input())
+
+                if choice == 3:
+                    self.csv_result_file()
+                    sys.exit()
+                elif choice == 2:
+                    print('Выберите локацию: ')
+                    for number, location in where_to_go.items():
+                        print(f'Нажми {number} для локации {list(location.items())[0][0]}')
+                    choice = int(input())
+                    list_of_location = where_to_go[int(choice)]
+                    self.calculation_time_and_experience(list(list_of_location)[0], False)
+                    break
+                elif choice == 1:
+                    print('Выбери цель: ')
+                    for number, monstr in enumerate(whom_to_kill):
+                        print(f'Нажми {number}, чтобы сразиться с {monstr}')
+                    choice = int(input())
+                    self.calculation_time_and_experience(whom_to_kill.pop(number))
+
+
+journey = Journey(remaining_time, 'rpg.json')
+journey.moves()
+
+choice = input('Текущая игра завершена. Желаете начать новую? (y/n)')
+if choice == 'y':
+    journey.location = None
+    journey.experience = 0
+    journey.start_time = Decimal(remaining_time)
+    journey.time_spent = 0
+    journey.flooded_caves = []
+    journey.location = ''
+    journey.moves()
+else:
+    print('Всего доброго!')
+
 
 # Учитывая время и опыт, не забывайте о точности вычислений!
