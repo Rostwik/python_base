@@ -81,18 +81,18 @@
 # и так далее...
 
 # Вы находитесь в Location_0_tm0
-    # У вас 0 опыта и осталось 123456.0987654321 секунд до наводнения
-    # Прошло времени: 00:00
-    #
-    # Внутри вы видите:
-    # — Вход в локацию: Location_1_tm1040
-    # — Вход в локацию: Location_2_tm123456
-    # Выберите действие:
-    # 1.Атаковать монстра
-    # 2.Перейти в другую локацию
-    # 3.Сдаться и выйти из игры
-    #
-    # Вы выбрали переход в локацию Location_2_tm1234567890
+# У вас 0 опыта и осталось 123456.0987654321 секунд до наводнения
+# Прошло времени: 00:00
+#
+# Внутри вы видите:
+# — Вход в локацию: Location_1_tm1040
+# — Вход в локацию: Location_2_tm123456
+# Выберите действие:
+# 1.Атаковать монстра
+# 2.Перейти в другую локацию
+# 3.Сдаться и выйти из игры
+#
+# Вы выбрали переход в локацию Location_2_tm1234567890
 
 
 import datetime
@@ -103,6 +103,7 @@ from decimal import *
 import csv
 
 remaining_time = '123456.0987654321'
+
 
 # если изначально не писать число в виде строки - теряется точность!
 
@@ -117,8 +118,6 @@ class Journey:
         self.flooded_caves = []
         self.location = ''
 
-
-
     def calculation_time_and_experience(self, data, flag=True):
         """
         Расчет времени и опыта
@@ -127,7 +126,7 @@ class Journey:
         :param flag: Если "Локация", передается False, чтобы учитывать только время
         :return:
         """
-        exp = []
+        exp = []  # TODO Эти переменные не используются(подсвечены серым), зачем они?
         time = []
         exp = re.search(r'(exp)(\d+)', data)
         time = re.search(r'(tm)(\d+)', data)
@@ -149,11 +148,13 @@ class Journey:
                              'current_date': datetime.datetime.now()})
 
     def moves(self):
+        # TODO Этот большой набор действий стоит разбить на методы
+        # TODO Один загружет карту
         with open(self.map, "r") as json_file:
             list_of_location = json.load(json_file)
 
         while True:
-
+            # TODO Другой обновляет текущее положение дел
             where_to_go = {}
             whom_to_kill = []
 
@@ -162,7 +163,7 @@ class Journey:
             print(f'Вы находитесь в {location}')
             self.location = location
             deadline = self.start_time - self.time_spent
-            if deadline < 0:
+            if deadline < 0:  # TODO Тут нужно использовать "<="
                 print('Время вышло. Вы не успели открыть люк!!! НАВОДНЕНИЕ!!! RIP.')
                 self.csv_result_file()
             if 'Hatch' in location:
@@ -176,15 +177,16 @@ class Journey:
             print(f'У вас {self.experience} опыта и осталось {deadline} секунд до наводнения')
             print(f'Прошло времени {str(datetime.timedelta(seconds=float(self.time_spent)))}')
             print('Внутри вы видите:')
-
+            # TODO Третий сканирует окружение
             for member, j in enumerate(environment):
-                if ('exp') in j:
+                if 'exp' in j:
                     whom_to_kill.append(j)
                     print(f'- Монстра {j}')
                 else:
                     where_to_go[member] = j
                     print(f'- Вход в локацию: {list(j.items())[0][0]}')
             while True:
+                # TODO четвертый запускает выбор пользователя
                 print('Выберите действие: ')
                 if whom_to_kill:
                     print('1.Атаковать монстра')
@@ -192,16 +194,26 @@ class Journey:
                     print('2.Перейти в другую локацию')
                 print('3.Сдаться и выйти из игры')
 
-                choice = int(input())
+                choice = int(input())  # TODO перед приведением к int стоит проверить, состоит ли ввод из цифр
+                # TODO и тогда можно сразу проверить, из нужных ли цифр он состоит
 
                 if choice == 3:
                     self.csv_result_file()
-                    sys.exit()
+                    sys.exit()  # TODO Прерывать программу таким образом не стоит,
+                    # TODO иначе изменяется код выхода из программы (что в некоторых системах учитывается и довольно
+                    # TODO важно правильно завершать программу), да и такой выход может не сработать, если
+                    # TODO будет вызван не в главном потоке.
+
+                    # TODO Лучше для внешнего цикла использовать переменную-переключатель
+                    # TODO например game - которая будет равна True, пока игру надо продолжать
+                    # TODO тут тогда можно будет изменить game на False и break-ом закончить этот цикл
+                    # TODO после чего внешний цикл попросту не продолжится
                 elif choice == 2:
                     print('Выберите локацию: ')
                     for number, location in where_to_go.items():
                         print(f'Нажми {number} для локации {list(location.items())[0][0]}')
-                    choice = int(input())
+                    choice = int(input())  # TODO ввод пользователя нужно проверять
+                    # TODO иначе будут ошибки
                     list_of_location = where_to_go[int(choice)]
                     self.calculation_time_and_experience(list(list_of_location)[0], False)
                     break
@@ -209,13 +221,16 @@ class Journey:
                     print('Выбери цель: ')
                     for number, monstr in enumerate(whom_to_kill):
                         print(f'Нажми {number}, чтобы сразиться с {monstr}')
-                    choice = int(input())
+                    choice = int(input())  # TODO И здесь, кроме того ниже вы даже не используете choice
+                    # TODO что вообще убирает влияние выбора на игру)
                     self.calculation_time_and_experience(whom_to_kill.pop(number))
 
 
 journey = Journey(remaining_time, 'rpg.json')
 journey.moves()
 
+# TODO Инициализацию новой игры тоже стоит добавить в отдельный метод
+# TODO И вызывать его в конце игры, внутри метода, а не снаружи класса
 choice = input('Текущая игра завершена. Желаете начать новую? (y/n)')
 if choice == 'y':
     journey.location = None
@@ -227,6 +242,5 @@ if choice == 'y':
     journey.moves()
 else:
     print('Всего доброго!')
-
 
 # Учитывая время и опыт, не забывайте о точности вычислений!
