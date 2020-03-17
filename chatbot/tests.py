@@ -3,7 +3,7 @@ from unittest.mock import patch, Mock, ANY
 
 from vk_api.bot_longpoll import VkBotMessageEvent
 
-from chatbot.vkbot import BotVk
+from vkbot import BotVk
 
 
 class Test1(TestCase):
@@ -30,8 +30,8 @@ class Test1(TestCase):
         long_poller_listen_mock = Mock()
         long_poller_listen_mock.listen = long_poller_mock
 
-        with patch('chatbot.vkbot.vk_api.VkApi'):
-            with patch('chatbot.vkbot.VkBotLongPoll', return_value=long_poller_listen_mock):
+        with patch('vkbot.vk_api.VkApi'):
+            with patch('vkbot.VkBotLongPoll', return_value=long_poller_listen_mock):
                 bot = BotVk('', '')
                 bot.on_event = Mock()
                 bot.run()
@@ -45,8 +45,8 @@ class Test1(TestCase):
 
         send_mock = Mock()
 
-        with patch('chatbot.vkbot.vk_api.VkApi'):
-            with patch('chatbot.vkbot.VkBotLongPoll'):
+        with patch('vkbot.vk_api.VkApi'):
+            with patch('vkbot.VkBotLongPoll'):
                 bot = BotVk('', '')
                 bot.api = Mock()
                 bot.api.messages.send = send_mock

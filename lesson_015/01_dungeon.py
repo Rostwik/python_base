@@ -98,9 +98,10 @@
 import datetime
 import re
 import json
-import sys
 from decimal import *
 import csv
+
+from termcolor import cprint
 
 remaining_time = '123456.0987654321'
 
@@ -110,13 +111,20 @@ remaining_time = '123456.0987654321'
 class Journey:
 
     def __init__(self, remaining_time, map):
+        """
+        Класс Путешествие. Реализует игровую логику.
+
+        :param remaining_time: Время, отведенное для прохождение квеста.
+        :param map: JSON файл с монстарми и локациями.
+        :param time_spent: затраченное время на прохождение
+
+        """
         self.location = None
+        self.list_of_location = []
         self.experience = 0
         self.start_time = Decimal(remaining_time)
         self.time_spent = 0
         self.map = map
-        self.flooded_caves = []
-        self.location = ''
 
     def calculation_time_and_experience(self, data, flag=True):
         """
@@ -125,9 +133,8 @@ class Journey:
         :param data: Передается строка, в зависимости от выбора "Локация" или "Монстр"
         :param flag: Если "Локация", передается False, чтобы учитывать только время
         :return:
+
         """
-        exp = []  # TODO Эти переменные не используются(подсвечены серым), зачем они?
-        time = []
         exp = re.search(r'(exp)(\d+)', data)
         time = re.search(r'(tm)(\d+)', data)
 
@@ -140,33 +147,36 @@ class Journey:
         return
 
     def csv_result_file(self):
+        """
+        Записываем результат игры.
+        :return: возвращаем признак окончания игры
+        """
         field_names = ['current_location', 'current_experience', 'current_date']
 
         with open('dungeon.csv', 'a', newline='') as out_csv:
             writer = csv.DictWriter(out_csv, delimiter=',', fieldnames=field_names)
             writer.writerow({'current_location': self.location, 'current_experience': self.experience,
                              'current_date': datetime.datetime.now()})
+        return False
 
     def moves(self):
-        # TODO Этот большой набор действий стоит разбить на методы
-        # TODO Один загружет карту
-        with open(self.map, "r") as json_file:
-            list_of_location = json.load(json_file)
+        exit = True
+        self.load_map()
 
-        while True:
-            # TODO Другой обновляет текущее положение дел
+        while exit:
+
             where_to_go = {}
             whom_to_kill = []
 
-            location, environment = list(list_of_location.items())[0]
+            # Обновляем текущее окружение.
+            deadline, environment = self.update_current_position()
 
-            print(f'Вы находитесь в {location}')
-            self.location = location
-            deadline = self.start_time - self.time_spent
-            if deadline < 0:  # TODO Тут нужно использовать "<="
+            # Проверка окончания игры.
+            if deadline <= 0:
                 print('Время вышло. Вы не успели открыть люк!!! НАВОДНЕНИЕ!!! RIP.')
                 self.csv_result_file()
-            if 'Hatch' in location:
+                break
+            elif 'Hatch' in self.location:
                 print('Вы видите спасительный люк! Вы пробуете его открыть.. ')
                 if self.experience < 280:
                     print('О Боже! Вы мало качались на мобах и Вам не хватает сил..')
@@ -174,73 +184,119 @@ class Journey:
                     print('Вы спасены! Свобода! Вы победитель по жизни, и Вас ждут новые испытания!')
                 self.csv_result_file()
                 break
+
             print(f'У вас {self.experience} опыта и осталось {deadline} секунд до наводнения')
             print(f'Прошло времени {str(datetime.timedelta(seconds=float(self.time_spent)))}')
+
+            # Осматриваем пещеру.
             print('Внутри вы видите:')
-            # TODO Третий сканирует окружение
-            for member, j in enumerate(environment):
-                if 'exp' in j:
-                    whom_to_kill.append(j)
-                    print(f'- Монстра {j}')
-                else:
-                    where_to_go[member] = j
-                    print(f'- Вход в локацию: {list(j.items())[0][0]}')
-            while True:
-                # TODO четвертый запускает выбор пользователя
-                print('Выберите действие: ')
-                if whom_to_kill:
-                    print('1.Атаковать монстра')
-                if where_to_go:
-                    print('2.Перейти в другую локацию')
-                print('3.Сдаться и выйти из игры')
+            self.look_around(environment, where_to_go, whom_to_kill)
 
-                choice = int(input())  # TODO перед приведением к int стоит проверить, состоит ли ввод из цифр
-                # TODO и тогда можно сразу проверить, из нужных ли цифр он состоит
+            # Выбор пользователя, что делаем дальше.
+            exit = self.choice(whom_to_kill, where_to_go)
 
-                if choice == 3:
-                    self.csv_result_file()
-                    sys.exit()  # TODO Прерывать программу таким образом не стоит,
-                    # TODO иначе изменяется код выхода из программы (что в некоторых системах учитывается и довольно
-                    # TODO важно правильно завершать программу), да и такой выход может не сработать, если
-                    # TODO будет вызван не в главном потоке.
+        self.end_or_new_game()
 
-                    # TODO Лучше для внешнего цикла использовать переменную-переключатель
-                    # TODO например game - которая будет равна True, пока игру надо продолжать
-                    # TODO тут тогда можно будет изменить game на False и break-ом закончить этот цикл
-                    # TODO после чего внешний цикл попросту не продолжится
-                elif choice == 2:
-                    print('Выберите локацию: ')
+    def end_or_new_game(self):
+        while True:
+
+            choice = input('Текущая игра завершена. Желаете начать новую? (y/n)')
+
+            if choice == 'y' and len(choice) == 1:
+                self.location = None
+                self.list_of_location = []
+                self.experience = 0
+                self.start_time = Decimal(remaining_time)
+                self.time_spent = 0
+                self.moves()
+                break
+            elif choice == 'n' and len(choice) == 1:
+                print('Всего доброго! Приходите еще.')
+                break
+            else:
+                print('Введен неверный символ. Попробуйте еще раз.')
+
+    def choice(self, whom_to_kill, where_to_go):
+        """
+        Осознанный выбор пользователя.
+
+        :param whom_to_kill: список монстров на локации
+        :param where_to_go: список выходов из пещеры
+        :return:
+        """
+
+        action_options = ['1', '2', '3']
+        while True:
+
+            cprint('Выберите действие: ', attrs=['underline'])
+            if whom_to_kill:
+                print('1.Атаковать монстра')
+            if where_to_go:
+                print('2.Перейти в другую локацию')
+            print('3.Сдаться и выйти из игры')
+
+            cprint('Что Вы выбрали?', 'magenta')
+            choice = input()
+
+            if choice in action_options:
+                if choice == '3':  # выход из игры
+                    return self.csv_result_file()
+
+                elif choice == '2':  # выбираем "переходим на другую локацию"
+                    cprint('Выберите локацию: ', attrs=['underline'])
                     for number, location in where_to_go.items():
-                        print(f'Нажми {number} для локации {list(location.items())[0][0]}')
-                    choice = int(input())  # TODO ввод пользователя нужно проверять
-                    # TODO иначе будут ошибки
-                    list_of_location = where_to_go[int(choice)]
-                    self.calculation_time_and_experience(list(list_of_location)[0], False)
-                    break
-                elif choice == 1:
+                        cprint(f'Нажми {number} для локации {list(location.items())[0][0]}', attrs=['blink'])
+                    cprint('Что Вы выбрали?', 'magenta')
+                    while True:
+                        choice = input()  # выбираем локацию из списка
+                        if choice.isdigit():
+                            if int(choice) in where_to_go.keys():
+                                self.list_of_location = where_to_go[int(choice)]
+                                self.calculation_time_and_experience(list(self.list_of_location)[0], False)
+                                break
+                        cprint('Вы ввели неверный символ, пожалуйста, попробуйте еще раз!', 'red')
+                    return True
+
+                elif choice == '1':  # выбираем "атаковать монстра"
                     print('Выбери цель: ')
                     for number, monstr in enumerate(whom_to_kill):
                         print(f'Нажми {number}, чтобы сразиться с {monstr}')
-                    choice = int(input())  # TODO И здесь, кроме того ниже вы даже не используете choice
-                    # TODO что вообще убирает влияние выбора на игру)
-                    self.calculation_time_and_experience(whom_to_kill.pop(number))
+                    while True:
+                        choice = input()  # выбираем монстра из списка для атаки
+                        if choice.isdigit():
+                            if int(choice) in list(range(len(whom_to_kill))):
+                                self.calculation_time_and_experience(whom_to_kill.pop(int(choice)))
+                                break
+                        cprint('Вы ввели неверный символ, пожалуйста, попробуйте еще раз!', 'red')
+
+            else:
+                cprint('Вы ввели неверный символ, пожалуйста, попробуйте еще раз!', 'red')
+        return True
+
+    def look_around(self, environment, where_to_go, whom_to_kill):
+        for member, j in enumerate(environment):
+            if 'exp' in j:
+                whom_to_kill.append(j)
+                print(f'- Монстра {j}')
+            else:
+                where_to_go[member] = j
+                print(f'- Вход в локацию: {list(j.items())[0][0]}')
+
+    def update_current_position(self):
+
+        location, environment = list(self.list_of_location.items())[0]
+        print(f'Вы находитесь в {location}')
+        self.location = location
+        deadline = self.start_time - self.time_spent
+        return deadline, environment
+
+    def load_map(self):
+
+        with open(self.map, "r") as json_file:
+            self.list_of_location = json.load(json_file)
 
 
 journey = Journey(remaining_time, 'rpg.json')
 journey.moves()
-
-# TODO Инициализацию новой игры тоже стоит добавить в отдельный метод
-# TODO И вызывать его в конце игры, внутри метода, а не снаружи класса
-choice = input('Текущая игра завершена. Желаете начать новую? (y/n)')
-if choice == 'y':
-    journey.location = None
-    journey.experience = 0
-    journey.start_time = Decimal(remaining_time)
-    journey.time_spent = 0
-    journey.flooded_caves = []
-    journey.location = ''
-    journey.moves()
-else:
-    print('Всего доброго!')
 
 # Учитывая время и опыт, не забывайте о точности вычислений!
