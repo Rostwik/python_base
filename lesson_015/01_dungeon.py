@@ -300,3 +300,4 @@ journey = Journey(remaining_time, 'rpg.json')
 journey.moves()
 
 # Учитывая время и опыт, не забывайте о точности вычислений!
+#зачет!
