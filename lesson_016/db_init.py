@@ -21,7 +21,7 @@ class DatabaseUpdater:
 
         class Weather(WeatherTable):
             date = peewee.DateField()  # дата
-            change_date = peewee.DateField() # дата изменения
+            change_date = peewee.DateField()  # дата изменения
             temperature = peewee.CharField()  # температура
             terms = peewee.CharField()  # погодные условия
 
@@ -41,21 +41,25 @@ class DatabaseUpdater:
         for row in query:
             print(row)
 
-    def write_db(self, weather_data):
+    def write_db(self, weather_data, write=True):
 
         query = self.table_weather.select().dicts()
 
         for day in weather_data:
             for item in query:
+                write = True
                 day_by_str = pars_date(day)
-                if item['date'] == day_by_str and item['change_date'] < datetime.date.today():
-                    self.table_weather[item['id']].delete_instance()
-            new_weather = self.table_weather(
-                date=day,
-                change_date=datetime.date.today(),
-                temperature=weather_data[day][0],
-                terms=weather_data[day][1])
-            new_weather.save()
-
-
-
+                if item['date'] == day_by_str:
+                    if item['change_date'] < datetime.date.today():
+                        self.table_weather[item['id']].delete_instance()
+                        break
+                    else:
+                        write = False
+                        break
+            if write:
+                new_weather = self.table_weather(
+                    date=day,
+                    change_date=datetime.date.today(),
+                    temperature=weather_data[day][0],
+                    terms=weather_data[day][1])
+                new_weather.save()

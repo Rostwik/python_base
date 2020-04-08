@@ -67,6 +67,13 @@ class WeatherMaker:
 
         result = {}
 
+        if init:
+            start_date = datetime.date.today() - datetime.timedelta(days=7)
+            end_date = datetime.date.today()
+        else:
+            start_date = pars_date(start_date)
+            end_date = pars_date(end_date)
+
         response = requests.get(self.url)
         if response.status_code == 200:
             html_doc = BeautifulSoup(response.text, features='html.parser')
@@ -76,12 +83,7 @@ class WeatherMaker:
 
                 date_str, timezone = tag.time['datetime'].split(' ')
                 date_dt = pars_date(date_str)
-                if init:
-                    start_date = datetime.date.today() - datetime.timedelta(days=7)
-                    end_date = datetime.date.today()
-                else:
-                    start_date = pars_date(start_date)
-                    end_date = pars_date(end_date)
+
 
                 if start_date <= date_dt <= end_date:
                     result[date_str] = [tag.find_all('span', {'class': 'temp__value'})[0].text]
@@ -110,7 +112,7 @@ class ImageMaker:
 
 
 perfect_day = WeatherMaker('https://yandex.ru/pogoda/saint-petersburg')
-weather_data = perfect_day.weather_html()
+weather_data = perfect_day.weather_html('2020-04-10', '2020-04-12', False)
 
 test = DatabaseUpdater()
 test.init_db()
