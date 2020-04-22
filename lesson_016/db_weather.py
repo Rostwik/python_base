@@ -54,7 +54,6 @@ import requests
 from bs4 import BeautifulSoup
 import cv2
 
-from lesson_016.db_init import DatabaseUpdater
 from lesson_016.instruments import pars_date
 
 
@@ -84,7 +83,6 @@ class WeatherMaker:
                 date_str, timezone = tag.time['datetime'].split(' ')
                 date_dt = pars_date(date_str)
 
-
                 if start_date <= date_dt <= end_date:
                     result[date_str] = [tag.find_all('span', {'class': 'temp__value'})[0].text]
                     result[date_str].append(tag.find_all('div', {'class': 'forecast-briefly__condition'})[0].text)
@@ -93,29 +91,33 @@ class WeatherMaker:
 
 
 class ImageMaker:
-    def __init__(self):
-        pass
+
+    # Солнечно - от желтого к белому
+    # Дождь - от синего к белому
+    # Снег - от голубого к белому
+    # Облачно - от серого к белому
 
     def draw_a_card(self, condition, temperature, date):
         path = 'python_snippets/external_data/weather_img/'
         path_bg = 'python_snippets/external_data/weather_gradient/'
-        cloud = ['Пасмурно', 'Облачно', 'Облачно с прояснениями']
+        cloud = ['Пасмурно', 'Облачно', 'Облачно с прояснениями', 'Малооблачно']
+        rain = ['Дождь со снегом', 'Небольшой дождь']
         if condition in cloud:
             img = 'cloud.jpg'
+            img_bg = 'cloudy.jpg'
+        elif condition in rain:
+            img = 'rain.jpg'
+            img_bg = 'rainy.jpg'
+        elif condition == 'снег':
+            img = 'snow.jpg'
+            img_bg = 'snowy.jpg'
+        elif condition == 'Ясно':
+            img = 'sun.jpg'
+            img_bg = 'sunny.jpg'
         image = cv2.imread(path + img)
-        background = cv2.imread(path_bg + 'sunny.jpg')
+        background = cv2.imread(path_bg + img_bg)
         postcard = cv2.addWeighted(image, 0.5, background, 0.5, 0)
         cv2.putText(postcard, condition, (15, 50), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255, 0, 0), 2)
         cv2.putText(postcard, temperature, (40, 65), cv2.FONT_HERSHEY_COMPLEX, 0.4, (255, 0, 0), 2)
 
         cv2.imwrite(str(date) + 'postcard.png', postcard)
-
-
-perfect_day = WeatherMaker('https://yandex.ru/pogoda/saint-petersburg')
-weather_data = perfect_day.weather_html('2020-04-10', '2020-04-12', False)
-
-test = DatabaseUpdater()
-test.init_db()
-test.write_db(weather_data)
-
-# postcard = ImageMaker()
