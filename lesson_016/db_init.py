@@ -56,7 +56,6 @@ class DatabaseUpdater:
         else:
             print('За указанный период, данных не нашлось!')
 
-
     def write_db(self, weather_data, write=True):
 
         query = self.table_weather.select().dicts()

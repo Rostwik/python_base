@@ -114,6 +114,7 @@ class ImageMaker:
         elif condition == 'Ясно':
             img = 'sun.jpg'
             img_bg = 'sunny.jpg'
+        # TODO Тут нужен else, чтобы ошибки не вылетали, если condition не найден
         image = cv2.imread(path + img)
         background = cv2.imread(path_bg + img_bg)
         postcard = cv2.addWeighted(image, 0.5, background, 0.5, 0)
@@ -121,3 +122,5 @@ class ImageMaker:
         cv2.putText(postcard, temperature, (40, 65), cv2.FONT_HERSHEY_COMPLEX, 0.4, (255, 0, 0), 2)
 
         cv2.imwrite(str(date) + 'postcard.png', postcard)
+        # TODO Открытки хорошо было бы записывать в отдельную папку.
+        # TODO Например можно создавать директорию с указанным месяцем и годом в дате
