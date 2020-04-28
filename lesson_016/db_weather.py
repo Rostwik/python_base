@@ -53,6 +53,7 @@ from pprint import pprint
 import requests
 from bs4 import BeautifulSoup
 import cv2
+import os
 
 from lesson_016.instruments import pars_date
 
@@ -98,8 +99,18 @@ class ImageMaker:
     # Облачно - от серого к белому
 
     def draw_a_card(self, condition, temperature, date):
-        path = 'python_snippets/external_data/weather_img/'
+
+        path_parent = 'python_snippets/external_data/weather_img/'
         path_bg = 'python_snippets/external_data/weather_gradient/'
+
+        directory = date.replace('-', '')[:6]
+
+        path = os.path.join(path_parent, directory)
+        try:
+            os.mkdir(path)
+        except OSError:
+            print('Создание директории не требуется.')
+
         cloud = ['Пасмурно', 'Облачно', 'Облачно с прояснениями', 'Малооблачно']
         rain = ['Дождь со снегом', 'Небольшой дождь']
         if condition in cloud:
@@ -114,13 +125,17 @@ class ImageMaker:
         elif condition == 'Ясно':
             img = 'sun.jpg'
             img_bg = 'sunny.jpg'
-        # TODO Тут нужен else, чтобы ошибки не вылетали, если condition не найден
-        image = cv2.imread(path + img)
+        else:
+            print('Подходящие погодные условия не найдены, установлен фон по умолчанию.')
+            img = 'rain.jpg'
+            img_bg = 'rainy.jpg'
+
+        image = cv2.imread(path_parent + img)
         background = cv2.imread(path_bg + img_bg)
         postcard = cv2.addWeighted(image, 0.5, background, 0.5, 0)
         cv2.putText(postcard, condition, (15, 50), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255, 0, 0), 2)
         cv2.putText(postcard, temperature, (40, 65), cv2.FONT_HERSHEY_COMPLEX, 0.4, (255, 0, 0), 2)
 
+        os.chdir(path)
+
         cv2.imwrite(str(date) + 'postcard.png', postcard)
-        # TODO Открытки хорошо было бы записывать в отдельную папку.
-        # TODO Например можно создавать директорию с указанным месяцем и годом в дате
