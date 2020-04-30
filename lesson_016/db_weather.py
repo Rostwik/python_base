@@ -129,7 +129,9 @@ class ImageMaker:
             print('Подходящие погодные условия не найдены, установлен фон по умолчанию.')
             img = 'rain.jpg'
             img_bg = 'rainy.jpg'
-
+        # TODO Я кажется понял, почему у вас получается такая маленькая открытка
+        # TODO Для основы нужно использовать lesson_016/python_snippets/external_data/probe.jpg
+        # TODO Это белая пустая картинка, на которую можно добавить всю нужную информацию
         image = cv2.imread(path_parent + img)
         background = cv2.imread(path_bg + img_bg)
         postcard = cv2.addWeighted(image, 0.5, background, 0.5, 0)
@@ -141,6 +143,9 @@ class ImageMaker:
             delta += 15
         cv2.putText(postcard, temperature, (40, 80), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255, 0, 0), 1)
 
-        os.chdir(path)
+        os.chdir(path)  # TODO Эта команда будет выдавать ошибку, если мы уже находимся в нужной папке
+        # TODO тут, как мне кажется лучше прописывать путь от директории, в которой запущена программа
+        # TODO чтобы не запутаться при множественном создании открыток за одну сессию
 
         cv2.imwrite(str(date) + 'postcard.png', postcard)
+        # TODO После создания удобно было бы видеть путь по которому была создана открытка
