@@ -52,6 +52,7 @@ def input_date_range():
 def exit_bb():
     print('Всего доброго!')
 
+
 # today = datetime.datetime.now(pytz.timezone('Europe/Moscow'))
 # today = datetime.datetime.strptime('2020-04-01 00:00+0300', '%Y-%m-%d %H:%M%z')
 # data_dt = datetime.datetime.strptime(tag.time['datetime'], '%Y-%m-%d %H:%M%z')

@@ -14,9 +14,37 @@ test.write_db(weather_data)
 
 card = ImageMaker()
 
-menu = {'1': {'name': 'Добавить прогнозы за диапазон дат в базу данных', 'func': perfect_day.weather_html},
-        '2': {'name': 'Получить прогнозы за диапазон дат из базы', 'func': test.read_db},
-        '3': {'name': 'Создать открытку за дату', 'func': card.draw_a_card},
+
+def add_date_range():
+    l_data, r_data = input_date_range()
+    weather_data = perfect_day.weather_html(l_data, r_data, False)
+    pprint(weather_data)
+    test.write_db(weather_data)
+    print('Данные записаны в бд.')
+
+
+def get_forecasts():
+    l_data, r_data = input_date_range()
+    test.read_db(l_data, r_data)
+    print('Данные получены из бд.')
+
+def create_postcard():
+    while True:
+
+        date_postcard = input('Введите дату в формате (yyyy-mm-dd): ')
+        if format_date(date_postcard):
+            break
+
+    read_postcard_data = test.read_db(date_postcard, date_postcard)
+    if read_postcard_data:
+        card.draw_a_card(read_postcard_data[0][1], read_postcard_data[0][2], date_postcard)
+
+    print('Открытка создана.')
+
+
+menu = {'1': {'name': 'Добавить прогнозы за диапазон дат в базу данных', 'func': add_date_range},
+        '2': {'name': 'Получить прогнозы за диапазон дат из базы', 'func': get_forecasts},
+        '3': {'name': 'Создать открытку за дату', 'func': create_postcard},
         '4': {'name': 'Выход', 'func': exit_bb}
         }
 
@@ -33,32 +61,11 @@ while True:
             print('Вы ввели некорректный символ! Попробуйте еще раз.')
         else:
             choice = True
-    # TODO Вместо подобных проверок выбора - стоит создать функции, добавить их в словарь и вызывать по ключу
-    # TODO Чтобы тут осталось if ввод в словаре --> действие_из_словаря()
-    if i == '1':
 
-        l_data, r_data = input_date_range()
-        weather_data = perfect_day.weather_html(l_data, r_data, False)
-        pprint(weather_data)
-        test.write_db(weather_data)
+    menu[i]['func']()
 
-    elif i == '2':
-        l_data, r_data = input_date_range()
-        menu['2']['func'](l_data, r_data)
-
-    elif i == '3':
-        while True:
-            date_postcard = input('Введите дату в формате (yyyy-mm-dd): ')
-            if format_date(date_postcard):
-                break
-
-        read_postcard_data = menu['2']['func'](date_postcard, date_postcard)
-        if read_postcard_data:
-            menu['3']['func'](read_postcard_data[0][1], read_postcard_data[0][2], date_postcard)
-
-    elif i == '4':
-        menu['4']['func']()
+    if i == '4':
         break
 
     choice = False
-# TODO После выполнения действий добавьте небольшой принт с оповещением, что действие выполнено успешно.
+
