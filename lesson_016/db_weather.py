@@ -133,8 +133,13 @@ class ImageMaker:
         image = cv2.imread(path_parent + img)
         background = cv2.imread(path_bg + img_bg)
         postcard = cv2.addWeighted(image, 0.5, background, 0.5, 0)
-        cv2.putText(postcard, condition, (15, 50), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255, 0, 0), 2)
-        cv2.putText(postcard, temperature, (40, 65), cv2.FONT_HERSHEY_COMPLEX, 0.4, (255, 0, 0), 2)
+        few_words_condition = condition.split(' ')
+        delta = 0
+
+        for word in few_words_condition:
+            cv2.putText(postcard, word, (2, 30 + delta), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255, 0, 0), 1)
+            delta += 15
+        cv2.putText(postcard, temperature, (40, 80), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255, 0, 0), 1)
 
         os.chdir(path)
 
