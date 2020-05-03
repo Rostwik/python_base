@@ -129,23 +129,22 @@ class ImageMaker:
             print('Подходящие погодные условия не найдены, установлен фон по умолчанию.')
             img = 'rain.jpg'
             img_bg = 'rainy.jpg'
-        # TODO Я кажется понял, почему у вас получается такая маленькая открытка
-        # TODO Для основы нужно использовать lesson_016/python_snippets/external_data/probe.jpg
-        # TODO Это белая пустая картинка, на которую можно добавить всю нужную информацию
+
         image = cv2.imread(path_parent + img)
         background = cv2.imread(path_bg + img_bg)
-        postcard = cv2.addWeighted(image, 0.5, background, 0.5, 0)
-        few_words_condition = condition.split(' ')
-        delta = 0
 
-        for word in few_words_condition:
-            cv2.putText(postcard, word, (2, 30 + delta), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255, 0, 0), 1)
-            delta += 15
-        cv2.putText(postcard, temperature, (40, 80), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255, 0, 0), 1)
+        default_image = cv2.imread('python_snippets/external_data/probe.jpg')
+        resized_image = cv2.resize(image, (default_image.shape[1], default_image.shape[0]),
+                                   interpolation=cv2.INTER_AREA)
+        resized_background = cv2.resize(background, (default_image.shape[1], default_image.shape[0]),
+                                        interpolation=cv2.INTER_AREA)
 
-        os.chdir(path)  # TODO Эта команда будет выдавать ошибку, если мы уже находимся в нужной папке
-        # TODO тут, как мне кажется лучше прописывать путь от директории, в которой запущена программа
-        # TODO чтобы не запутаться при множественном создании открыток за одну сессию
+        probe = cv2.addWeighted(default_image, 0.5, resized_image, 0.5, 0)
+        postcard = cv2.addWeighted(probe, 0.5, resized_background, 0.5, 0)
+        cv2.putText(postcard, condition, (20, 90), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 2)
 
-        cv2.imwrite(str(date) + 'postcard.png', postcard)
-        # TODO После создания удобно было бы видеть путь по которому была создана открытка
+        cv2.putText(postcard, temperature, (100, 150), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 2)
+        path_postcard = path + '/' + str(date) + 'postcard.png'
+        cv2.imwrite(path_postcard, postcard)
+
+        return path_postcard

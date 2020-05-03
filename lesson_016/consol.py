@@ -37,9 +37,9 @@ def create_postcard():
 
     read_postcard_data = test.read_db(date_postcard, date_postcard)
     if read_postcard_data:
-        card.draw_a_card(read_postcard_data[0][1], read_postcard_data[0][2], date_postcard)
+        path = card.draw_a_card(read_postcard_data[0][1], read_postcard_data[0][2], date_postcard)
 
-    print('Открытка создана.')
+    print(f'Открытка создана по следующему пути: {path}')
 
 
 menu = {'1': {'name': 'Добавить прогнозы за диапазон дат в базу данных', 'func': add_date_range},
