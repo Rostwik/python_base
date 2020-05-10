@@ -69,3 +69,4 @@ while True:
 
     choice = False
 
+#зачет!
