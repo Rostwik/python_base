@@ -112,7 +112,7 @@ class BotVk:
         else:
             # ищем intent
             for intent in settings.INTENTS:
-                if any(token in text for token in intent['tokens']):
+                if any(token in text.lower() for token in intent['tokens']):
                     # run intent
                     if intent['answer']:
                         text_to_send = intent['answer']
