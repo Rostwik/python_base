@@ -4,7 +4,10 @@ from pprint import pprint
 import random
 import logging
 
+from pony.orm import db_session
+
 from chatbot import handlers
+from chatbot.models import UserState
 
 try:
     import settings
@@ -33,20 +36,20 @@ def configure_logging():
     log.setLevel(logging.DEBUG)
 
 
-class UserState:
-    """
-    Состояние пользователя внутри сценария.
-    """
+# class UserState:
+# #     """
+# #     Состояние пользователя внутри сценария.
+# #     """
+# #
+# #     def __init__(self, scenario_name, step_name, context=None):
+# #         self.scenario_name = scenario_name
+# #         self.step_name = step_name
+# #         self.context = context or {}
 
-    def __init__(self, scenario_name, step_name, context=None):
-        self.scenario_name = scenario_name
-        self.step_name = step_name
-        self.context = context or {}
-
-    # TODO: def __init__(self, scenario_name, step_name, context={}):
-    #  не понял объяснение лектора - почему так делать нельзя, почему при добавлении новой ID
-    #  все равно будет ссылаться на один и тот же дикт контекста? И чем лучше строка self.context = context or {}
-    #  Разве это не одно и тоже? Разъясните, пожалуйста.
+# TODO: def __init__(self, scenario_name, step_name, context={}):
+#  не понял объяснение лектора - почему так делать нельзя, почему при добавлении новой ID
+#  все равно будет ссылаться на один и тот же дикт контекста? И чем лучше строка self.context = context or {}
+#  Разве это не одно и тоже? Разъясните, пожалуйста.
 
 
 class BotVk:
@@ -75,7 +78,6 @@ class BotVk:
         self.vk = vk_api.VkApi(token=token)
         self.long_poller = VkBotLongPoll(self.vk, self.id_group)
         self.api = self.vk.get_api()
-        self.user_states = dict()  # user_id -> UserState
 
     def run(self):
         """
@@ -89,6 +91,7 @@ class BotVk:
             except Exception:
                 log.exception('Ошибка в обработке события.')
 
+    @db_session
     def on_event(self, event):
         """
          Обрабатывает сообщения бота. Отправляет сообщение назад, если это текст
@@ -102,12 +105,12 @@ class BotVk:
 
         user_id = event.message.peer_id
         text = event.message.text
+        state = UserState.get(user_id=str(user_id))
 
-        if user_id in self.user_states:
+        if state is not None:
             # продолжаем сценарий
 
-            text_to_send = self.continue_scenario(user_id, text=text)
-
+            text_to_send = self.continue_scenario(text, state)
 
         else:
             # ищем intent
@@ -127,8 +130,7 @@ class BotVk:
                                peer_id=user_id
                                )
 
-    def continue_scenario(self, user_id, text):
-        state = self.user_states[user_id]
+    def continue_scenario(self, text, state):
         steps = settings.SCENARIOS[state.scenario_name]['steps']
         step = steps[state.step_name]
         handler = getattr(handlers, step['handler'])
@@ -141,7 +143,7 @@ class BotVk:
                 state.step_name = step['next_step']
             else:
                 # finish scenario
-                self.user_states.pop(user_id)
+                state.delete()
         else:
             # retry current step
             text_to_send = step['failure_text'].format(**state.context)
@@ -153,7 +155,7 @@ class BotVk:
         first_step = scenario['first_step']
         step = scenario['steps'][first_step]
         text_to_send = step['text']
-        self.user_states[user_id] = UserState(scenario_name=scenario_name, step_name=first_step)
+        UserState(user_id=str(user_id), scenario_name=scenario_name, step_name=first_step, context={})
         return text_to_send
 
 

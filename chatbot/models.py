@@ -8,6 +8,10 @@ db.bind(**DB_CONFIG)
 
 class UserState(db.Entity):
     """Состояние пользователя внури сценария"""
+    user_id = Required(str, unique=True)
     scenario_name = Required(str)
-    step_name = Required(int)
+    step_name = Required(str)
     context = Required(Json)
+
+
+db.generate_mapping(create_tables=True)
