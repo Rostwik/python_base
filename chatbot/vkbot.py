@@ -4,6 +4,7 @@ from pprint import pprint
 import random
 import logging
 
+import requests
 from pony.orm import db_session
 
 from chatbot import handlers
@@ -120,7 +121,7 @@ class BotVk:
                     if intent['answer']:
                         self.send_text(intent['answer'], user_id)
                     else:
-                        self.start_scenario(user_id, intent['scenario'])
+                        self.start_scenario(user_id, intent['scenario'], text)
                     break
             else:
                 self.send_text(settings.DEFAULT_ANSWER, user_id)
@@ -131,11 +132,33 @@ class BotVk:
                                peer_id=user_id
                                )
 
-    def start_scenario(self, user_id, scenario_name):
+    def send_image(self, image, user_id):
+        upload_url = self.api.photos.getMessagesUploadServer()['upload_url']
+        upload_data = requests.post(url=upload_url, files={'photo': ('image.png', image, 'image/png')}).json()
+        image_data = self.api.photos.saveMessagesPhoto(**upload_data)
+
+        owner_id = image_data[0]['owner_id']
+        media_id = image_data[0]['id']
+        attachment = f'photo{owner_id}_{media_id}'
+
+        self.api.messages.send(attachment=attachment,
+                               random_id=random.randint(0, 2 ** 20),
+                               peer_id=user_id
+                               )
+
+    def send_step(self, step, user_id, text, context):
+        if 'text' in step:
+            self.send_text(step['text'].format(**context), user_id)
+        if 'image' in step:
+            handler = getattr(handlers, step['image'])
+            image = handler(text, context)
+            self.send_image(image, user_id)
+
+    def start_scenario(self, user_id, scenario_name, text):
         scenario = settings.SCENARIOS[scenario_name]
         first_step = scenario['first_step']
         step = scenario['steps'][first_step]
-        self.send_text(step['text'], user_id)
+        self.send_step(step, user_id, text, context={})
         UserState(user_id=str(user_id), scenario_name=scenario_name, step_name=first_step, context={})
 
     def continue_scenario(self, text, state, user_id):
@@ -145,8 +168,8 @@ class BotVk:
         if handler(text=text, context=state.context):
             # next step
             next_step = steps[step['next_step']]
-            text_to_send = next_step['text'].format(**state.context)
-            self.send_text(text_to_send, user_id)
+            self.send_step(next_step, user_id, text, state.context)
+
             if next_step['next_step']:
                 # switch to next step
                 state.step_name = step['next_step']
