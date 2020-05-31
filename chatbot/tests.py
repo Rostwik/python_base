@@ -2,11 +2,22 @@ from copy import deepcopy
 from unittest import TestCase
 from unittest.mock import patch, Mock, ANY
 
+from pony.orm import db_session, rollback
 from vk_api.bot_longpoll import VkBotMessageEvent, VkBotEvent
 
 from vkbot import BotVk
 
 from chatbot import settings
+from chatbot.generate_ticket import generate_ticket
+
+
+def isolated_db(test_func):
+    def wrapper(*args, **kwargs):
+        with db_session:
+            test_func(*args, **kwargs)
+            rollback()
+
+    return wrapper
 
 
 class Test1(TestCase):
@@ -89,6 +100,7 @@ class Test1(TestCase):
     #       ничего нет кроме переопределенных методов для сравнения. Но у нас в данном случае нет никаких
     #       сравнений. Можете поделиться ссылкой на разъяснения и примеры по поводу ANY ?
 
+    @isolated_db
     def test_run_ok(self):
         send_mock = Mock()
         api_mock = Mock()
@@ -116,3 +128,16 @@ class Test1(TestCase):
             real_outputs.append(kwargs['message'])
 
         assert real_outputs == self.EXPECTED_OUTPUTS
+
+    def test_image_generation(self):
+        with open('files/email.png', 'rb') as avatar_file:
+            avatar_mock = Mock()
+            avatar_mock.content = avatar_file.read()
+
+        with patch('requests.get', return_value=avatar_mock):
+            ticket_file = generate_ticket('name', 'email')
+
+        with open('files/ticket-example.png', 'rb') as expected_file:
+            expected_bytes = expected_file.read()
+
+        assert ticket_file.read() == expected_bytes
