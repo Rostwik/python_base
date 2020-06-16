@@ -64,13 +64,14 @@ def handle_date_format(text, context):
     if match:
         context['date'] = text
         return True
-    else:
-        return False
+    return False
 
 
 def handle_flight_selection(text, context):
-    context['route'] = text
-    return True
+    if text in context['suitable_flights']:
+        context['route'] = text
+        return True
+    return False
 
 
 def handle_number_of_seats(text, context):
@@ -87,7 +88,8 @@ def handle_comment(text, context):
 
 
 def handle_yesno(text, context):
-    # TODO дописать функцию
+    # TODO дописать функцию handle_yesno
+
     return True
 
 

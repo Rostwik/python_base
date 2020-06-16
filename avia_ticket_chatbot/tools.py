@@ -7,3 +7,4 @@ def dispatcher(context):
         if DISPATCHER_CONFIG[route]['town_from'] == context['town_from'] and DISPATCHER_CONFIG[route]['town_to'] == context['town_to']:
             suitable_flights.append(route)
             context['suitable_flights'] = ' ,'.join(suitable_flights)
+        # TODO дописать функцию dispatcher добавить обработку дат и сортировку для 5 ближайших маршрутов.
