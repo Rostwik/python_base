@@ -20,8 +20,11 @@ class Registration(db.Entity):
 
     """Заявка на регистрацию"""
 
-    name = Required(str)
-    email = Required(str)
+    phone = Required(str)
+    places = Required(str)
+    route = Required(str)
+    comment = Required(str)
+
 
 
 

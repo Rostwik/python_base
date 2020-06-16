@@ -7,7 +7,7 @@ import logging
 import requests
 from pony.orm import db_session
 
-from avia_ticket_chatbot import handlers
+from avia_ticket_chatbot import handlers, tools
 from avia_ticket_chatbot.models import UserState, Registration
 
 try:
@@ -147,6 +147,9 @@ class BotVk:
                                )
 
     def send_step(self, step, user_id, text, context):
+        if 'tool' in step:
+            tool = getattr(tools, step['tool'])
+            tool(context)
         if 'text' in step:
             self.send_text(step['text'].format(**context), user_id)
         if 'image' in step:
@@ -175,8 +178,9 @@ class BotVk:
                 state.step_name = step['next_step']
             else:
                 # finish scenario
-                log.info('Зарегистрирован: {name} {email}'.format(**state.context))
-                Registration(name=state.context['name'], email=state.context['email'])
+                log.info('Зарегистрирован: {phone}'.format(**state.context))
+                Registration(phone=state.context['phone'], places=state.context['place'],
+                             route=state.context['route'], comment=state.context['comment'])
                 state.delete()
         else:
             # retry current step
