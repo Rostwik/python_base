@@ -23,18 +23,19 @@ def dispatcher(context):
         route_config = DISPATCHER_CONFIG[route]
         if route_config['town_from'] == context['town_from'] and route_config['town_to'] == context['town_to']:
 
-            if route_config['day_of_week'] is not None:
+            if route_config['day_of_week'] is not None:  # Если рейс содержит периодический маршрут по дням недели
                 day_of_week(route, route_config, suitable_flights, context)
 
     list_of_suitable_flights = list(suitable_flights.keys())
     list_of_suitable_flights.sort()
     for index in range(5):
-        context['suitable_flights'][index] = [suitable_flights[list_of_suitable_flights[index]],
-                                              list_of_suitable_flights[index]]
+        context['suitable_flights'][index] = [
+            suitable_flights[list_of_suitable_flights[index]],
+            list_of_suitable_flights[index].strftime('%d-%m-%Y %H:%M')]
 
     context['suitable_flights_user_text'] = ' ,'.join(
-        f"<br> {x}. Рейс: {context['suitable_flights'][x][0]}"
-        f" Дата и время вылета: {context['suitable_flights'][x][1].strftime('%d-%m-%Y %H:%M')}"
+        f"<br> {x}. Рейс: {', '.join(context['suitable_flights'][x][0])}, "
+        f" Дата и время вылета: {context['suitable_flights'][x][1]}"
         for x in context['suitable_flights'])
 
 
