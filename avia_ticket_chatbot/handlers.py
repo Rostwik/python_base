@@ -3,9 +3,12 @@ Handler - функция, которая принимает на вход text (
 True, если шаг пройден, False, если данные введены неправильно.
 
 """
+import datetime
+import random
 import re
 
 from avia_ticket_chatbot.generate_ticket import generate_ticket
+from avia_ticket_chatbot.models import UserState
 from avia_ticket_chatbot.settings import DISPATCHER_CONFIG
 
 # re_name = re.compile(r'^[\w\-\s]{3,40}$')
@@ -25,7 +28,7 @@ re_place = [1, 2, 3, 4, 5]
 re_phone = re.compile(r"^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$")
 
 
-def handle_town_from(text, context):
+def handle_town_from(text, context, id):
     for re_town in re_towns:
         re_town_comp = re.compile(re_town)
         match = re.match(re_town_comp, text)
@@ -42,7 +45,7 @@ def handle_town_from(text, context):
     return False
 
 
-def handle_town_to(text, context):
+def handle_town_to(text, context, id):
     for re_town in re_towns:
         re_town_comp = re.compile(re_town)
         match = re.match(re_town_comp, text)
@@ -59,22 +62,26 @@ def handle_town_to(text, context):
     return False
 
 
-def handle_date_format(text, context):
+def handle_date_format(text, context, id):
+    now = datetime.datetime.now()
     match = re.match(re_date, text)
     if match:
-        context['date'] = text
-        return True
+        incoming_date_datetime = datetime.datetime.strptime(text, f'%d-%m-%Y')
+        incoming_date_datetime += now.strftime("%H:%M:%S")
+        if incoming_date_datetime >= datetime.datetime.now():
+            context['date'] = text
+            return True
     return False
 
 
-def handle_flight_selection(text, context):
+def handle_flight_selection(text, context, id):
     if text in context['suitable_flights']:
-        context['route'] = text
+        context['route'] = context['suitable_flights'][text]
         return True
     return False
 
 
-def handle_number_of_seats(text, context):
+def handle_number_of_seats(text, context, id):
     if text.isdigit():
         if int(text) in re_place:
             context['place'] = text
@@ -82,15 +89,19 @@ def handle_number_of_seats(text, context):
     return False
 
 
-def handle_comment(text, context):
+def handle_comment(text, context, id):
     context['comment'] = text
     return True
 
 
-def handle_yesno(text, context):
-    # TODO дописать функцию handle_yesno
-
-    return True
+def handle_yesno(text, context, id):
+    if text == 'Да':
+        return True
+    elif text == 'Нет':
+        state = UserState.get(user_id=id)
+        state.step_name = 'user_mistake'
+        return True
+    return False
 
 
 def handle_phone_number(text, context):

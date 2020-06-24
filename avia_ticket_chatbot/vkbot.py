@@ -158,6 +158,7 @@ class BotVk:
             self.send_image(image, user_id)
 
     def start_scenario(self, user_id, scenario_name, text):
+
         scenario = settings.SCENARIOS[scenario_name]
         first_step = scenario['first_step']
         step = scenario['steps'][first_step]
@@ -165,27 +166,43 @@ class BotVk:
         UserState(user_id=str(user_id), scenario_name=scenario_name, step_name=first_step, context={})
 
     def continue_scenario(self, text, state, user_id):
-        steps = settings.SCENARIOS[state.scenario_name]['steps']
-        step = steps[state.step_name]
-        handler = getattr(handlers, step['handler'])
-        if handler(text=text, context=state.context):
-            # next step
-            next_step = steps[step['next_step']]
-            self.send_step(next_step, user_id, text, state.context)
-
-            if next_step['next_step']:
-                # switch to next step
-                state.step_name = step['next_step']
-            else:
-                # finish scenario
-                log.info('Зарегистрирован: {phone}'.format(**state.context))
-                Registration(phone=state.context['phone'], places=state.context['place'],
-                             route=state.context['route'], comment=state.context['comment'])
-                state.delete()
+        for intent in settings.INTENTS:
+            if any(token in text.lower() for token in intent['tokens']):
+                # run intent
+                if intent['answer']:
+                    self.send_text(intent['answer'], user_id)
+                    state.delete()
+                elif intent['scenario']:
+                    self.start_scenario(user_id, intent['scenario'], text)
+                break
         else:
-            # retry current step
-            text_to_send = step['failure_text'].format(**state.context)
-            self.send_text(text_to_send, user_id)
+            steps = settings.SCENARIOS[state.scenario_name]['steps']
+            step = steps[state.step_name]
+
+            handler = getattr(handlers, step['handler'])
+            if handler(text=text, context=state.context, id=state.user_id):
+                # next step
+                if state.step_name == 'user_mistake':  # Если пользователь ошибся при заказе билета, удаляем весь прогресс.
+                    text_to_send = 'Очень жаль, попробуйте еще раз.'
+                    self.send_text(text_to_send, user_id)
+                    state.delete()
+                else:
+                    next_step = steps[step['next_step']]
+                    self.send_step(next_step, user_id, text, state.context)
+
+                    if next_step['next_step']:
+                        # switch to next step
+                        state.step_name = step['next_step']
+                    else:
+                        # finish scenario
+                        log.info('Зарегистрирован: {phone}'.format(**state.context))
+                        Registration(phone=state.context['phone'], places=state.context['place'],
+                                     route=state.context['route'], comment=state.context['comment'])
+                        state.delete()
+            else:
+                # retry current step
+                text_to_send = step['failure_text'].format(**state.context)
+                self.send_text(text_to_send, user_id)
 
 
 if __name__ == "__main__":

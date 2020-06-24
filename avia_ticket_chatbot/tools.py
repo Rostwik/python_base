@@ -9,8 +9,7 @@ def dispatcher(context):
     Диспетчер выбирает все записи из файла конфигурации, где находятся все возможные маршруты.
     В маршруте может быть или определенная дата или день недели или день месяца отправлений. (последние
     два периодические) Далее маршруты сортируются и ближайшие 5 попадают в выборку для
-    пользователя. Если маршрут периодический, то сравнение производится с текущей датой, удовлетворяющим
-    условиям считается маршрут в рамках 30 календарных дней от даты запроса.
+    пользователя.
 
     :param context:
     :return:
@@ -25,10 +24,18 @@ def dispatcher(context):
 
             if route_config['day_of_week'] is not None:  # Если рейс содержит периодический маршрут по дням недели
                 day_of_week(route, route_config, suitable_flights, context)
+            elif route_config['day_of_month'] is not None:
+                user_date = datetime.datetime.strptime(context['date'], '%d-%m-%Y')
+                for day_of_month in route_config['day_of_month'].split(','):
+
+                    if user_date.day == int(day_of_month):
+                        flight_date = datetime.datetime.strptime(user_date.strftime('%d-%m-%Y') +
+                                                                 ' ' + route_config['time'], '%d-%m-%Y %H:%M')
+                        suitable_flights[flight_date].append(route)
 
     list_of_suitable_flights = list(suitable_flights.keys())
     list_of_suitable_flights.sort()
-    for index in range(5):
+    for index in list_of_suitable_flights:
         context['suitable_flights'][index] = [
             suitable_flights[list_of_suitable_flights[index]],
             list_of_suitable_flights[index].strftime('%d-%m-%Y %H:%M')]
@@ -40,14 +47,10 @@ def dispatcher(context):
 
 
 def day_of_week(route, route_config, suitable_flights, context):
+    user_date = datetime.datetime.strptime(context['date'], '%d-%m-%Y')
     for weekday in route_config['day_of_week'].split(','):
-        user_date = datetime.datetime.strptime(context['date'], '%d-%m-%Y')
 
-        month_period = user_date + datetime.timedelta(days=30)
-        while user_date < month_period:
-            if user_date.weekday() == int(weekday):
-                flight_date = datetime.datetime.strptime(user_date.strftime('%d-%m-%Y') +
-                                                         ' ' + route_config['time'], '%d-%m-%Y %H:%M')
-                suitable_flights[flight_date].append(route)
-
-            user_date = user_date + datetime.timedelta(days=1)
+        if user_date.weekday() == int(weekday):
+            flight_date = datetime.datetime.strptime(user_date.strftime('%d-%m-%Y') +
+                                                     ' ' + route_config['time'], '%d-%m-%Y %H:%M')
+            suitable_flights[flight_date].append(route)
