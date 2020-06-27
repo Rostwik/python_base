@@ -38,9 +38,9 @@ def handle_town_from(text, context, id):
                     context['town_from'] = re_towns[re_town]
                     return True
 
-    town_dict = []
+    town_dict = set()
     for route in DISPATCHER_CONFIG:
-        town_dict.append(DISPATCHER_CONFIG[route]['town_from'])
+        town_dict.add(DISPATCHER_CONFIG[route]['town_from'])
     context['town_from'] = ', '.join(town_dict)
     return False
 
@@ -55,9 +55,9 @@ def handle_town_to(text, context, id):
                     context['town_to'] = re_towns[re_town]
                     return True
 
-    town_dict = []
+    town_dict = set()
     for route in DISPATCHER_CONFIG:
-        town_dict.append(DISPATCHER_CONFIG[route]['town_to'])
+        town_dict.add(DISPATCHER_CONFIG[route]['town_to'])
     context['town_to'] = ', '.join(town_dict)
     return False
 
@@ -66,8 +66,9 @@ def handle_date_format(text, context, id):
     now = datetime.datetime.now()
     match = re.match(re_date, text)
     if match:
-        incoming_date_datetime = datetime.datetime.strptime(text, f'%d-%m-%Y')
-        incoming_date_datetime += now.strftime("%H:%M:%S")
+        incoming_date_datetime = datetime.datetime.strptime(text, '%d-%m-%Y')
+        delta = datetime.timedelta(hours=now.hour + 1, minutes=now.minute, seconds=now.second)
+        incoming_date_datetime += delta
         if incoming_date_datetime >= datetime.datetime.now():
             context['date'] = text
             return True
