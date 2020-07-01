@@ -9,7 +9,7 @@ from pony.orm import db_session
 
 from avia_ticket_chatbot import handlers, tools
 from avia_ticket_chatbot.models import UserState, Registration
-
+# TODO avia_ticket_chatbot. вместо этого пометьте саму директорию как source root
 try:
     import settings
 except ImportError:
@@ -47,11 +47,13 @@ def configure_logging():
 # #         self.step_name = step_name
 # #         self.context = context or {}
 
-# TODO: def __init__(self, scenario_name, step_name, context={}):
-#  не понял объяснение лектора - почему так делать нельзя, почему при добавлении новой ID
-#  все равно будет ссылаться на один и тот же дикт контекста? И чем лучше строка self.context = context or {}
-#  Разве это не одно и тоже? Разъясните, пожалуйста.
-
+# def __init__(self, scenario_name, step_name, context={}):
+# не понял объяснение лектора - почему так делать нельзя, почему при добавлении новой ID
+# все равно будет ссылаться на один и тот же дикт контекста? И чем лучше строка self.context = context or {}
+# Разве это не одно и тоже? Разъясните, пожалуйста.
+# TODO {} -- это изменяемый элемент, в первый раз он будет создан пустым, вы что-нибудь в него добавите
+# TODO в следующий объект будет создавать не новый, пустой элемент, а будет использовать тот же,
+# TODO что был создан раньше. В итоге все данные попадут в один и тот же словарь, новые создаваться не будут
 
 class BotVk:
     """

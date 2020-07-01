@@ -1,6 +1,6 @@
 from pony.orm import Database, Required, Json
 
-from chatbot.settings import DB_CONFIG
+from settings import DB_CONFIG
 
 db = Database()
 db.bind(**DB_CONFIG)
