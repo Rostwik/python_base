@@ -173,6 +173,7 @@ class BotVk:
                     self.send_text(intent['answer'], user_id)
                     state.delete()
                 elif intent['scenario']:
+                    state.delete()
                     self.start_scenario(user_id, intent['scenario'], text)
                 break
         else:
@@ -184,6 +185,11 @@ class BotVk:
                 # next step
                 if state.step_name == 'user_mistake':  # Если пользователь ошибся при заказе билета, удаляем весь прогресс.
                     text_to_send = 'Очень жаль, попробуйте еще раз.'
+                    self.send_text(text_to_send, user_id)
+                    state.delete()
+                elif state.step_name == 'no_flights_between':  # Если между городами,
+                    # что выбрал пользовтель нет сообщения, удаляем весь прогресс.
+                    text_to_send = 'К сожалению между городами {town_from} и {town_to} нет рейсов.'.format(**state.context)
                     self.send_text(text_to_send, user_id)
                     state.delete()
                 else:

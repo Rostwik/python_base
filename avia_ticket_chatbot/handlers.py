@@ -51,10 +51,15 @@ def handle_town_to(text, context, id):
         match = re.match(re_town_comp, text)
         if match:
             for route in DISPATCHER_CONFIG:
-                if re_towns[re_town] == DISPATCHER_CONFIG[route]['town_to']:
+                if re_towns[re_town] == DISPATCHER_CONFIG[route]['town_to']\
+                        and context['town_from'] == DISPATCHER_CONFIG[route]['town_from']:
                     context['town_to'] = re_towns[re_town]
                     return True
-
+            else:
+                context['town_to'] = re_towns[re_town]
+                state = UserState.get(user_id=id)
+                state.step_name = 'no_flights_between'
+                return True
     town_dict = set()
     for route in DISPATCHER_CONFIG:
         town_dict.add(DISPATCHER_CONFIG[route]['town_to'])
@@ -105,7 +110,7 @@ def handle_yesno(text, context, id):
     return False
 
 
-def handle_phone_number(text, context):
+def handle_phone_number(text, context, id):
     match = re.match(re_phone, text)
     if match:
         context['phone'] = text

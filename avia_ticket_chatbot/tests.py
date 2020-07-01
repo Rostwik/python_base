@@ -7,8 +7,8 @@ from vk_api.bot_longpoll import VkBotMessageEvent, VkBotEvent
 
 from vkbot import BotVk
 
-from chatbot import settings
-from chatbot.generate_ticket import generate_ticket
+from avia_ticket_chatbot import settings
+# from avia_ticket_chatbot.generate_ticket import generate_ticket
 
 
 def isolated_db(test_func):
@@ -39,21 +39,42 @@ class Test1(TestCase):
 
     INPUTS = [
         'Привет',
-        'А когда?',
-        'Где будет конференция?',
-        'Зарегистрируй меня',
-        'Вениамин',
-        'мой адрес email@email.ru',
+        'помоги',
+        'билет',
+        'Париж',
+        'Берлин',
+        '01-07-2020',
+        '0'
+        # '5',
+        # 'тут коммент',
+        # 'Да'
+
     ]
 
     EXPECTED_OUTPUTS = [
         settings.DEFAULT_ANSWER,
         settings.INTENTS[0]['answer'],
-        settings.INTENTS[1]['answer'],
-        settings.SCENARIOS['registration']['steps']['step1']['text'],
-        settings.SCENARIOS['registration']['steps']['step2']['text'],
+        settings.SCENARIOS['ticket']['steps']['step1']['text'],
+        settings.SCENARIOS['ticket']['steps']['step2']['text'],
+        settings.SCENARIOS['ticket']['steps']['step3']['text'],
+        settings.SCENARIOS['ticket']['steps']['step4']['text'].format(suitable_flights_user_text=
+        '<br> 0. Рейс: route3,  Дата и время вылета: 01-07-2020 15:30 ,'
+        '<br> 1. Рейс: route5,  Дата и время вылета: 10-07-2020 17:30 ,'
+        '<br> 2. Рейс: route3,  Дата и время вылета: 02-08-2020 15:30 ,'
+        '<br> 3. Рейс: route5,  Дата и время вылета: 25-08-2020 17:30 ,'
+        '<br> 4. Рейс: route3,  Дата и время вылета: 28-09-2020 15:30'),
+        # settings.SCENARIOS['ticket']['steps']['step5']['text'],
+        # settings.SCENARIOS['ticket']['steps']['step6']['text'],
+        # settings.SCENARIOS['ticket']['steps']['step7']['text'].format(town_from='Париж',
+        #                                                               town_to='Берлин',
+        #                                                               date='01-07-2020',
+        #                                                               place='5',
+        #                                                               comment='тут коммент')
 
-        settings.SCENARIOS['registration']['steps']['step3']['text'].format(name='Вениамин', email='email@email.ru')
+        # settings.SCENARIOS['ticket']['steps']['step8']['text'],
+        # settings.SCENARIOS['ticket']['steps']['step9']['text'],
+
+        # settings.SCENARIOS['registration']['steps']['step3']['text'].format(name='Вениамин', email='email@email.ru')
     ]
 
     def test_run(self):
@@ -131,15 +152,15 @@ class Test1(TestCase):
 
         assert real_outputs == self.EXPECTED_OUTPUTS
 
-    def test_image_generation(self):
-        with open('files/email.png', 'rb') as avatar_file:
-            avatar_mock = Mock()
-            avatar_mock.content = avatar_file.read()
-
-        with patch('requests.get', return_value=avatar_mock):
-            ticket_file = generate_ticket('name', 'email')
-
-        with open('files/ticket-example.png', 'rb') as expected_file:
-            expected_bytes = expected_file.read()
-
-        assert ticket_file.read() == expected_bytes
+    # def test_image_generation(self):
+    #     with open('files/email.png', 'rb') as avatar_file:
+    #         avatar_mock = Mock()
+    #         avatar_mock.content = avatar_file.read()
+    #
+    #     with patch('requests.get', return_value=avatar_mock):
+    #         ticket_file = generate_ticket('name', 'email')
+    #
+    #     with open('files/ticket-example.png', 'rb') as expected_file:
+    #         expected_bytes = expected_file.read()
+    #
+    #     assert ticket_file.read() == expected_bytes
