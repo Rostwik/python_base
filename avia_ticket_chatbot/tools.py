@@ -51,7 +51,7 @@ def user_list_of_flights(context, suitable_flights):
         f" Дата и время вылета: {context['suitable_flights'][x][1]}"
         for x in context['suitable_flights'] if not None)
 
-    # print(context['suitable_flights_user_text'])
+    print(context['suitable_flights_user_text'])
 
 
 def day_of_month(context, route, route_config, suitable_flights):

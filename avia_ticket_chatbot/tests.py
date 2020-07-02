@@ -45,7 +45,7 @@ class Test1(TestCase):
         'билет',
         'Париж',
         'Берлин',
-        '01-07-2020',
+        '10-07-2020',
         '0'
         # '5',
         # 'тут коммент',
@@ -60,14 +60,14 @@ class Test1(TestCase):
         settings.SCENARIOS['ticket']['steps']['step2']['text'],
         settings.SCENARIOS['ticket']['steps']['step3']['text'],
         settings.SCENARIOS['ticket']['steps']['step4']['text'].format(suitable_flights_user_text=
-                                                                      '<br> 0. Рейс: route3,  Дата и время вылета: 01-07-2020 15:30 ,'
-                                                                      '<br> 1. Рейс: route5,  Дата и время вылета: 10-07-2020 17:30 ,'
-                                                                      '<br> 2. Рейс: route3,  Дата и время вылета: 02-08-2020 15:30 ,'
-                                                                      '<br> 3. Рейс: route5,  Дата и время вылета: 25-08-2020 17:30 ,'
+                                                                      '<br> 0. Рейс: route5,  Дата и время вылета: 10-07-2020 17:30 ,'
+                                                                      '<br> 1. Рейс: route3,  Дата и время вылета: 01-08-2020 15:30 ,'
+                                                                      '<br> 2. Рейс: route5,  Дата и время вылета: 25-08-2020 17:30 ,'
+                                                                      '<br> 3. Рейс: route3,  Дата и время вылета: 02-09-2020 15:30 ,'
                                                                       '<br> 4. Рейс: route3,  Дата и время вылета: 28-09-2020 15:30'),
         # здесь по идее надо следущий шаг, но тест не проходит, так как тест не видит маршрут "0" и выдает
         # другой ответ, хотя без теста все ок. Почему так происходит? С тестами не разобрался до конца.
-        # settings.SCENARIOS['ticket']['steps']['step5']['text'],
+        settings.SCENARIOS['ticket']['steps']['step5']['text'],
         # settings.SCENARIOS['ticket']['steps']['step6']['text'],
         # settings.SCENARIOS['ticket']['steps']['step7']['text'].format(town_from='Париж',
         #                                                               town_to='Берлин',
