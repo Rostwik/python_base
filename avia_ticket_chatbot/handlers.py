@@ -10,8 +10,7 @@ import re
 from avia_ticket_chatbot.generate_ticket import generate_ticket
 from avia_ticket_chatbot.models import UserState
 from avia_ticket_chatbot.settings import DISPATCHER_CONFIG
-# TODO avia_ticket_chatbot. тут надо убрать
-# TODO А DISPATCHER_CONFIG надо добавить, без него не могу запустить ничего
+
 # re_name = re.compile(r'^[\w\-\s]{3,40}$')
 # re_email = re.compile(r"\b[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+\b")
 
