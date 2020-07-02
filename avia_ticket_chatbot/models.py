@@ -7,7 +7,6 @@ db.bind(**DB_CONFIG)
 
 
 class UserState(db.Entity):
-
     """Состояние пользователя внури сценария"""
 
     user_id = Required(str, unique=True)
@@ -17,15 +16,12 @@ class UserState(db.Entity):
 
 
 class Registration(db.Entity):
-
     """Заявка на регистрацию"""
 
     phone = Required(str)
     places = Required(str)
     route = Required(str)
     comment = Required(str)
-
-
 
 
 db.generate_mapping(create_tables=True)

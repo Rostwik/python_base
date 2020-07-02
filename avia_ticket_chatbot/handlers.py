@@ -71,11 +71,17 @@ def handle_date_format(text, context, id):
     now = datetime.datetime.now()
     match = re.match(re_date, text)
     if match:
+        print(text, match, '+++')  # TODO Тут дату распознает верно
         incoming_date_datetime = datetime.datetime.strptime(text, '%d-%m-%Y')
         delta = datetime.timedelta(hours=now.hour + 1, minutes=now.minute, seconds=now.second)
         incoming_date_datetime += delta
-        if incoming_date_datetime >= datetime.datetime.now():
+        if incoming_date_datetime >= datetime.datetime.now():  # TODO А вот здесь проблема
+            # TODO Дата в тестах не будет больше или равна текущей дате
+            # TODO Исправление этой ошибки зависит от формирования словаря с датами
+            # TODO в идеале в тесте надо использовать дату запуска теста (вместо 01-07-2020)
+            # TODO и под неё формировать ответ
             context['date'] = text
+            print(text, match, '+++')
             return True
     return False
 
