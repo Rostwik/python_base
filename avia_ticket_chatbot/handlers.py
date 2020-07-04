@@ -7,9 +7,9 @@ import datetime
 import random
 import re
 
-from avia_ticket_chatbot.generate_ticket import generate_ticket
-from avia_ticket_chatbot.models import UserState
-from avia_ticket_chatbot.settings import DISPATCHER_CONFIG
+from generate_ticket import generate_ticket
+from models import UserState
+from settings import DISPATCHER_CONFIG
 
 # re_name = re.compile(r'^[\w\-\s]{3,40}$')
 # re_email = re.compile(r"\b[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+\b")
