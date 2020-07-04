@@ -87,6 +87,13 @@ def handle_date_format(text, context, id):
 
 
 def handle_flight_selection(text, context, id):
+    print('=' * 20, handle_flight_selection, '=' * 20)
+    print(text, type(text), text == '0')
+    print(context['suitable_flights'])
+    print(text in context['suitable_flights'])
+    print(int(text) in context['suitable_flights'])
+    # TODO А вот и причина нашлась, ключ просто int, а передается str
+    print('=' * 20, handle_flight_selection, '=' * 20)
     if text in context['suitable_flights']:
         context['route'] = context['suitable_flights'][text]
         return True
