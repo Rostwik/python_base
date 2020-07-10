@@ -1,7 +1,7 @@
 import collections
 import datetime
 
-from avia_ticket_chatbot.settings import DISPATCHER_CONFIG
+from settings import DISPATCHER_CONFIG
 
 
 def dispatcher(context):
@@ -17,6 +17,7 @@ def dispatcher(context):
 
     suitable_flights = collections.defaultdict(list)
     context['suitable_flights'] = {}
+
 
     for route in DISPATCHER_CONFIG:
         route_config = DISPATCHER_CONFIG[route]
@@ -42,7 +43,7 @@ def user_list_of_flights(context, suitable_flights):
     list_of_suitable_flights = list_of_suitable_flights[:5]
 
     for index, flight in enumerate(list_of_suitable_flights):
-        context['suitable_flights'][index] = [
+        context['suitable_flights'][str(index)] = [
             suitable_flights[list_of_suitable_flights[index]],
             list_of_suitable_flights[index].strftime('%d-%m-%Y %H:%M')]
 
@@ -51,31 +52,32 @@ def user_list_of_flights(context, suitable_flights):
         f" Дата и время вылета: {context['suitable_flights'][x][1]}"
         for x in context['suitable_flights'] if not None)
 
-    print(context['suitable_flights_user_text'])
+    # print(context['suitable_flights_user_text'])
 
 
 def day_of_month(context, route, route_config, suitable_flights):
     user_date = datetime.datetime.strptime(context['date'], '%d-%m-%Y')
+    month_period = user_date + datetime.timedelta(days=30)
     for day_of_the_month in route_config['day_of_month'].split(','):
-        month_period = user_date + datetime.timedelta(days=30)
-        while user_date < month_period:
-            if user_date.day == int(day_of_the_month):
-                flight_date = datetime.datetime.strptime(user_date.strftime('%d-%m-%Y') +
+        user_date_0 = user_date
+        while user_date_0 < month_period:
+            if user_date_0.day == int(day_of_the_month):
+                flight_date = datetime.datetime.strptime(user_date_0.strftime('%d-%m-%Y') +
                                                          ' ' + route_config['time'], '%d-%m-%Y %H:%M')
                 suitable_flights[flight_date].append(route)
 
-            user_date = user_date + datetime.timedelta(days=1)
+            user_date_0 = user_date_0 + datetime.timedelta(days=1)
 
 
 def day_of_week(route, route_config, suitable_flights, context):
     user_date = datetime.datetime.strptime(context['date'], '%d-%m-%Y')
+    month_period = user_date + datetime.timedelta(days=30)
     for weekday in route_config['day_of_week'].split(','):
-
-        month_period = user_date + datetime.timedelta(days=30)
-        while user_date < month_period:
-            if user_date.weekday() == int(weekday):
-                flight_date = datetime.datetime.strptime(user_date.strftime('%d-%m-%Y') +
+        user_date_0 = user_date
+        while user_date_0 < month_period:
+            if user_date_0.weekday() == int(weekday):
+                flight_date = datetime.datetime.strptime(user_date_0.strftime('%d-%m-%Y') +
                                                          ' ' + route_config['time'], '%d-%m-%Y %H:%M')
                 suitable_flights[flight_date].append(route)
 
-            user_date = user_date + datetime.timedelta(days=1)
+            user_date_0 = user_date_0 + datetime.timedelta(days=1)

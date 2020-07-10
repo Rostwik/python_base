@@ -9,6 +9,7 @@ from pony.orm import db_session
 
 from avia_ticket_chatbot import handlers, tools
 from avia_ticket_chatbot.models import UserState, Registration
+
 # TODO avia_ticket_chatbot. вместо этого пометьте саму директорию как source root
 try:
     import settings
@@ -184,30 +185,34 @@ class BotVk:
             step = steps[state.step_name]
 
             handler = getattr(handlers, step['handler'])
-            if handler(text=text, context=state.context, id=state.user_id):
+            result_step = handler(text=text, context=state.context, id=state.user_id)
+            if result_step == 'no_flights_between':
+                # Если между городами,
+                # что выбрал пользователь нет сообщения, удаляем весь прогресс.
+                text_to_send = 'К сожалению между городами {town_from} и {town_to} нет рейсов.'.format(**state.context)
+                self.send_text(text_to_send, user_id)
+                state.delete()
+            elif result_step == 'user_mistake':
+                # Если пользователь ошибся при заказе билета, удаляем весь прогресс.
+                text_to_send = 'Очень жаль, попробуйте еще раз.'
+                self.send_text(text_to_send, user_id)
+                state.delete()
+            elif result_step:
                 # next step
-                if state.step_name == 'user_mistake':  # Если пользователь ошибся при заказе билета, удаляем весь прогресс.
-                    text_to_send = 'Очень жаль, попробуйте еще раз.'
-                    self.send_text(text_to_send, user_id)
-                    state.delete()
-                elif state.step_name == 'no_flights_between':  # Если между городами,
-                    # что выбрал пользовтель нет сообщения, удаляем весь прогресс.
-                    text_to_send = 'К сожалению между городами {town_from} и {town_to} нет рейсов.'.format(**state.context)
-                    self.send_text(text_to_send, user_id)
-                    state.delete()
-                else:
-                    next_step = steps[step['next_step']]
-                    self.send_step(next_step, user_id, text, state.context)
 
-                    if next_step['next_step']:
-                        # switch to next step
-                        state.step_name = step['next_step']
-                    else:
-                        # finish scenario
-                        log.info('Зарегистрирован: {phone}'.format(**state.context))
-                        Registration(phone=state.context['phone'], places=state.context['place'],
-                                     route=state.context['route'], comment=state.context['comment'])
-                        state.delete()
+                next_step = steps[step['next_step']]
+                self.send_step(next_step, user_id, text, state.context)
+
+                if next_step['next_step']:
+                    # switch to next step
+                    state.step_name = step['next_step']
+                else:
+                    # finish scenario
+                    log.info('Зарегистрирован: {phone}'.format(**state.context))
+                    Registration(phone=state.context['phone'], places=state.context['place'],
+                                 route=state.context['route'], comment=state.context['comment'])
+                    state.delete()
+
             else:
                 # retry current step
                 text_to_send = step['failure_text'].format(**state.context)

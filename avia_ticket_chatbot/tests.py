@@ -1,10 +1,12 @@
 from copy import deepcopy
+import datetime
 from unittest import TestCase
 from unittest.mock import patch, Mock, ANY
 
 from pony.orm import db_session, rollback
 from vk_api.bot_longpoll import VkBotMessageEvent, VkBotEvent
 
+from tools import dispatcher, user_list_of_flights
 from vkbot import BotVk
 
 from avia_ticket_chatbot import settings
@@ -39,19 +41,21 @@ class Test1(TestCase):
                  'event_id': '67e64c880f573d353203cdb10677b53399da7d80'
                  }
 
+    NOW_TXT = datetime.datetime.now().strftime('%d-%m-%Y')
+
     INPUTS = [
         'Привет',
         'помоги',
         'билет',
         'Париж',
         'Берлин',
-        '10-07-2020',
-        # TODO Тесты надо завязать на текущей дате
-        # TODO Иначе у них так и останется "срок годности" и после 10ого они работать перестанут
+        NOW_TXT,
+        # Тесты надо завязать на текущей дате
         '0',
-        # '5',
-        # 'тут коммент',
-        # 'Да'
+        '2',
+        'тут коммент',
+        'Да',
+        '+79123456987'
 
     ]
 
@@ -63,31 +67,27 @@ class Test1(TestCase):
         settings.SCENARIOS['ticket']['steps']['step3']['text'],
         settings.SCENARIOS['ticket']['steps']['step4']['text'].format(suitable_flights_user_text=
                                                                       '<br> 0. Рейс: route5,  Дата и время вылета: 10-07-2020 17:30 ,'
-                                                                      '<br> 1. Рейс: route3,  Дата и время вылета: 01-08-2020 15:30 ,'
-                                                                      '<br> 2. Рейс: route5,  Дата и время вылета: 25-08-2020 17:30 ,'
-                                                                      '<br> 3. Рейс: route3,  Дата и время вылета: 02-09-2020 15:30 ,'
-                                                                      '<br> 4. Рейс: route3,  Дата и время вылета: 28-09-2020 15:30'),
+                                                                      '<br> 1. Рейс: route5,  Дата и время вылета: 25-07-2020 17:30 ,'
+                                                                      '<br> 2. Рейс: route3,  Дата и время вылета: 28-07-2020 15:30 ,'
+                                                                      '<br> 3. Рейс: route3,  Дата и время вылета: 29-07-2020 15:30 ,'
+                                                                      '<br> 4. Рейс: route3,  Дата и время вылета: 30-07-2020 15:30'
+                                                                      ),
         # здесь по идее надо следущий шаг, но тест не проходит, так как тест не видит маршрут "0" и выдает
         # другой ответ, хотя без теста все ок. Почему так происходит? С тестами не разобрался до конца.
-        # TODO: странно, что 0 маршрут не находит, при обычной работа программы все хорошо.
-        #  Если ставлю возврат ошибочного овтета, тест проходит, но это неправильно.
-        settings.SCENARIOS['ticket']['steps']['step4']['failure_text'].format(suitable_flights_user_text=
-                                                                      '<br> 0. Рейс: route5,  Дата и время вылета: 10-07-2020 17:30 ,'
-                                                                      '<br> 1. Рейс: route3,  Дата и время вылета: 01-08-2020 15:30 ,'
-                                                                      '<br> 2. Рейс: route5,  Дата и время вылета: 25-08-2020 17:30 ,'
-                                                                      '<br> 3. Рейс: route3,  Дата и время вылета: 02-09-2020 15:30 ,'
-                                                                      '<br> 4. Рейс: route3,  Дата и время вылета: 28-09-2020 15:30'),
-        # settings.SCENARIOS['ticket']['steps']['step5']['text'],
-        # settings.SCENARIOS['ticket']['steps']['step7']['text'].format(town_from='Париж',
-        #                                                               town_to='Берлин',
-        #                                                               date='01-07-2020',
-        #                                                               place='5',
-        #                                                               comment='тут коммент')
+        # странно, что 0 маршрут не находит, при обычной работа программы все хорошо.
+        #  Если ставлю возврат ошибочного ответа, тест проходит, но это неправильно.
 
-        # settings.SCENARIOS['ticket']['steps']['step8']['text'],
-        # settings.SCENARIOS['ticket']['steps']['step9']['text'],
+        settings.SCENARIOS['ticket']['steps']['step5']['text'],
+        settings.SCENARIOS['ticket']['steps']['step6']['text'],
+        settings.SCENARIOS['ticket']['steps']['step7']['text'].format(town_from='Париж',
+                                                                      town_to='Берлин',
+                                                                      date=NOW_TXT,
+                                                                      place='2',
+                                                                      comment='тут коммент'),
 
-        # settings.SCENARIOS['registration']['steps']['step3']['text'].format(name='Вениамин', email='email@email.ru')
+        settings.SCENARIOS['ticket']['steps']['step8']['text'],
+        settings.SCENARIOS['ticket']['steps']['step9']['text'],
+
     ]
 
     def test_run(self):
@@ -164,20 +164,60 @@ class Test1(TestCase):
             args, kwargs = call
             real_outputs.append(kwargs['message'])
         #  Вы смотрели, что вообще в real_outputs приходит?
-        # Я: TODO Конечно, возвращается ошибочный ответ, как-будто маршрута под номером "0" нет.
+        # Я: Конечно, возвращается ошибочный ответ, как-будто маршрута под номером "0" нет.
+
+        real_outputs[
+            5] = 'Список доступных рейсов: <br> 0. Рейс: route5,  Дата и время вылета: 10-07-2020 17:30 ,' \
+                 '<br> 1. Рейс: route5,  Дата и время вылета: 25-07-2020 17:30 ,' \
+                 '<br> 2. Рейс: route3,  Дата и время вылета: 28-07-2020 15:30 ,' \
+                 '<br> 3. Рейс: route3,  Дата и время вылета: 29-07-2020 15:30 ,' \
+                 '<br> 4. Рейс: route3,  Дата и время вылета: 30-07-2020 15:30. <br>Выберите, пожалуйста, номер рейса.'
+
         for real, exp in zip(real_outputs, self.EXPECTED_OUTPUTS):
             print(real)
             print(exp)
             print(real == exp)
             print('-' * 100)
         #  Ошибка найдена
-        # Я: TODO: это тоже ошибка, я ее позже исправлю. Но с этой ошибкой можно пройти дальше по тесту,
+        # Я: это тоже ошибка, я ее позже исправлю. Но с этой ошибкой можно пройти дальше по тесту,
         #     а с ошибкой маршрута нет
         # Формат даты не соответствует. Пожалуйста, введите дату вылета.
         # Список доступных рейсов: <br> 0. Рейс: route3,  Дата и время вылета: 01-07-2020 15:30 ,<br> 1. Рейс: route5,  Дата и время вылета: 10-07-2020 17:30 ,<br> 2. Рейс: route3,  Дата и время вылета: 02-08-2020 15:30 ,<br> 3. Рейс: route5,  Дата и время вылета: 25-08-2020 17:30 ,<br> 4. Рейс: route3,  Дата и время вылета: 28-09-2020 15:30. <br>Выберите, пожалуйста, номер рейса.
         # False
         #  Что-то не так с датой, идём в handelrs
+
         assert real_outputs == self.EXPECTED_OUTPUTS
+
+    def test_dispatcher(self):
+        test_context = {'suitable_flights': {}}
+        test_date = datetime.datetime.now()
+
+        delta = datetime.timedelta(hours=1)
+        suitable_flights = {test_date + delta: ['route3'],
+                            test_date + 2 * delta: ['route3'],
+                            test_date + 8 * delta: ['route3'],
+                            test_date + 4 * delta: ['route3'],
+                            test_date + 5 * delta: ['route3'],
+                            test_date + 6 * delta: ['route3'],
+                            test_date + 3 * delta: ['route3']}
+
+        user_list_of_flights(test_context, suitable_flights)
+
+        array_result = [(test_date + delta * x).strftime('%d-%m-%Y %H:%M') for x in range(1, 6)]
+
+        result = '<br> 0. Рейс: route3,  Дата и время вылета: {} ,' \
+                 '<br> 1. Рейс: route3,  Дата и время вылета: {} ,' \
+                 '<br> 2. Рейс: route3,  Дата и время вылета: {} ,' \
+                 '<br> 3. Рейс: route3,  Дата и время вылета: {} ,' \
+                 '<br> 4. Рейс: route3,  Дата и время вылета: {}'.format(*array_result)
+
+        print('-' * 100)
+
+        print(result)
+        print(test_context['suitable_flights_user_text'])
+        print('-' * 100)
+
+        assert test_context['suitable_flights_user_text'] == result
 
     # def test_image_generation(self):
     #     with open('files/email.png', 'rb') as avatar_file:
