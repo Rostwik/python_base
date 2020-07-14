@@ -7,8 +7,6 @@ import datetime
 import random
 import re
 
-
-
 from generate_ticket import generate_ticket
 from models import UserState
 from settings import DISPATCHER_CONFIG
@@ -28,9 +26,11 @@ re_towns = {
 re_date = re.compile(r'\d\d-\d\d-\d{4}')
 re_place = [1, 2, 3, 4, 5]
 re_phone = re.compile(r"^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$")
+re_name = re.compile(r'^[\w\-\s]{3,40}$')
+re_email = re.compile(r"\b[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+\b")
 
 
-def handle_town_from(text, context, id):
+def handle_town_from(text, context):
     for re_town in re_towns:
         re_town_comp = re.compile(re_town)
         match = re.match(re_town_comp, text)
@@ -47,7 +47,7 @@ def handle_town_from(text, context, id):
     return False
 
 
-def handle_town_to(text, context, id):
+def handle_town_to(text, context):
     for re_town in re_towns:
         re_town_comp = re.compile(re_town)
         match = re.match(re_town_comp, text)
@@ -63,7 +63,6 @@ def handle_town_to(text, context, id):
                 # state = UserState.get(user_id=id)
                 # state.step_name = 'no_flights_between'
 
-
     town_dict = set()
     for route in DISPATCHER_CONFIG:
         town_dict.add(DISPATCHER_CONFIG[route]['town_to'])
@@ -71,7 +70,7 @@ def handle_town_to(text, context, id):
     return False
 
 
-def handle_date_format(text, context, id):
+def handle_date_format(text, context):
     now = datetime.datetime.now()
     match = re.match(re_date, text)
     if match:
@@ -79,7 +78,7 @@ def handle_date_format(text, context, id):
         incoming_date_datetime = datetime.datetime.strptime(text, '%d-%m-%Y')
         delta = datetime.timedelta(hours=now.hour + 1, minutes=now.minute, seconds=now.second)
         incoming_date_datetime += delta
-        if incoming_date_datetime >= datetime.datetime.now():  # TODO А вот здесь проблема
+        if incoming_date_datetime >= datetime.datetime.now():
             #  Дата в тестах не будет больше или равна текущей дате
             #  Исправление этой ошибки зависит от формирования словаря с датами
             #  в идеале в тесте надо использовать дату запуска теста (вместо 01-07-2020)
@@ -90,7 +89,7 @@ def handle_date_format(text, context, id):
     return False
 
 
-def handle_flight_selection(text, context, id):
+def handle_flight_selection(text, context):
     # print('=' * 20, handle_flight_selection, '=' * 20)
     # print(text, type(text), text == '0')
     # print(context['suitable_flights'])
@@ -99,14 +98,15 @@ def handle_flight_selection(text, context, id):
     # А вот и причина нашлась, ключ просто int, а передается str
     # print('=' * 20, handle_flight_selection, '=' * 20)
     if text in context['suitable_flights']:
-        context['route'] = f"Рейс: {', '.join(context['suitable_flights'][text][0])}," \
-                           f" Дата и время вылета: {context['suitable_flights'][text][1]}"
+        context['route_txt'] = f"Рейс: {', '.join(context['suitable_flights'][text][0])}," \
+                            f" Дата и время вылета: {context['suitable_flights'][text][1]}"
+        context['route'] = context['suitable_flights'][text]
 
         return True
     return False
 
 
-def handle_number_of_seats(text, context, id):
+def handle_number_of_seats(text, context):
     if text.isdigit():
         if int(text) in re_place:
             context['place'] = text
@@ -114,12 +114,12 @@ def handle_number_of_seats(text, context, id):
     return False
 
 
-def handle_comment(text, context, id):
+def handle_comment(text, context):
     context['comment'] = text
     return True
 
 
-def handle_yesno(text, context, id):
+def handle_yesno(text, context):
     if text == 'Да':
         return True
     elif text == 'Нет':
@@ -128,7 +128,7 @@ def handle_yesno(text, context, id):
     return False
 
 
-def handle_phone_number(text, context, id):
+def handle_phone_number(text, context):
     match = re.match(re_phone, text)
     if match:
         context['phone'] = text
@@ -137,5 +137,23 @@ def handle_phone_number(text, context, id):
         return False
 
 
+def handle_name(text, context):
+    match = re.match(re_name, text)
+    if match:
+        context['name'] = text
+        return True
+    else:
+        return False
+
+
+def handle_email(text, context):
+    matches = re.findall(re_email, text)
+    if len(matches) > 0:
+        context['email'] = matches[0]
+        return True
+    else:
+        return False
+
+
 def generate_ticket_handler(text, context):
-    return generate_ticket(name=context['name'], email=context['email'])
+    return generate_ticket(context)

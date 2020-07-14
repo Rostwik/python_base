@@ -6,6 +6,7 @@ from unittest.mock import patch, Mock, ANY
 from pony.orm import db_session, rollback
 from vk_api.bot_longpoll import VkBotMessageEvent, VkBotEvent
 
+from generate_ticket import generate_ticket
 from tools import dispatcher, user_list_of_flights
 from vkbot import BotVk
 
@@ -22,6 +23,21 @@ def isolated_db(test_func):
             rollback()
 
     return wrapper
+
+
+CONTEXT = {'town_from': 'Париж', 'town_to': 'Берлин', 'date': '15-07-2020',
+           'suitable_flights': {'0': [['route5'], '25-07-2020 17:30'], '1': [['route3'], '28-07-2020 15:30'],
+                                '2': [['route3'], '29-07-2020 15:30'], '3': [['route3'], '30-07-2020 15:30'],
+                                '4': [['route3'], '01-08-2020 15:30']},
+           'suitable_flights_user_text': '<br> 0. Рейс: route5,  Дата и время вылета: 25-07-2020 17:30 ,'
+                                         '<br> 1. Рейс: route3,  Дата и время вылета: 28-07-2020 15:30 ,'
+                                         '<br> 2. Рейс: route3,  Дата и время вылета: 29-07-2020 15:30 ,'
+                                         '<br> 3. Рейс: route3,  Дата и время вылета: 30-07-2020 15:30 ,'
+                                         '<br> 4. Рейс: route3,  Дата и время вылета: 01-08-2020 15:30',
+           'route_txt': 'Рейс: route5, Дата и время вылета: 25-07-2020 17:30',
+           'route': [['route5'], '25-07-2020 17:30'],
+           'place': '2', 'comment': 'тут коммент', 'phone': '+79123456987', 'name': 'Василий',
+           'email': 'roma@gh.ru'}
 
 
 class Test1(TestCase):
@@ -55,7 +71,9 @@ class Test1(TestCase):
         '2',
         'тут коммент',
         'Да',
-        '+79123456987'
+        '+79123456987',
+        'Василий',
+        'roma@gh.ru'
 
     ]
 
@@ -87,6 +105,8 @@ class Test1(TestCase):
 
         settings.SCENARIOS['ticket']['steps']['step8']['text'],
         settings.SCENARIOS['ticket']['steps']['step9']['text'],
+        settings.SCENARIOS['ticket']['steps']['step10']['text'],
+        settings.SCENARIOS['ticket']['steps']['step11']['text'].format(name='Василий', email='roma@gh.ru'),
 
     ]
 
@@ -178,6 +198,7 @@ class Test1(TestCase):
             print(exp)
             print(real == exp)
             print('-' * 100)
+
         #  Ошибка найдена
         # Я: это тоже ошибка, я ее позже исправлю. Но с этой ошибкой можно пройти дальше по тесту,
         #     а с ошибкой маршрута нет
@@ -219,15 +240,11 @@ class Test1(TestCase):
 
         assert test_context['suitable_flights_user_text'] == result
 
-    # def test_image_generation(self):
-    #     with open('files/email.png', 'rb') as avatar_file:
-    #         avatar_mock = Mock()
-    #         avatar_mock.content = avatar_file.read()
-    #
-    #     with patch('requests.get', return_value=avatar_mock):
-    #         ticket_file = generate_ticket('name', 'email')
-    #
-    #     with open('files/ticket-example.png', 'rb') as expected_file:
-    #         expected_bytes = expected_file.read()
-    #
-    #     assert ticket_file.read() == expected_bytes
+    def test_image_generation(self):
+
+        ticket_file = generate_ticket(CONTEXT)
+
+        with open('files/ticket-example.png', 'rb') as expected_file:
+            expected_bytes = expected_file.read()
+
+        assert ticket_file.read() == expected_bytes

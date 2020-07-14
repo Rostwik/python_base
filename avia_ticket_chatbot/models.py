@@ -22,6 +22,8 @@ class Registration(db.Entity):
     places = Required(str)
     route = Required(str)
     comment = Required(str)
+    name = Required(str)
+    email = Required(str)
 
 
 db.generate_mapping(create_tables=True)

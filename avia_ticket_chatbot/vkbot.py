@@ -10,7 +10,7 @@ from pony.orm import db_session
 from avia_ticket_chatbot import handlers, tools
 from avia_ticket_chatbot.models import UserState, Registration
 
-# TODO avia_ticket_chatbot. вместо этого пометьте саму директорию как source root
+# avia_ticket_chatbot. вместо этого пометьте саму директорию как source root
 try:
     import settings
 except ImportError:
@@ -185,7 +185,7 @@ class BotVk:
             step = steps[state.step_name]
 
             handler = getattr(handlers, step['handler'])
-            result_step = handler(text=text, context=state.context, id=state.user_id)
+            result_step = handler(text=text, context=state.context)
             if result_step == 'no_flights_between':
                 # Если между городами,
                 # что выбрал пользователь нет сообщения, удаляем весь прогресс.
@@ -208,9 +208,11 @@ class BotVk:
                     state.step_name = step['next_step']
                 else:
                     # finish scenario
+                    print(state.context)
                     log.info('Зарегистрирован: {phone}'.format(**state.context))
                     Registration(phone=state.context['phone'], places=state.context['place'],
-                                 route=state.context['route'], comment=state.context['comment'])
+                                 route=state.context['route_txt'], comment=state.context['comment'],
+                                 name=state.context['name'], email=state.context['email'])
                     state.delete()
 
             else:
