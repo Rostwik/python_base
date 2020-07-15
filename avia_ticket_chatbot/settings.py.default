@@ -1,4 +1,4 @@
-TOKEN = ''
+TOKEN = '717dd44e801853742a023d1df3f69c62588e52d9922b6129bf698957e4943ec0c390d684ea70c6c40e265'
 ID_GROUP = 190258846
 
 INTENTS = [
@@ -86,7 +86,21 @@ SCENARIOS = {
                 "next_step": "step9"
             },
             "step9": {
-                "text": "Спасибо за обращение. С Вами свяжутся по указанному номеру (phone) телефона.",
+                "text": "Пожалуйста, введите Ваше имя.",
+                "failure_text": "Имя должно состоять из 3-30 букв и дефиса. Попробуйте еще раз.",
+                "handler": "handle_name",
+                "next_step": "step10"
+            },
+            "step10": {
+                "text": "Пожалуйста, укажите Ваш email. Мы отправим на него все данные.",
+                "failure_text": "Во введенном адресе ошибка. Попробуйте еще раз.",
+                "handler": "handle_email",
+                "next_step": "step11"
+            },
+            "step11": {
+                "text": "Спасибо за обращение, {name}! Ваш билет ниже. Копию мы отправили на {email},"
+                        "распечатайте его. Спасибо",
+                "image": "generate_ticket_handler",
                 "failure_text": None,
                 "handler": None,
                 "next_step": None
